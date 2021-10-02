@@ -1,0 +1,44 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes configures the TweetQA API
+  version: "1.0.0"
+  title: TweetQA API
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/"
+
+# Paths supported by the server application
+paths:
+  /:
+    get:
+      operationId: "controller.v1.root.read"
+      tags:
+        - "Root"
+      summary: "Application root to check if things are running correctly"
+      description: "Read a status check message"
+      responses:
+        200:
+          description: "TweetQA API successfully read"
+          schema:
+            type: "string"
+  /v1/models:
+    get:
+      operationId: "controller.v1.model.read"
+      tags:
+        - "Model"
+      summary: "The model data structure supported by the server application"
+      description: "Read the list of available models"
+      responses:
+        200:
+          description: "Successful read model list operation"
+          schema:
+            type: "array"
+            items:
+              properties:
+                model_name:
+                  type: "string"
+                timestamp:
+                  type: "string"
