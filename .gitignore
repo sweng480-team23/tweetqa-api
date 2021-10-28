@@ -1,3 +1,7 @@
 .idea/*
 Pipfile
 Pipfile.lock
+controller/__pycache__/__init__.cpython-38.pyc
+controller/v1/__pycache__/__init__.cpython-38.pyc
+controller/v1/__pycache__/model.cpython-38.pyc
+controller/v1/__pycache__/root.cpython-38.pyc
