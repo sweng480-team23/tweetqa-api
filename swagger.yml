@@ -12,18 +12,6 @@ basePath: "/"
 
 # Paths supported by the server application
 paths:
-  /:
-    get:
-      operationId: "controller.v1.root.read"
-      tags:
-        - "Root"
-      summary: "Application root to check if things are running correctly"
-      description: "Read a status check message"
-      responses:
-        200:
-          description: "TweetQA API successfully read"
-          schema:
-            type: "string"
   /v1/models:
     get:
       operationId: "controller.v1.model.read"
