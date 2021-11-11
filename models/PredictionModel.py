@@ -7,7 +7,7 @@ class PredictionModel(db.Model):
     __tablename__ = 'model'
 
     response_id = db.Column(Integer, primary_key=True)
-    uuid = db.Column(Integer, nullable=False, unique=True)
+    uuid = db.Column(String(60), nullable=False, unique=True)
     token_id = db.Column(String(60), nullable=False)
     is_corrected = db.Column(Boolean, nullable=False)
     alt_answer = db.Column(String(280), nullable=True)
