@@ -8,7 +8,7 @@ class Prediction(db.Model):
 
     prediction_id = db.Column(Integer, primary_key=True, autoincrement = True)
     uuid = db.Column(String(60), nullable=False, unique=True)
-    rating = db.Column(Integer, nullable=False)
+    is_corrected = db.Column(Boolean, nullable=False)
     alt_answer = db.Column(String(280), nullable=True)
 
     # many to one relatioonship with Model

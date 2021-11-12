@@ -51,7 +51,7 @@ testvisitor = Visitor(
 )
 testprediction = Prediction(
     uuid = uuid_generator(),
-    rating = 1,
+    is_corrected = True,
     alt_answer = None,
     model_id = testmodel.model_id,
     model = testmodel, 
