@@ -10,3 +10,8 @@ class Account(db.Model):
     username = db.Column(String(60), nullable=False)
     password = db.Column(String(60), nullable=False)
     email = db.Column(String(60), nullable=False)
+
+    # tostring code use for testing and debug
+    def __repr__(self)->str:
+        return (f'Username: {self.username}, \n' +
+                f'Email: {self.email}, \n')
