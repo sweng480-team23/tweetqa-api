@@ -14,7 +14,7 @@ basePath: "/"
 paths:
   /:
     get:
-      operationId: "controller.v1.root.read"
+      operationId: "controllers.v1.root.read"
       tags:
         - "Root"
       summary: "Application root to check if things are running correctly"
@@ -24,21 +24,37 @@ paths:
           description: "TweetQA API successfully read"
           schema:
             type: "string"
-  /v1/models:
+  /controllers/v1/QAModelController/read_qa_model/{model_uuid}:
     get:
-      operationId: "controller.v1.model.read"
-      tags:
-        - "Model"
-      summary: "The model data structure supported by the server application"
-      description: "Read the list of available models"
+      operationId: "controllers.v1.QAModelController.read_qa_model"
+      tags: 
+        - "QAModelController"
+      summary: "Application controller to handle QAModel request/response"
+      description: "Request a model DTO by uuid"
+      parameters:
+      - name: model_uuid
+        in: path
+        required: true
+        type: string
+        format: path
       responses:
         200:
-          description: "Successful read model list operation"
+          description: "Model uuid succesfully found"
           schema:
             type: "array"
             items:
               properties:
-                model_name:
+                model_uuid: 
                   type: "string"
-                timestamp:
+                created: 
                   type: "string"
+                ml_type: 
+                  type: "string"
+                ml_version:
+                  type: "string"
+                bleu_score:
+                  type: "number"
+                rouge_score:
+                  type: "number"
+                meteor_score:
+                  type: "number"

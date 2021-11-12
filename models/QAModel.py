@@ -6,7 +6,7 @@ class QAModel(db.Model):
     __tablename__ = 'qa_model'
 
     model_id = db.Column(Integer, primary_key=True)
-    uuid = db.Column(String(60), nullable=False, unique=True)
+    model_uuid = db.Column(String(60), nullable=False, unique=True)
 
     ml_type = db.Column(String(100), nullable=False)
     ml_version = db.Column(String(20), nullable=False)
