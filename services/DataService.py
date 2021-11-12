@@ -11,8 +11,8 @@ class DataService():
     db_conn = db
 
     def create_data(self, datum:Data)->Data:
-        self.db_conn.add(datum)
-        self.db_conn.commit()
+        self.db_conn.session.add(datum)
+        self.db_conn.session.commit()
         saved_data = self.read_data_by_qid(datum.qid)
         return saved_data
 
@@ -28,6 +28,26 @@ class DataService():
         selected_datas = Data.query.order_by(Data.datum_id.desc()).limit(x)
         selected_datas = selected_datas [::-1]
         return selected_datas
+
+    def update_data (self, datum:Data)->Data:
+        selected_data = Data.query.filter(Data.uuid == datum.uuid).first()
+        selected_data.qid = datum.qid
+        selected_data.tweet = datum.tweet
+        selected_data.question = datum.question
+        selected_data.answer = datum.answer
+        selected_data.created_date = datum.created_date
+        selected_data.updated_date = datum.updated_date
+        selected_data.source = datum.source
+        selected_data.answer = datum.answer
+        selected_data.start_position = datum.start_position
+        selected_data.end_position = datum.end_position
+        self.db_conn.session.commit()
+        saved_data = self.read_data_by_qid(datum.qid)
+        return saved_data
+
+    def generate_word_cloud(self, model:QAModel)->list:
+        pass
+        #not implemented at this moment
 #End of DataService Class
 
 

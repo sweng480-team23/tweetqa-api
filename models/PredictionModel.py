@@ -8,6 +8,7 @@ class Prediction(db.Model):
 
     prediction_id = db.Column(Integer, primary_key=True, autoincrement = True)
     uuid = db.Column(String(60), nullable=False, unique=True)
+    prediction = db.Column(String(280))
     is_corrected = db.Column(Boolean, nullable=False)
     alt_answer = db.Column(String(280), nullable=True)
 
@@ -26,4 +27,4 @@ class Prediction(db.Model):
     visitor = db.relationship('models.VisitorModel.Visitor', back_populates='predictions')
 
     def __repr__(self) -> str:
-        return f'Prediction {self.prediction_id}'
+        return (f'Prediction {self.prediction_id} '+ f'Prediction:{self.prediction} ' + f'Alt_ans:{self.alt_answer}')
