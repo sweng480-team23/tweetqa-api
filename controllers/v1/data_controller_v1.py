@@ -1,14 +1,20 @@
 from datetime import datetime
-from ...dtos.v1.data_dto_v1 import DataCollectionResponse, DataCreateRequest, DataResponse
+from dtos.v1.data_dto_v1 import DataCollectionResponse, DataCreateRequest, DataResponse
+from services.DataService import DataService
 import datetime
 
-def create_data(request: DataCreateRequest) -> DataResponse:
-    # todo
-    pass
+data_service = DataService()
 
-def read_data(qid: int) -> DataResponse:
-    # todo
-    pass
+def create_data(request: DataCreateRequest) -> DataResponse:
+    req_model = data_service.create_data(request.to_model())
+    return req_model, 200
+
+def read_data(qid: str) -> DataResponse:
+    datum = data_service.read_data_by_qid(qid)
+    if (datum):
+        return datum, 200
+
+    return qid, 404
 
 def read_all_data_since(date: datetime) -> DataCollectionResponse:
     # todo
