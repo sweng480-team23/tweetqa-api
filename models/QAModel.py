@@ -5,7 +5,7 @@ from controllers import db
 class QAModel(db.Model):
     __tablename__ = 'qa_model'
 
-    model_id = db.Column(Integer, primary_key=True)
+    model_id = db.Column(Integer, primary_key=True, autoincrement = True)
     uuid = db.Column(String(60), nullable=False, unique=True)
 
     ml_type = db.Column(String(100), nullable=False)
@@ -15,12 +15,13 @@ class QAModel(db.Model):
     rogue_score = db.Column(Float, nullable=False)
     meteor_score = db.Column(Float, nullable=False)
 
-    created = db.Column(DateTime, nullable=False)
+    created_date = db.Column(DateTime, nullable=False)
 
     # One to many relationship with prediction
-    predictions = db.relationship('models.PredictionModel.PredictionModel', back_populates='model')
+    predictions = db.relationship('models.PredictionModel.Prediction', back_populates='model')
 
+    # tostring code use for testing and debug
     def __repr__(self) -> str:
         return (f'Model id: {self.model_id}, Model: {self.ml_type}-{self.ml_version}, ' +
                 f'Scores: [{self.bleu_score}, {self.rogue_score}, {self.meteor_score}], ' +
-                f'Created: {self.created}')
+                f'Created: {self.created_date}')
