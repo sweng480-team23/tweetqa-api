@@ -7,7 +7,7 @@ class Data(db.Model):
 
     datum_id = db.Column(Integer, primary_key=True, autoincrement = True)
     qid = db.Column(String(35), nullable=False, unique=True)
-    uuid = db.Column(String(60), nullable=False, unique=True)
+    uuid = db.Column(String(36), nullable=False, unique=True)
 
     tweet = db.Column(String(400), nullable=False)
     question = db.Column(String(280), nullable=False)
