@@ -12,7 +12,7 @@ class QAModel(db.Model):
     ml_version = db.Column(String(20), nullable=False)
 
     bleu_score = db.Column(Float, nullable=False)
-    rogue_score = db.Column(Float, nullable=False)
+    rouge_score = db.Column(Float, nullable=False)
     meteor_score = db.Column(Float, nullable=False)
 
     created_date = db.Column(DateTime, nullable=False)
@@ -23,5 +23,5 @@ class QAModel(db.Model):
     # tostring code use for testing and debug
     def __repr__(self) -> str:
         return (f'Model uuid: {self.uuid}, Model: {self.ml_type}-{self.ml_version}, ' +
-                f'Scores: [{self.bleu_score}, {self.rogue_score}, {self.meteor_score}], ' +
+                f'Scores: [{self.bleu_score}, {self.rouge_score}, {self.meteor_score}], ' +
                 f'Created: {self.created_date}')

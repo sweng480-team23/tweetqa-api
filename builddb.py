@@ -33,7 +33,7 @@ testmodel = QAModel(
     ml_type = 'BERT',
     ml_version = '0.1.0',
     bleu_score = 0.70,
-    rogue_score = 0.70,
+    rouge_score = 0.70,
     meteor_score = 0.70, 
     created_date = datetime.now()
 )

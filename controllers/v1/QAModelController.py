@@ -1,19 +1,16 @@
 from dtos.v1.QAModelDTOs import QAModelCreateRequest, QAModelResponse
 from dtos.v1.WordCloudDTOs import WordCloudRequest, WordCloudResponse
-from models import QAModel
 from services.QAModelService import QAModelService
-from datetime import datetime
 
 
 qa_model_service = QAModelService()
 
 
-# TODO: Add the end point to drive this method
 def create_qa_model(request: QAModelCreateRequest) -> QAModelResponse:
     '''Controller function to process a model create request'''
-
-
-    model = request.to_model()
+    
+    dto = QAModelCreateRequest(request)
+    model = dto.to_model()
 
     try:
         model = qa_model_service.create_qa_model(model)

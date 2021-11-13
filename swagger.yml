@@ -100,3 +100,54 @@ paths:
           description: "Model not found"
           schema:
             type: "null"
+  /controllers/v1/QAModelController/create_qa_model:
+    post:
+      operationId: "controllers.v1.QAModelController.create_qa_model"
+      tags: 
+        - "QAModelController"
+      summary: "Application controller to handle QAModel request/response"
+      description: "Request to persist a given model DTO"
+      consumes: 
+        - application/json
+      parameters:
+        - in: body
+          name: request
+          schema:
+            type: "object"
+            items:
+              properties:
+                ml_type: 
+                  type: "string"
+                ml_version:
+                  type: "string"
+                bleu_score:
+                  type: "number"
+                rouge_score:
+                  type: "number"
+                meteor_score:
+                  type: "number"
+      responses:
+        200:
+          description: "Model succesfully created"
+          schema:
+            type: "array"
+            items:
+              properties:
+                uuid: 
+                  type: "string"
+                created: 
+                  type: "string"
+                ml_type: 
+                  type: "string"
+                ml_version:
+                  type: "string"
+                bleu_score:
+                  type: "number"
+                rouge_score:
+                  type: "number"
+                meteor_score:
+                  type: "number"
+        404:
+          description: "Model not created"
+          schema:
+            type: "null"

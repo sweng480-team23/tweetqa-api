@@ -1,6 +1,6 @@
 
 from controllers import db
-from models import *
+from models import QAModel
 import string
 
 class QAModelService(object):
