@@ -1,18 +1,13 @@
 from controllers import db
 from models.AccountModel import Account
-from models.DataModel import Data
-from models.PredictionModel import Prediction
-from models.QAModel import QAModel
-from models.VisitorModel import Visitor
+from models import *
 from datetime import datetime
-import random, string
+import random, string, uuid
 
 
-def uuid_generator(size : int = 60) -> str:
-    chars = string.ascii_lowercase + string.digits
-    uuid = ''.join(random.choice(chars) for i in range(size))
-    return uuid
-
+def uuid_generator() -> str:
+    return str(uuid.uuid1())
+    
 # Reset database
 db.drop_all()
 db.create_all()
@@ -49,6 +44,7 @@ testvisitor = Visitor(
     name = 'John',
     email = 'John@hotmail.com'
 )
+
 testprediction = Prediction(
     uuid = uuid_generator(),
     prediction = 'Kinder Garden',
@@ -74,10 +70,10 @@ db.session.add(testmodel)
 db.session.add(testvisitor)
 db.session.add(testprediction)
 db.session.add(testaccount)
+db.session.commit()
 
 model = QAModel.query.order_by(QAModel.model_id.desc()).first()
 print(model)
 print(model.predictions[0])
 
-db.session.commit()
 db.session.close()

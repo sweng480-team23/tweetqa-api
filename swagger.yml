@@ -24,7 +24,7 @@ paths:
           description: "TweetQA API successfully read"
           schema:
             type: "string"
-  /controllers/v1/QAModelController/read_qa_model/{model_uuid}:
+  /controllers/v1/QAModelController/read_qa_model/{uuid}:
     get:
       operationId: "controllers.v1.QAModelController.read_qa_model"
       tags: 
@@ -32,19 +32,19 @@ paths:
       summary: "Application controller to handle QAModel request/response"
       description: "Request a model DTO by uuid"
       parameters:
-      - name: model_uuid
+      - name: uuid
         in: path
         required: true
         type: string
         format: path
       responses:
         200:
-          description: "Model uuid succesfully found"
+          description: "Model succesfully found"
           schema:
             type: "array"
             items:
               properties:
-                model_uuid: 
+                uuid: 
                   type: "string"
                 created: 
                   type: "string"
@@ -58,3 +58,45 @@ paths:
                   type: "number"
                 meteor_score:
                   type: "number"
+        404:
+          description: "Model uuid not found"
+          schema:
+            type: "null"
+  /controllers/v1/QAModelController/read_latest_qa_model_by_type/{model_type}:
+    get:
+      operationId: "controllers.v1.QAModelController.read_latest_qa_model_by_type"
+      tags: 
+        - "QAModelController"
+      summary: "Application controller to handle QAModel request/response"
+      description: "Request the latest model DTO by type"
+      parameters:
+      - name: model_type
+        in: path
+        required: true
+        type: string
+        format: path
+      responses:
+        200:
+          description: "Model succesfully found"
+          schema:
+            type: "array"
+            items:
+              properties:
+                uuid: 
+                  type: "string"
+                created: 
+                  type: "string"
+                ml_type: 
+                  type: "string"
+                ml_version:
+                  type: "string"
+                bleu_score:
+                  type: "number"
+                rouge_score:
+                  type: "number"
+                meteor_score:
+                  type: "number"
+        404:
+          description: "Model not found"
+          schema:
+            type: "null"

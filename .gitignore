@@ -8,3 +8,15 @@ controller/v1/__pycache__/root.cpython-38.pyc
 controllers/__pycache__/__init__.cpython-310.pyc
 controllers/database.db
 .env
+controllers/__pycache__/__init__.cpython-38.pyc
+controllers/v1/__pycache__/root.cpython-38.pyc
+models/__pycache__/VisitorModel.cpython-38.pyc
+models/__pycache__/QAModel.cpython-38.pyc
+models/__pycache__/DataModel.cpython-38.pyc
+models/__pycache__/AccountModel.cpython-38.pyc
+models/__pycache__/PredictionModel.cpython-38.pyc
+dtos/v1/__pycache__/WordCloudDTOs.cpython-38.pyc
+dtos/v1/__pycache__/QAModelDTOs.cpython-38.pyc
+controllers/v1/__pycache__/QAModelController.cpython-38.pyc
+models/__pycache__/__init__.cpython-38.pyc
+services/__pycache__/QAModelService.cpython-38.pyc
