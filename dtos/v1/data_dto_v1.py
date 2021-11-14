@@ -52,7 +52,6 @@ class DataCreateRequest(object):
 
         return Data(
             qid = ''.join(random.choice(ascii_letters + string.digits) for _ in range(35)),
-            uuid = str(uuid.uuid1()),
             tweet = self.tweet,
             question = self.question,
             answer = self.answer,

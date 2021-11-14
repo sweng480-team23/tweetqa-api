@@ -19,7 +19,7 @@ class Prediction(db.Model):
     model = db.relationship('models.QAModel.QAModel', back_populates='predictions')
 
     # many to one relationship with Data
-    datum_id = db.Column(Integer, db.ForeignKey('data.datum_id'), nullable=False)
+    datum_id = db.Column(Integer, db.ForeignKey('data.id'), nullable=False)
     data = db.relationship('models.DataModel.Data', back_populates='predictions')
 
     # many to one relationship with Model
