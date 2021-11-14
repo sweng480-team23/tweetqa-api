@@ -13,16 +13,16 @@ def create_data(request: dict) -> DataResponse:
     response = DataResponse(req_model)
     return response, 200
 
-def read_data(qid: str) -> DataResponse:
-    '''Controller function to retrieve a datum from a given qid'''
+def read_data(id_: int) -> DataResponse:
+    '''Controller function to retrieve a datum from a given id'''
 
-    datum_model = data_service.read_data_by_qid(qid)
+    datum_model = data_service.read_data_by_id(id_)
 
     if (datum_model is not None):
         response = DataResponse(datum_model)
         return response, 200
 
-    return qid, 404
+    return id_, 404
 
 def read_all_data_since(date: datetime) -> DataCollectionResponse:
     # todo
