@@ -1,19 +1,13 @@
 from sqlalchemy.sql.expression import null
-from sqlalchemy.sql.sqltypes import String
 from controllers import db
 from models.AccountModel import Account
-from models.DataModel import Data
-from models.PredictionModel import Prediction
-from models.QAModel import QAModel
-from sqlalchemy.orm import sessionmaker
 import string
 
 class AccountService():
-    db_conn = db
 
-    def create_account(self, account:Account)->Account:
-        self.db_conn.session.add(account)
-        self.db_conn.session.commit()
+    def create_account(self, account: Account) -> Account:
+        db.session.add(account)
+        db.session.commit()
         saved_account = self.login(account.username,account.password)
         return saved_account
 
@@ -28,7 +22,7 @@ class AccountService():
     #login function 
     #check if the username and password combination exist in the database
     #if not, return null object
-    def login(self, username:string, password:string)->Account:
+    def login(self, username: string, password: string) -> Account:
         login_user = Account.query.filter_by(username=username).first()
         if login_user is None:
             return null

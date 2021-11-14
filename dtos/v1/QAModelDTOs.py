@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
 from models import QAModel
-import uuid
 
 @dataclass
 class QAModelCreateRequest(object):
@@ -24,8 +23,7 @@ class QAModelCreateRequest(object):
     def to_model(self) -> QAModel:
         '''Utility function to convert this DTO into a model'''
 
-        return QAModel( uuid=str(uuid.uuid1()),
-                        ml_type=self.ml_type, 
+        return QAModel( ml_type=self.ml_type, 
                         ml_version=self.ml_version,
                         bleu_score=self.bleu_score,
                         rouge_score=self.rouge_score,
@@ -35,7 +33,7 @@ class QAModelCreateRequest(object):
 @dataclass
 class QAModelResponse(object):
 
-    uuid: str
+    id: int
     created_date: datetime
     ml_type: str
     ml_version: str
@@ -46,7 +44,7 @@ class QAModelResponse(object):
     def __init__(self, model: QAModel) -> None:
         '''Constructor to build response from model'''
 
-        self.uuid = model.uuid
+        self.id = model.id
         self.created_date = model.created_date
         self.ml_type = model.ml_type
         self.ml_version = model.ml_version

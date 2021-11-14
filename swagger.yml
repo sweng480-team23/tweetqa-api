@@ -24,15 +24,15 @@ paths:
           description: "TweetQA API successfully read"
           schema:
             type: "string"
-  /controllers/v1/QAModelController/read_qa_model/{uuid}:
+  /controllers/v1/QAModelController/read_qa_model/{id}:
     get:
       operationId: "controllers.v1.QAModelController.read_qa_model"
       tags: 
         - "QAModelController"
       summary: "Application controller to handle QAModel request/response"
-      description: "Request a model DTO by uuid"
+      description: "Request a model DTO by id"
       parameters:
-      - name: uuid
+      - name: id
         in: path
         required: true
         type: string
@@ -44,7 +44,7 @@ paths:
             type: "array"
             items:
               properties:
-                uuid: 
+                id: 
                   type: "string"
                 created: 
                   type: "string"
@@ -59,7 +59,7 @@ paths:
                 meteor_score:
                   type: "number"
         404:
-          description: "Model uuid not found"
+          description: "Model id not found"
           schema:
             type: "null"
   /controllers/v1/QAModelController/read_latest_qa_model_by_type/{model_type}:
@@ -82,7 +82,7 @@ paths:
             type: "array"
             items:
               properties:
-                uuid: 
+                id: 
                   type: "string"
                 created: 
                   type: "string"
@@ -133,7 +133,7 @@ paths:
             type: "array"
             items:
               properties:
-                uuid: 
+                id: 
                   type: "string"
                 created: 
                   type: "string"

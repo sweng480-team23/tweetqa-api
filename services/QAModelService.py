@@ -13,13 +13,13 @@ class QAModelService(object):
         db.session.add(model)
         db.session.commit()
 
-        saved_model = self.read_qa_model_by_uuid(model.uuid)
+        saved_model = self.read_qa_model_by_id(model.id)
         return saved_model
 
-    def read_qa_model_by_uuid(self, uuid: string) -> QAModel:
-        '''Service function to read a model from the database by uuid'''
+    def read_qa_model_by_id(self, id: string) -> QAModel:
+        '''Service function to read a model from the database by id'''
 
-        selected_model = QAModel.query.filter(QAModel.uuid == uuid).first()
+        selected_model = QAModel.query.filter(QAModel.id == id).first()
         return selected_model
 
     def read_all_qa_model_by_type(self, model_type: string) -> list:
