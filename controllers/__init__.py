@@ -15,4 +15,4 @@ app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'false'
 app.app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:' + SECRET_KEY + '@ljdub.com:3306/mysql_database'  
 db = SQLAlchemy(app.app)
 
-#app.add_api('../swagger.yml')
+app.add_api('../swagger.yml', pythonic_params=True)

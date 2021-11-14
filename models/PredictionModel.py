@@ -7,7 +7,7 @@ class Prediction(db.Model):
     __tablename__ = 'prediction'
 
     prediction_id = db.Column(Integer, primary_key=True, autoincrement = True)
-    uuid = db.Column(String(60), nullable=False, unique=True)
+    uuid = db.Column(String(36), nullable=False, unique=True)
     prediction = db.Column(String(280))
     is_corrected = db.Column(Boolean, nullable=False)
     alt_answer = db.Column(String(280), nullable=True)
@@ -19,7 +19,7 @@ class Prediction(db.Model):
     model = db.relationship('models.QAModel.QAModel', back_populates='predictions')
 
     # many to one relationship with Data
-    datum_id = db.Column(Integer, db.ForeignKey('data.datum_id'), nullable=False)
+    datum_id = db.Column(Integer, db.ForeignKey('data.id'), nullable=False)
     data = db.relationship('models.DataModel.Data', back_populates='predictions')
 
     # many to one relationship with Model

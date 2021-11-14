@@ -14,7 +14,7 @@ basePath: "/"
 paths:
   /:
     get:
-      operationId: "controller.v1.root.read"
+      operationId: "controllers.v1.root.read"
       tags:
         - "Root"
       summary: "Application root to check if things are running correctly"
@@ -24,21 +24,215 @@ paths:
           description: "TweetQA API successfully read"
           schema:
             type: "string"
-  /v1/models:
+  /controllers/v1/QAModelController/read_qa_model/{uuid}:
     get:
-      operationId: "controller.v1.model.read"
+      operationId: "controllers.v1.QAModelController.read_qa_model"
       tags:
-        - "Model"
-      summary: "The model data structure supported by the server application"
-      description: "Read the list of available models"
+        - "QAModelController"
+      summary: "Application controller to handle QAModel request/response"
+      description: "Request a model DTO by uuid"
+      parameters:
+      - name: uuid
+        in: path
+        required: true
+        type: string
+        format: path
       responses:
         200:
-          description: "Successful read model list operation"
+          description: "Model succesfully found"
           schema:
             type: "array"
             items:
               properties:
-                model_name:
+                uuid:
                   type: "string"
-                timestamp:
+                created:
                   type: "string"
+                ml_type:
+                  type: "string"
+                ml_version:
+                  type: "string"
+                bleu_score:
+                  type: "number"
+                rouge_score:
+                  type: "number"
+                meteor_score:
+                  type: "number"
+        404:
+          description: "Model uuid not found"
+          schema:
+            type: "null"
+  /controllers/v1/QAModelController/read_latest_qa_model_by_type/{model_type}:
+    get:
+      operationId: "controllers.v1.QAModelController.read_latest_qa_model_by_type"
+      tags:
+        - "QAModelController"
+      summary: "Application controller to handle QAModel request/response"
+      description: "Request the latest model DTO by type"
+      parameters:
+      - name: model_type
+        in: path
+        required: true
+        type: string
+        format: path
+      responses:
+        200:
+          description: "Model succesfully found"
+          schema:
+            type: "array"
+            items:
+              properties:
+                uuid:
+                  type: "string"
+                created:
+                  type: "string"
+                ml_type:
+                  type: "string"
+                ml_version:
+                  type: "string"
+                bleu_score:
+                  type: "number"
+                rouge_score:
+                  type: "number"
+                meteor_score:
+                  type: "number"
+        404:
+          description: "Model not found"
+          schema:
+            type: "null"
+  /controllers/v1/QAModelController/create_qa_model:
+    post:
+      operationId: "controllers.v1.QAModelController.create_qa_model"
+      tags:
+        - "QAModelController"
+      summary: "Application controller to handle QAModel request/response"
+      description: "Request to persist a given model DTO"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: request
+          schema:
+            type: "object"
+            items:
+              properties:
+                ml_type:
+                  type: "string"
+                ml_version:
+                  type: "string"
+                bleu_score:
+                  type: "number"
+                rouge_score:
+                  type: "number"
+                meteor_score:
+                  type: "number"
+      responses:
+        200:
+          description: "Model succesfully created"
+          schema:
+            type: "array"
+            items:
+              properties:
+                uuid:
+                  type: "string"
+                created:
+                  type: "string"
+                ml_type:
+                  type: "string"
+                ml_version:
+                  type: "string"
+                bleu_score:
+                  type: "number"
+                rouge_score:
+                  type: "number"
+                meteor_score:
+                  type: "number"
+        404:
+          description: "Model not created"
+          schema:
+            type: "null"
+  /v1/data/{qid}:
+    get:
+      operationId: "controllers.v1.data_controller_v1.read_data"
+      tags:
+        - "Data"
+      summary: "The Tweet-Question-Answer data structure supported by the server application"
+      description: "Read Tweet-Question-Answer datum with supplied qid"
+      parameters:
+      - name: qid
+        in: path
+        required: true
+        type: "string"
+        format: path
+      responses:
+        200:
+          description: "Successful read Tweet-Question-Answer datum operation"
+          schema:
+            properties:
+              qid:
+                type: "string"
+              tweet:
+                type: "string"
+              question:
+                type: "string"
+              answer:
+                type: "string"
+              created_date:
+                type: "string"
+              updated_date:
+                type: "string"
+              original:
+                type: "string"
+              start_position:
+                type: "integer"
+              end_position:
+                type: "integer"
+        404:
+          description: "Failed to find Tweet-Question-Answer datum with supplied qid"
+          schema:
+            type: "null"
+  /v1/data:
+    post:
+      operationId: "controllers.v1.data_controller_v1.create_data"
+      tags:
+        - "Data"
+      summary: "The Tweet-Question-Answer data structure supported by the server application"
+      description: "Creates a new Tweet-Question-Answer datum"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: request
+          schema:
+            type: "object"
+            items:
+              properties:
+                tweet:
+                  type: "string"
+                question:
+                  type: "string"
+                answer:
+                  type: "string"
+      responses:
+          200:
+            description: "Successful create Tweet-Question-Answer datum operation"
+            schema:
+              properties:
+                qid:
+                  type: "string"
+                tweet:
+                  type: "string"
+                question:
+                  type: "string"
+                answer:
+                  type: "string"
+                created_date:
+                  type: "string"
+                updated_date:
+                  type: "string"
+                original:
+                  type: "string"
+                start_position:
+                  type: "integer"
+                end_position:
+                  type: "integer"

@@ -5,9 +5,8 @@ from controllers import db
 class Data(db.Model):
     __tablename__ = 'data'
 
-    datum_id = db.Column(Integer, primary_key=True, autoincrement = True)
+    id = db.Column(Integer, primary_key=True, autoincrement = True)
     qid = db.Column(String(35), nullable=False, unique=True)
-    uuid = db.Column(String(60), nullable=False, unique=True)
 
     tweet = db.Column(String(400), nullable=False)
     question = db.Column(String(280), nullable=False)
@@ -25,7 +24,7 @@ class Data(db.Model):
     predictions = db.relationship('models.PredictionModel.Prediction', back_populates='data')
 
     def __repr__(self):
-        return (f'Id: {self.datum_id}, \n' +
+        return (f'Id: {self.id}, \n' +
                 f'Tweet: {self.tweet}, \n' +
                 f'Question: {self.question}, \n' +
                 f'Answer: {self.answer}')
