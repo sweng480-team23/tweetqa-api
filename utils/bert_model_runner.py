@@ -7,7 +7,7 @@ class BertModelRunner(object):
     tokenizer: BertTokenizer
     model: BertModel
 
-    def __init__(self, name: str, tokenizer: tokenizer, model: BertModel) -> None:
+    def __init__(self, name: str, tokenizer: BertTokenizer, model: BertModel) -> None:
         self.name = name
         self.tokenizer = tokenizer
         self.model = model
@@ -40,8 +40,8 @@ class BertModelRunner(object):
         #reconstructing the answer
         answer_start = torch.argmax(output.start_logits)
         answer_end = torch.argmax(output.end_logits)
-        print(f"Answer Start: {answer_start}")
-        print(f"Answer End: {answer_end}")
+        # print(f"Answer Start: {answer_start}")
+        # print(f"Answer End: {answer_end}")
         if answer_end >= answer_start:
             answer = tokens[answer_start]
             for i in range(answer_start+1, answer_end+1):
