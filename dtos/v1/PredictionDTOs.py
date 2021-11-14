@@ -2,23 +2,28 @@ from dataclasses import dataclass
 
 from models import Prediction
 from dtos.v1.QAModelDTOs import QAModelResponse
+from dtos.v1.data_dto_v1 import DataCreateRequest, DataResponse
 
 
 @dataclass
 class PredictionCreateRequest(object):
     token: str
     model_id: str
-    prediction: str
-    
-    #TODO: Add Datum class
-    
-    
-    def to_model(self) -> Prediction: 
-        return Prediction(token=self.token,
-                                model_id=self.model_id,
-                                prediction=self.prediction) 
+    datum: DataCreateRequest
 
-        
+    def __init__(self, request: dict) -> None:
+        self.token = request["token"]
+        self.model_id = request["model_id"]
+        self.datum = DataCreateRequest(request["datum"])
+        super().__setattr__('frozen', True)
+    
+    
+    #TODO: Work around for the token 
+    def to_model(self) -> Prediction: 
+        return Prediction(prediction=self.datum.answer,
+                          model_id=self.model_id,
+                          datum=self.datum.to_model(),
+                          visitor_id=1) 
 
 
 @dataclass
@@ -26,6 +31,11 @@ class PredictionUpdateRequest(object):
     id: int
     is_corrected: bool
     alt_answer: str
+
+    def __init__(self, update: dict) -> None:
+        self.id = update["id"]
+        self.is_corrected = update["is_corrected"]
+        self.alt_answer = update["alt_answer"]
 
     def to_model(self) -> Prediction:
         return Prediction(id=self.id,
@@ -41,7 +51,7 @@ class PredictionResponse(object):
     is_corrected: bool
     alt_answer: str
     model: QAModelResponse
-    #TODO: add the datum class
+    datum: DataResponse
 
     def __init__(self, prediction: Prediction) -> None:
         self.id = prediction.id
@@ -50,3 +60,4 @@ class PredictionResponse(object):
         self.is_corrected = prediction.is_corrected
         self.alt_answer = prediction.alt_answer
         self.model = QAModelResponse(prediction.model)
+        self.datum = DataResponse(prediction.datum)

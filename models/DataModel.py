@@ -6,11 +6,7 @@ class Data(db.Model):
     __tablename__ = 'data'
 
     id = db.Column(Integer, primary_key=True, autoincrement = True)
-<<<<<<< HEAD
     qid = db.Column(String(35), nullable=True, unique=True)
-=======
-    qid = db.Column(String(35), nullable=False, unique=True)
->>>>>>> master
 
     tweet = db.Column(String(400), nullable=False)
     question = db.Column(String(280), nullable=False)
@@ -25,7 +21,7 @@ class Data(db.Model):
     end_position = db.Column(Integer)
 
     # For specifying the relationship, db.relationship('packagename.filename.classname', back_populates = 'columnname specified in the class')
-    predictions = db.relationship('models.PredictionModel.Prediction', back_populates='data')
+    predictions = db.relationship('models.PredictionModel.Prediction', back_populates='datum')
 
     def __repr__(self):
         return (f'Id: {self.id}, \n' +

@@ -19,7 +19,7 @@ class Prediction(db.Model):
 
     # many to one relationship with Data
     datum_id = db.Column(Integer, db.ForeignKey('data.id'), nullable=False)
-    data = db.relationship('models.DataModel.Data', back_populates='predictions')
+    datum = db.relationship('models.DataModel.Data', back_populates='predictions')
 
     # many to one relationship with Model
     visitor_id = db.Column(Integer, db.ForeignKey('visitor.id'), nullable=False)

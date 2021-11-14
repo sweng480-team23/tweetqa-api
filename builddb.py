@@ -33,7 +33,7 @@ testmodel = QAModel(
 )
 
 testvisitor = Visitor(
-    token_id = uuid.uuid1(),
+    token = uuid.uuid1(),
     name = 'John',
     email = 'John@hotmail.com'
 )
@@ -45,7 +45,7 @@ testprediction = Prediction(
     model_id = testmodel.id,
     model = testmodel, 
     datum_id = testdata.id,
-    data = testdata,
+    datum = testdata,
     visitor_id = testvisitor.id,
     visitor = testvisitor
 )
