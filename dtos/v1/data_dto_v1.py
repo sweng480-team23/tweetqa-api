@@ -20,6 +20,8 @@ class DataResponse(object):
     end_position: int
 
     def __init__(self, model: Data):
+        '''Constructor to build datum response DTO from a datum model object'''
+
         self.qid = model.qid
         self.tweet = model.tweet
         self.question = model.question
@@ -38,12 +40,16 @@ class DataCreateRequest(object):
     answer: str
 
     def __init__(self, request: dict):
+        '''Constructor to build datum create request DTO from request dictionary'''
+
         self.tweet = request["tweet"]
         self.question = request["question"]
         self.answer = request["answer"]
         super().__setattr__('frozen', True)
 
     def to_model(self) -> Data:
+        '''Utility function to convert this DTO into a model'''
+
         return Data(
             qid = ''.join(random.choice(ascii_letters + string.digits) for _ in range(35)),
             uuid = str(uuid.uuid1()),
