@@ -27,7 +27,7 @@ paths:
   /controllers/v1/QAModelController/read_qa_model/{uuid}:
     get:
       operationId: "controllers.v1.QAModelController.read_qa_model"
-      tags: 
+      tags:
         - "QAModelController"
       summary: "Application controller to handle QAModel request/response"
       description: "Request a model DTO by uuid"
@@ -44,11 +44,11 @@ paths:
             type: "array"
             items:
               properties:
-                uuid: 
+                uuid:
                   type: "string"
-                created: 
+                created:
                   type: "string"
-                ml_type: 
+                ml_type:
                   type: "string"
                 ml_version:
                   type: "string"
@@ -65,7 +65,7 @@ paths:
   /controllers/v1/QAModelController/read_latest_qa_model_by_type/{model_type}:
     get:
       operationId: "controllers.v1.QAModelController.read_latest_qa_model_by_type"
-      tags: 
+      tags:
         - "QAModelController"
       summary: "Application controller to handle QAModel request/response"
       description: "Request the latest model DTO by type"
@@ -82,11 +82,11 @@ paths:
             type: "array"
             items:
               properties:
-                uuid: 
+                uuid:
                   type: "string"
-                created: 
+                created:
                   type: "string"
-                ml_type: 
+                ml_type:
                   type: "string"
                 ml_version:
                   type: "string"
@@ -103,11 +103,11 @@ paths:
   /controllers/v1/QAModelController/create_qa_model:
     post:
       operationId: "controllers.v1.QAModelController.create_qa_model"
-      tags: 
+      tags:
         - "QAModelController"
       summary: "Application controller to handle QAModel request/response"
       description: "Request to persist a given model DTO"
-      consumes: 
+      consumes:
         - application/json
       parameters:
         - in: body
@@ -116,7 +116,7 @@ paths:
             type: "object"
             items:
               properties:
-                ml_type: 
+                ml_type:
                   type: "string"
                 ml_version:
                   type: "string"
@@ -133,11 +133,11 @@ paths:
             type: "array"
             items:
               properties:
-                uuid: 
+                uuid:
                   type: "string"
-                created: 
+                created:
                   type: "string"
-                ml_type: 
+                ml_type:
                   type: "string"
                 ml_version:
                   type: "string"
@@ -151,3 +151,88 @@ paths:
           description: "Model not created"
           schema:
             type: "null"
+  /v1/data/{qid}:
+    get:
+      operationId: "controllers.v1.data_controller_v1.read_data"
+      tags:
+        - "Data"
+      summary: "The Tweet-Question-Answer data structure supported by the server application"
+      description: "Read Tweet-Question-Answer datum with supplied qid"
+      parameters:
+      - name: qid
+        in: path
+        required: true
+        type: "string"
+        format: path
+      responses:
+        200:
+          description: "Successful read Tweet-Question-Answer datum operation"
+          schema:
+            properties:
+              qid:
+                type: "string"
+              tweet:
+                type: "string"
+              question:
+                type: "string"
+              answer:
+                type: "string"
+              created_date:
+                type: "string"
+              updated_date:
+                type: "string"
+              original:
+                type: "string"
+              start_position:
+                type: "integer"
+              end_position:
+                type: "integer"
+        404:
+          description: "Failed to find Tweet-Question-Answer datum with supplied qid"
+          schema:
+            type: "null"
+  /v1/data:
+    post:
+      operationId: "controllers.v1.data_controller_v1.create_data"
+      tags:
+        - "Data"
+      summary: "The Tweet-Question-Answer data structure supported by the server application"
+      description: "Creates a new Tweet-Question-Answer datum"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: request
+          schema:
+            type: "object"
+            items:
+              properties:
+                tweet:
+                  type: "string"
+                question:
+                  type: "string"
+                answer:
+                  type: "string"
+      responses:
+          200:
+            description: "Successful create Tweet-Question-Answer datum operation"
+            schema:
+              properties:
+                qid:
+                  type: "string"
+                tweet:
+                  type: "string"
+                question:
+                  type: "string"
+                answer:
+                  type: "string"
+                created_date:
+                  type: "string"
+                updated_date:
+                  type: "string"
+                original:
+                  type: "string"
+                start_position:
+                  type: "integer"
+                end_position:
+                  type: "integer"

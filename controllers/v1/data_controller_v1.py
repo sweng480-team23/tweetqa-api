@@ -5,14 +5,18 @@ import datetime
 
 data_service = DataService()
 
-def create_data(request: DataCreateRequest) -> DataResponse:
-    req_model = data_service.create_data(request.to_model())
-    return req_model, 200
+def create_data(request: dict) -> DataResponse:
+    req_dto = DataCreateRequest(request)
+    req_model = data_service.create_data(req_dto.to_model())
+    response = DataResponse(req_model)
+    return response, 200
 
 def read_data(qid: str) -> DataResponse:
-    datum = data_service.read_data_by_qid(qid)
-    if (datum):
-        return datum, 200
+    datum_model = data_service.read_data_by_qid(qid)
+
+    if (datum_model is not None):
+        response = DataResponse(datum_model)
+        return response, 200
 
     return qid, 404
 

@@ -1,9 +1,13 @@
 from dataclasses import dataclass
+from string import ascii_letters
+import string
 from typing import List
-from models import DataModel
-import datetime
+import uuid
+from models.DataModel import Data
+import random
+from datetime import datetime
 
-@dataclass(frozen=True)
+@dataclass
 class DataResponse(object):
     qid: str
     tweet: str
@@ -15,7 +19,7 @@ class DataResponse(object):
     start_position: int
     end_position: int
 
-    def __init__(self, model: DataModel.Data):
+    def __init__(self, model: Data):
         self.qid = model.qid
         self.tweet = model.tweet
         self.question = model.question
@@ -24,26 +28,34 @@ class DataResponse(object):
         self.updated_date = model.updated_date
         self.source = model.source
         self.start_position = model.start_position
+        self.end_position = model.end_position
+        super().__setattr__('frozen', True)
 
-@dataclass(frozen=True)
+@dataclass
 class DataCreateRequest(object):
     tweet: str
     question: str
     answer: str
 
-    def __init__(self, model: DataModel.Data):
-        self.tweet = model.tweet
-        self.question = model.question
-        self.answer = model.answer
+    def __init__(self, request: dict):
+        self.tweet = request["tweet"]
+        self.question = request["question"]
+        self.answer = request["answer"]
+        super().__setattr__('frozen', True)
 
-    def to_model(self) -> DataModel.Data:
-        return DataModel(
+    def to_model(self) -> Data:
+        return Data(
+            qid = ''.join(random.choice(ascii_letters + string.digits) for _ in range(35)),
+            uuid = str(uuid.uuid1()),
             tweet = self.tweet,
             question = self.question,
-            answer = self.answer
+            answer = self.answer,
+            created_date = datetime.now(),
+            updated_date = datetime.now(),
+            source = "sweng480"
         )
 
-@dataclass(frozen=True)
+@dataclass
 class DataCollectionResponse(object):
     # todo - inherit from CollectionResponse base class
     collection: List[DataResponse]
