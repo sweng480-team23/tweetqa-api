@@ -6,7 +6,11 @@ class Data(db.Model):
     __tablename__ = 'data'
 
     id = db.Column(Integer, primary_key=True, autoincrement = True)
+<<<<<<< HEAD
     qid = db.Column(String(35), nullable=True, unique=True)
+=======
+    qid = db.Column(String(35), nullable=False, unique=True)
+>>>>>>> master
 
     tweet = db.Column(String(400), nullable=False)
     question = db.Column(String(280), nullable=False)
