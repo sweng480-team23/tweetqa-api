@@ -17,7 +17,7 @@ class DataService():
         return saved_data
 
     def read_data_by_qid(self, qid:String)->Data:
-        selected_data = Data.query.filter(qid == qid).first()
+        selected_data = Data.query.filter(Data.qid == qid).first()
         return selected_data
 
     def read_all_data_since(self, date:datetime)->list:
