@@ -151,6 +151,28 @@ paths:
           description: "Model not created"
           schema:
             type: "null"
+  /v1/model/read_latest_models:
+    get:
+      operationId: "controllers.v1.QAModelController.read_latest_models"
+      tags:
+        - "QAModelController"
+      summary: "Application controller to handle QAModel request/response"
+      description: "Request to persist a given model DTO"
+      responses:
+        200:
+          description: "Models succesfully found"
+          schema:
+            type: "array"
+            items:
+              properties:
+                length: 
+                  type: "number"
+                items:
+                  type: "object"
+        404:
+          description: "Models not found"
+          schema:
+            type: "null"
   /v1/data/{id}:
     get:
       operationId: "controllers.v1.data_controller_v1.read_data"

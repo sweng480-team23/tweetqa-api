@@ -1,5 +1,6 @@
 from dtos.v1.QAModelDTOs import QAModelCreateRequest, QAModelResponse
 from dtos.v1.WordCloudDTOs import WordCloudRequest, WordCloudResponse
+from dtos.v1.CollectionDTO import CollectionDTOResponse
 from services.QAModelService import QAModelService
 
 
@@ -47,6 +48,14 @@ def read_latest_qa_model_by_type(model_type: str) -> QAModelResponse:
     else:
         return None, 404
 
+def read_latest_models() -> CollectionDTOResponse:
+    models = qa_model_service.read_latest_models()
+
+    response = CollectionDTOResponse()
+    for model in models:
+        response.add(QAModelResponse(model))
+
+    return response, 200
 
 def get_word_cloud(request: WordCloudRequest) -> WordCloudResponse:
     '''Controller function to get the latest wordcloud'''

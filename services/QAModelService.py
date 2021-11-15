@@ -1,5 +1,6 @@
 
 from controllers import db
+from dtos.v1.QAModelDTOs import QAModelResponse
 from models import QAModel
 import string
 
@@ -33,3 +34,11 @@ class QAModelService(object):
 
         selected_model = QAModel.query.filter(QAModel.ml_type == model_type).order_by(QAModel.created_date.desc()).first()
         return selected_model
+
+    def read_latest_models(self) -> list:
+        '''Service function used to retrive the latest models for each type'''
+
+        #TODO: Not working correctly
+        models = QAModel.query.order_by(QAModel.created_date.desc()).distinct(QAModel.ml_type)
+        return models
+
