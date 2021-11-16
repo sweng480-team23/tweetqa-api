@@ -10,7 +10,7 @@ class Data(db.Model):
 
     tweet = db.Column(String(400), nullable=False)
     question = db.Column(String(280), nullable=False)
-    answer = db.Column(String(280), nullable=False)
+    answer = db.Column(String(280), nullable=True)
 
     created_date = db.Column(DateTime, nullable=False)
     updated_date = db.Column(DateTime, nullable=False)

@@ -43,7 +43,7 @@ class DataCreateRequest(object):
 
         self.tweet = request["tweet"]
         self.question = request["question"]
-        self.answer = request["answer"]
+        self.answer = None
         super().__setattr__('frozen', True)
 
     def to_model(self) -> Data:

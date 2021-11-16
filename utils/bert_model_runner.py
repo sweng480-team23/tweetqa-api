@@ -1,9 +1,9 @@
-import string
-from transformers import BertModel, BertTokenizer
+from transformers import BertModel, BertTokenizer, BertTokenizerFast, BertForQuestionAnswering
+
 import torch
 
 class BertModelRunner(object):
-    name: string
+    name: str
     tokenizer: BertTokenizer
     model: BertModel
 

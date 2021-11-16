@@ -1,10 +1,12 @@
 from controllers import db
+from utils import first_runner
 from models import Prediction
 
 
 class PredictionService():
 
     def create_prediction(self, prediction:Prediction)->Prediction:
+        prediction.prediction = first_runner.answer_tweet_question(prediction.datum.tweet, prediction.datum.question)
         db.session.add(prediction)
         db.session.commit()
         saved_prediction = Prediction.query.filter(Prediction.id == prediction.id).first()
