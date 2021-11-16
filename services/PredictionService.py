@@ -13,7 +13,7 @@ class PredictionService():
     def update_prediction(self, prediction: Prediction) -> Prediction:
         prediction_retrieve = Prediction.query.filter(Prediction.id == prediction.id).first()
         prediction_retrieve.alt_answer = prediction.alt_answer
-        prediction_retrieve.is_corrected = prediction.is_corrected
+        prediction_retrieve.is_correct = prediction.is_correct
         db.session.commit()
         saved_prediction = Prediction.query.filter(Prediction.id == prediction.id).first()
         return saved_prediction

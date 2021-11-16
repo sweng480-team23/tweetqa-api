@@ -30,7 +30,7 @@ def read_prediction(id_: int) -> PredictionResponse:
     else:
         return None, 404
 
-def update_prediction(request: dict):
+def update_prediction(id_: int, request: dict):
     '''Controller function used to record a corrected answer'''
 
     dto = PredictionUpdateRequest(request)

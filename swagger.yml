@@ -24,7 +24,7 @@ paths:
           description: "TweetQA API successfully read"
           schema:
             type: "string"
-  /v1/model/read_qa_model/{id}:
+  /v1/models/{id}:
     get:
       operationId: "controllers.v1.QAModelController.read_qa_model"
       tags:
@@ -35,7 +35,7 @@ paths:
       - name: id
         in: path
         required: true
-        type: string
+        type: number
         format: path
       responses:
         200:
@@ -62,7 +62,7 @@ paths:
           description: "Model id not found"
           schema:
             type: "null"
-  /v1/model/read_latest_qa_model_by_type/{model_type}:
+  /v1/models/{model_type}:
     get:
       operationId: "controllers.v1.QAModelController.read_latest_qa_model_by_type"
       tags:
@@ -100,7 +100,7 @@ paths:
           description: "Model not found"
           schema:
             type: "null"
-  /v1/model/create_qa_model:
+  /v1/models:
     post:
       operationId: "controllers.v1.QAModelController.create_qa_model"
       tags:
@@ -151,7 +151,7 @@ paths:
           description: "Model not created"
           schema:
             type: "null"
-  /v1/model/read_latest_models:
+  /v1/models/latest:
     get:
       operationId: "controllers.v1.QAModelController.read_latest_models"
       tags:
@@ -258,7 +258,58 @@ paths:
                   type: "integer"
                 end_position:
                   type: "integer"
-  /v1/prediction/{id}:
+  /v1/predictions/{id}:
+    post:
+      operationId: "controllers.v1.PredictionController.update_prediction"
+      tags:
+        - "PredictionController"
+      summary: "Application controller to handle QAModel request/response"
+      description: "Request to update a given prediction DTO"
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: "integer"
+          format: path
+        - name: request
+          in: body
+          schema:
+            type: "object"
+            items:
+              properties:
+                id:
+                  type: "string"
+                is_correct:
+                  type: "boolean"
+                alt_answer:
+                  type: "string"
+      responses:
+        200:
+          description: "Model succesfully updated"
+          schema:
+            type: "array"
+            items:
+              properties:
+                id: 
+                  type: "number"
+                token:
+                  type: "string"
+                prediction:
+                  type: "string"
+                is_correct:
+                  type: "boolean"
+                alt_answer:
+                  type: "string"
+                model:
+                  type: "object"
+                datum:
+                  type: "object"
+        404:
+          description: "Prediction not created"
+          schema:
+            type: "null"
     get:
       operationId: "controllers.v1.PredictionController.read_prediction"
       tags:
@@ -269,7 +320,7 @@ paths:
       - name: id
         in: path
         required: true
-        type: "integer"
+        type: "number"
         format: path
       responses:
         200:
@@ -282,7 +333,7 @@ paths:
                 type: "string"
               prediction:
                 type: "string"
-              is_corrected:
+              is_correct:
                 type: "boolean"
               alt_answer:
                 type: "string"
@@ -294,7 +345,7 @@ paths:
           description: "Failed to find Tweet-Question-Answer datum with supplied id"
           schema:
             type: "null"
-  /v1/prediction:
+  /v1/predictions:
     post:
       operationId: "controllers.v1.PredictionController.create_predition"
       tags:
@@ -329,54 +380,7 @@ paths:
                   type: "string"
                 prediction:
                   type: "string"
-                is_corrected:
-                  type: "boolean"
-                alt_answer:
-                  type: "string"
-                model:
-                  type: "object"
-                datum:
-                  type: "object"
-        404:
-          description: "Prediction not created"
-          schema:
-            type: "null"
-  /v1/prediction/update_prediction:
-    post:
-      operationId: "controllers.v1.PredictionController.update_prediction"
-      tags:
-        - "PredictionController"
-      summary: "Application controller to handle QAModel request/response"
-      description: "Request to update a given prediction DTO"
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: request
-          schema:
-            type: "object"
-            items:
-              properties:
-                id:
-                  type: "string"
-                is_corrected:
-                  type: "boolean"
-                alt_answer:
-                  type: "string"
-      responses:
-        200:
-          description: "Model succesfully updated"
-          schema:
-            type: "array"
-            items:
-              properties:
-                id: 
-                  type: "number"
-                token:
-                  type: "string"
-                prediction:
-                  type: "string"
-                is_corrected:
+                is_correct:
                   type: "boolean"
                 alt_answer:
                   type: "string"

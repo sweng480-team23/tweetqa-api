@@ -39,6 +39,13 @@ class QAModelService(object):
         '''Service function used to retrive the latest models for each type'''
 
         #TODO: Not working correctly
+        """ select qa1.*
+        from qa_models qa1
+        where qa1.created_date in (
+            select max(qa2.created_date)
+            from qa_models qa2
+            where qa2.ml_type = qa1.ml_type )"""
+
         models = QAModel.query.order_by(QAModel.created_date.desc()).distinct(QAModel.ml_type)
         return models
 

@@ -40,7 +40,7 @@ testvisitor = Visitor(
 
 testprediction = Prediction(
     prediction = 'Kinder Garden',
-    is_corrected = True,
+    is_correct = True,
     alt_answer = None,
     model_id = testmodel.id,
     model = testmodel, 

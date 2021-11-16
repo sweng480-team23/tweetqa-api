@@ -21,7 +21,7 @@ class AccountService():
     """
     #login function 
     #check if the username and password combination exist in the database
-    #if not, return null object
+    #if not, return null object TODO: need to hash/salt passwords
     def login(self, username: string, password: string) -> Account:
         login_user = Account.query.filter_by(username=username).first()
         if login_user is None:

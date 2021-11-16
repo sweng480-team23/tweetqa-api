@@ -29,17 +29,17 @@ class PredictionCreateRequest(object):
 @dataclass
 class PredictionUpdateRequest(object):
     id: int
-    is_corrected: bool
+    is_correct: bool
     alt_answer: str
 
     def __init__(self, update: dict) -> None:
         self.id = update["id"]
-        self.is_corrected = update["is_corrected"]
+        self.is_correct = update["is_correct"]
         self.alt_answer = update["alt_answer"]
 
     def to_model(self) -> Prediction:
         return Prediction(id=self.id,
-                          is_corrected=self.is_corrected,
+                          is_correct=self.is_correct,
                           alt_answer=self.alt_answer)
 
 
@@ -48,7 +48,7 @@ class PredictionResponse(object):
     id: int
     token: str
     prediction: str
-    is_corrected: bool
+    is_correct: bool
     alt_answer: str
     model: QAModelResponse
     datum: DataResponse
@@ -57,7 +57,7 @@ class PredictionResponse(object):
         self.id = prediction.id
         self.token = prediction.visitor.token
         self.prediction = prediction.prediction
-        self.is_corrected = prediction.is_corrected
+        self.is_correct = prediction.is_correct
         self.alt_answer = prediction.alt_answer
         self.model = QAModelResponse(prediction.model)
         self.datum = DataResponse(prediction.datum)
