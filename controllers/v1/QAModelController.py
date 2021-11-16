@@ -1,12 +1,13 @@
 from dtos.v1.QAModelDTOs import QAModelCreateRequest, QAModelResponse
 from dtos.v1.WordCloudDTOs import WordCloudRequest, WordCloudResponse
+from dtos.v1.CollectionDTO import CollectionDTOResponse
 from services.QAModelService import QAModelService
 
 
 qa_model_service = QAModelService()
 
 
-def create_qa_model(request: QAModelCreateRequest) -> QAModelResponse:
+def create_qa_model(request: dict) -> QAModelResponse:
     '''Controller function to process a model create request'''
     
     dto = QAModelCreateRequest(request)
@@ -22,11 +23,10 @@ def create_qa_model(request: QAModelCreateRequest) -> QAModelResponse:
         return None, 404
 
 
+def read_qa_model(id_: str) -> QAModelResponse:
+    '''Controller function to get a given model based on id'''
 
-def read_qa_model(uuid: str) -> QAModelResponse:
-    '''Controller function to get a given model based on uuid'''
-
-    model = qa_model_service.read_qa_model_by_uuid(uuid)
+    model = qa_model_service.read_qa_model_by_id(id_)
 
     # Model is found and return the DTO or return None
     if model is not None:
@@ -48,6 +48,14 @@ def read_latest_qa_model_by_type(model_type: str) -> QAModelResponse:
     else:
         return None, 404
 
+def read_latest_models() -> CollectionDTOResponse:
+    models = qa_model_service.read_latest_models()
+
+    response = CollectionDTOResponse()
+    for model in models:
+        response.add(QAModelResponse(model))
+
+    return response, 200
 
 def get_word_cloud(request: WordCloudRequest) -> WordCloudResponse:
     '''Controller function to get the latest wordcloud'''

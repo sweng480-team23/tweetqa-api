@@ -1,5 +1,6 @@
 
 from controllers import db
+from dtos.v1.QAModelDTOs import QAModelResponse
 from models import QAModel
 import string
 
@@ -13,13 +14,13 @@ class QAModelService(object):
         db.session.add(model)
         db.session.commit()
 
-        saved_model = self.read_qa_model_by_uuid(model.uuid)
+        saved_model = self.read_qa_model_by_id(model.id)
         return saved_model
 
-    def read_qa_model_by_uuid(self, uuid: string) -> QAModel:
-        '''Service function to read a model from the database by uuid'''
+    def read_qa_model_by_id(self, id: string) -> QAModel:
+        '''Service function to read a model from the database by id'''
 
-        selected_model = QAModel.query.filter(QAModel.uuid == uuid).first()
+        selected_model = QAModel.query.filter(QAModel.id == id).first()
         return selected_model
 
     def read_all_qa_model_by_type(self, model_type: string) -> list:
@@ -33,3 +34,18 @@ class QAModelService(object):
 
         selected_model = QAModel.query.filter(QAModel.ml_type == model_type).order_by(QAModel.created_date.desc()).first()
         return selected_model
+
+    def read_latest_models(self) -> list:
+        '''Service function used to retrive the latest models for each type'''
+
+        #TODO: Not working correctly
+        """ select qa1.*
+        from qa_models qa1
+        where qa1.created_date in (
+            select max(qa2.created_date)
+            from qa_models qa2
+            where qa2.ml_type = qa1.ml_type )"""
+
+        models = QAModel.query.order_by(QAModel.created_date.desc()).distinct(QAModel.ml_type)
+        return models
+
