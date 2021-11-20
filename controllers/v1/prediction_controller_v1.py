@@ -1,11 +1,11 @@
-from dtos.v1.PredictionDTOs import PredictionCreateRequest
-from services.PredictionService import PredictionService
-from dtos.v1.PredictionDTOs import *
+from dtos.v1.prediction_dto_v1 import PredictionCreateRequest
+from services.prediction_service import PredictionService
+from dtos.v1.prediction_dto_v1 import *
 
 prediction_service = PredictionService()
 
 
-def create_predition(request: dict) -> PredictionResponse:
+def create_prediction(request: dict) -> PredictionResponse:
     '''Controller function to process a create prediction request'''
 
     dto = PredictionCreateRequest(request)
@@ -23,7 +23,7 @@ def read_prediction(id_: int) -> PredictionResponse:
     '''Controller function to process prediciton read request by id'''
 
     prediciton = prediction_service.read_prediciton_by_id(id_)
-    
+
     if prediciton is not None:
         response = PredictionResponse(prediciton)
         return response, 200

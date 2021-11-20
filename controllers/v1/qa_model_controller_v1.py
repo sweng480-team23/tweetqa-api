@@ -1,7 +1,7 @@
-from dtos.v1.QAModelDTOs import QAModelCreateRequest, QAModelResponse
-from dtos.v1.WordCloudDTOs import WordCloudRequest, WordCloudResponse
-from dtos.v1.CollectionDTO import CollectionDTOResponse
-from services.QAModelService import QAModelService
+from dtos.v1.qa_model_dto_v1 import QAModelCreateRequest, QAModelResponse
+from dtos.v1.word_cloud_dto_v1 import WordCloudRequest, WordCloudResponse
+from dtos.v1.collection_dto_v1 import CollectionDTOResponse
+from services.qa_model_service import QAModelService
 
 
 qa_model_service = QAModelService()
@@ -9,7 +9,7 @@ qa_model_service = QAModelService()
 
 def create_qa_model(request: dict) -> QAModelResponse:
     '''Controller function to process a model create request'''
-    
+
     dto = QAModelCreateRequest(request)
     model = dto.to_model()
 

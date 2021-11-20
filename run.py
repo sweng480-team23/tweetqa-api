@@ -1,17 +1,17 @@
 from operator import ne
 from controllers import db
-from models.AccountModel import Account
-from models.DataModel import Data
-from models.PredictionModel import Prediction
-from models.QAModel import QAModel
-from models.VisitorModel import Visitor
-from services.AccountService import AccountService
+from models.account_model import Account
+from models.data_model import Data
+from models.prediction_model import Prediction
+from models.qa_model import QAModel
+from models.visitor_model import Visitor
+from services.account_service import AccountService
 from datetime import datetime
 import random, string
 
-from services.DataService import DataService
-from services.PredictionService import PredictionService
-from services.QAModelService import QAModelService
+from services.data_service import DataService
+from services.prediction_service import prediction_service
+from services.qa_model_service import QAModelService
 
 def uuid_generator(size : int = 60) -> str:
     chars = string.ascii_lowercase + string.digits
@@ -24,7 +24,7 @@ test_data = Data(
     uuid = uuid_generator(),
     tweet = ('Our prayers are with the students, educators & families at '+
     'Independence High School & all the first responders on the scene. ' +
-    '#PatriotPride\u2014 Doug Ducey (@dougducey) February 12, 2016'), 
+    '#PatriotPride\u2014 Doug Ducey (@dougducey) February 12, 2016'),
     question = 'at which school were first responders on the scene for?',
     answer = 'independence high school',
     created_date = datetime.now(),
@@ -74,7 +74,7 @@ testprediction = Prediction(
     visitor_id = 1
 )
 
-new_predservice = PredictionService()
+new_predservice = prediction_service()
 #saved_prediction = new_predservice.create_prediction(testprediction)
 
 testprediction.uuid = '0mpzsz22qebxk4qfkatm3tnyc5syryz4t5z7lik8cm1ct95ahyroyv3hsh3t'
@@ -91,7 +91,7 @@ testmodel = QAModel(
     ml_version = '0.1.0',
     bleu_score = 0.70,
     rogue_score = 0.70,
-    meteor_score = 0.70, 
+    meteor_score = 0.70,
     created_date = datetime.now()
 )
 

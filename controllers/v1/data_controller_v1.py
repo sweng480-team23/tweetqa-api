@@ -1,6 +1,6 @@
 from datetime import datetime
 from dtos.v1.data_dto_v1 import DataCollectionResponse, DataCreateRequest, DataResponse
-from services.DataService import DataService
+from services.data_service import DataService
 import datetime
 
 data_service = DataService()

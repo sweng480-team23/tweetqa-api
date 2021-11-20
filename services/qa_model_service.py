@@ -1,13 +1,13 @@
 
 from controllers import db
-from dtos.v1.QAModelDTOs import QAModelResponse
+from dtos.v1.qa_model_dto_v1 import QAModelResponse
 from models import QAModel
 import string
 
 class QAModelService(object):
     '''Service class to handle all database CRUD operations for models'''
 
-    
+
     def create_qa_model(self, model: QAModel) -> QAModel:
         '''Service function to create a new model in the database'''
 

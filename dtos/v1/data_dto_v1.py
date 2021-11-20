@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from string import ascii_letters
 import string
 from typing import List
-from models.DataModel import Data
+from models.data_model import Data
 import random
 from datetime import datetime
 

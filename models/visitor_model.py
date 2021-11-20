@@ -11,4 +11,4 @@ class Visitor(db.Model):
     email = db.Column(String(60), nullable=False)
 
     # One to many relationship with prediction
-    predictions = db.relationship('models.PredictionModel.Prediction', back_populates='visitor')
+    predictions = db.relationship('models.prediction_model.Prediction', back_populates='visitor')

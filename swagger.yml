@@ -26,7 +26,7 @@ paths:
             type: "string"
   /v1/models/{id}:
     get:
-      operationId: "controllers.v1.QAModelController.read_qa_model"
+      operationId: "controllers.v1.qa_model_controller_v1.read_qa_model"
       tags:
         - "QAModelController"
       summary: "Application controller to handle QAModel request/response"
@@ -44,7 +44,7 @@ paths:
             type: "array"
             items:
               properties:
-                id: 
+                id:
                   type: "string"
                 created:
                   type: "string"
@@ -64,7 +64,7 @@ paths:
             type: "null"
   /v1/models/{model_type}:
     get:
-      operationId: "controllers.v1.QAModelController.read_latest_qa_model_by_type"
+      operationId: "controllers.v1.qa_model_controller_v1.read_latest_qa_model_by_type"
       tags:
         - "QAModelController"
       summary: "Application controller to handle QAModel request/response"
@@ -82,7 +82,7 @@ paths:
             type: "array"
             items:
               properties:
-                id: 
+                id:
                   type: "string"
                 created:
                   type: "string"
@@ -102,7 +102,7 @@ paths:
             type: "null"
   /v1/models:
     post:
-      operationId: "controllers.v1.QAModelController.create_qa_model"
+      operationId: "controllers.v1.qa_model_controller_v1.create_qa_model"
       tags:
         - "QAModelController"
       summary: "Application controller to handle QAModel request/response"
@@ -133,7 +133,7 @@ paths:
             type: "array"
             items:
               properties:
-                id: 
+                id:
                   type: "string"
                 created:
                   type: "string"
@@ -153,7 +153,7 @@ paths:
             type: "null"
   /v1/models/latest:
     get:
-      operationId: "controllers.v1.QAModelController.read_latest_models"
+      operationId: "controllers.v1.qa_model_controller_v1.read_latest_models"
       tags:
         - "QAModelController"
       summary: "Application controller to handle QAModel request/response"
@@ -165,7 +165,7 @@ paths:
             type: "array"
             items:
               properties:
-                length: 
+                length:
                   type: "number"
                 items:
                   type: "object"
@@ -260,7 +260,7 @@ paths:
                   type: "integer"
   /v1/predictions/{id}:
     post:
-      operationId: "controllers.v1.PredictionController.update_prediction"
+      operationId: "controllers.v1.prediction_controller_v1.update_prediction"
       tags:
         - "PredictionController"
       summary: "Application controller to handle QAModel request/response"
@@ -292,7 +292,7 @@ paths:
             type: "array"
             items:
               properties:
-                id: 
+                id:
                   type: "number"
                 token:
                   type: "string"
@@ -311,7 +311,7 @@ paths:
           schema:
             type: "null"
     get:
-      operationId: "controllers.v1.PredictionController.read_prediction"
+      operationId: "controllers.v1.prediction_controller_v1.read_prediction"
       tags:
         - "Prediction"
       summary: "Prediction controlller to create/read/update prediction data structures"
@@ -347,7 +347,7 @@ paths:
             type: "null"
   /v1/predictions:
     post:
-      operationId: "controllers.v1.PredictionController.create_predition"
+      operationId: "controllers.v1.prediction_controller_v1.create_prediction"
       tags:
         - "PredictionController"
       summary: "Application controller to handle QAModel request/response"
@@ -369,12 +369,12 @@ paths:
                   type: "object"
       responses:
         200:
-          description: "Model succesfully created"
+          description: "Prediction successfully created"
           schema:
             type: "array"
             items:
               properties:
-                id: 
+                id:
                   type: "number"
                 token:
                   type: "string"
