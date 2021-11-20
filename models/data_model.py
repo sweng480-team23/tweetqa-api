@@ -21,7 +21,7 @@ class Data(db.Model):
     end_position = db.Column(Integer)
 
     # For specifying the relationship, db.relationship('packagename.filename.classname', back_populates = 'columnname specified in the class')
-    predictions = db.relationship('models.PredictionModel.Prediction', back_populates='datum')
+    predictions = db.relationship('models.prediction_model.Prediction', back_populates='datum')
 
     def __repr__(self):
         return (f'Id: {self.id}, \n' +

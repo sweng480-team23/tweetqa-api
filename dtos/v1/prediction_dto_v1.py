@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from models import Prediction
-from dtos.v1.QAModelDTOs import QAModelResponse
+from dtos.v1.qa_model_dto_v1 import QAModelResponse
 from dtos.v1.data_dto_v1 import DataCreateRequest, DataResponse
 
 
@@ -16,14 +16,14 @@ class PredictionCreateRequest(object):
         self.model_id = request["model_id"]
         self.datum = DataCreateRequest(request["datum"])
         super().__setattr__('frozen', True)
-    
-    
-    #TODO: Work around for the token 
-    def to_model(self) -> Prediction: 
+
+
+    #TODO: Work around for the token
+    def to_model(self) -> Prediction:
         return Prediction(prediction=self.datum.answer,
                           model_id=self.model_id,
                           datum=self.datum.to_model(),
-                          visitor_id=1) 
+                          visitor_id=1)
 
 
 @dataclass

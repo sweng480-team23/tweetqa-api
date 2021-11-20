@@ -1,6 +1,6 @@
 from sqlalchemy.sql.expression import null
 from controllers import db
-from models.AccountModel import Account
+from models.account_model import Account
 import string
 
 class AccountService():
@@ -19,7 +19,7 @@ class AccountService():
             print('No item returned')
         return selected_data
     """
-    #login function 
+    #login function
     #check if the username and password combination exist in the database
     #if not, return null object TODO: need to hash/salt passwords
     def login(self, username: string, password: string) -> Account:

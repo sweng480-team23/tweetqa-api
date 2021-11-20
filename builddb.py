@@ -1,9 +1,9 @@
 from controllers import db
-from models.AccountModel import Account
+from models.account_model import Account
 from models import *
 from datetime import datetime
 import uuid
-    
+
 # Reset database
 db.drop_all()
 db.create_all()
@@ -13,7 +13,7 @@ testdata = Data(
     qid = '0c871b7e5320d0816d5b2979d67c2649',
     tweet = ('Our prayers are with the students, educators & families at '+
     'Independence High School & all the first responders on the scene. ' +
-    '#PatriotPride\u2014 Doug Ducey (@dougducey) February 12, 2016'), 
+    '#PatriotPride\u2014 Doug Ducey (@dougducey) February 12, 2016'),
     question = 'at which school were first responders on the scene for?',
     answer = 'independence high school',
     created_date = datetime.now(),
@@ -28,7 +28,7 @@ testmodel = QAModel(
     ml_version = '0.1.0',
     bleu_score = 0.70,
     rouge_score = 0.70,
-    meteor_score = 0.70, 
+    meteor_score = 0.70,
     created_date = datetime.now()
 )
 
@@ -43,7 +43,7 @@ testprediction = Prediction(
     is_correct = True,
     alt_answer = None,
     model_id = testmodel.id,
-    model = testmodel, 
+    model = testmodel,
     datum_id = testdata.id,
     datum = testdata,
     visitor_id = testvisitor.id,
