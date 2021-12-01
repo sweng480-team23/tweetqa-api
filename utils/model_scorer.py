@@ -4,10 +4,20 @@ import string
 import re
 
 from typing import List
+from os.path import exists
+from google.cloud import storage
 from nltk.translate.bleu_score import sentence_bleu
 from nlgeval.pycocoevalcap.meteor.meteor import Meteor
 from nlgeval.pycocoevalcap.rouge.rouge import Rouge
+from transformers import BertTokenizerFast, BertForQuestionAnswering
+from utils.bert_model_runner import BertModelRunner
 
+
+local_model_location = './models'
+gs_model_location = 'v2/artifacts/pipeline/TweetQA ML Pipeline/2c77f481-3c1d-404a-9421-54fee4d02a61/model-training/model'
+config_file = 'config.json'
+model_file = 'pytorch_model.bin'
+training_args_file = 'training_args.bin'
 
 meteor_scorer = Meteor()
 rouge_scorer = Rouge()
@@ -17,14 +27,44 @@ def read_data(url: str) -> pd.DataFrame:
     return pd.read_json(url)
 
 
+def download_model_to_local(gs_model_loc: str, model_name: str, model_loc: str):
+    if (
+        not exists(f'{model_loc}/{model_name}/{config_file}')
+        and not exists(f'{model_loc}/{model_name}/{model_file}')
+        and not exists(f'{model_loc}/{model_name}/{training_args_file}')
+    ):
+        bucket_name = 'tweetqa-models'
+        storage_client = storage.Client.from_service_account_json('../gcp-keys/tweetqa-6233800255dc.json')
+        bucket = storage_client.bucket(bucket_name)
+        config_blob = bucket.blob(f'{gs_model_loc}/{config_file}')
+        config_blob.download_to_filename(f'{model_loc}/{model_name}/{config_file}')
+        model_blob = bucket.blob(f'{gs_model_loc}/{model_file}')
+        model_blob.download_to_filename(f'{model_loc}/{model_name}/{model_file}')
+        training_args_blob = bucket.blob(f'{gs_model_loc}/{training_args_file}')
+        training_args_blob.download_to_filename(f'{model_loc}/{model_name}/{training_args_file}')
+
+
+def get_model_runner(gs_model_loc: str, model_name: str, model_loc: str) -> BertModelRunner:
+    download_model_to_local(gs_model_loc, model_name, model_loc)
+    tokenizer = BertTokenizerFast.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
+    model = BertForQuestionAnswering.from_pretrained(f'{model_loc}/{model_name}')
+    return BertModelRunner(model_name, tokenizer, model)
+
+
 def generate_gold_file(df: pd.DataFrame) -> List[dict]:
     data_dict: dict = df.to_dict('records')
     return [{'qid': datum['qid'], 'Answer': datum['Answer']} for datum in data_dict]
 
 
 def generate_user_file(df: pd.DataFrame) -> List[dict]:
-    # TODO Make predictions using the model runner to generate the user file
-    return
+    model_runner: BertModelRunner = get_model_runner(gs_model_location, "bert", local_model_location)
+    data_dict: dict = df.to_dict('records')
+    return [
+        {
+            'qid': datum['qid'],
+            'Answer': model_runner.answer_tweet_question(datum['Tweet'], datum['Question'])
+        }
+        for datum in data_dict]
 
 
 def normalize_answer(s):
@@ -86,7 +126,8 @@ def evaluate(gold, pred):
 
 if __name__ == '__main__':
     data: pd.DataFrame = read_data('https://raw.githubusercontent.com/sweng480-team23/tweet-qa-data/main/dev.json')
-    gold = generate_gold_file(data)
-    user = generate_user_file(data)
-    output = evaluate(gold, gold)
+    gold_file = generate_gold_file(data)
+    user_file = generate_user_file(data)
+    print(user_file[0:5])
+    output = evaluate(gold_file, user_file)
     print(output)
