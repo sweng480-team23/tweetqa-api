@@ -30,6 +30,7 @@ def mock_db_teardown():
     os.remove('controllers/test.db')
 
 def test_data_service_creates_data():
+    '''TC-001: The DataService object can create a datum entity in the database'''
     mock_db_setup()
 
     data_in = Data(
@@ -55,6 +56,7 @@ def test_data_service_creates_data():
     assert data_out == data_in
 
 def test_data_service_reads_data_by_id():
+    '''TC-002: The DataService object can read a datum entity from the database by id'''
     mock_db_setup()
 
     data_in = Data(
@@ -81,6 +83,7 @@ def test_data_service_reads_data_by_id():
     assert data_out == data_in
 
 def test_data_service_updates_data():
+    '''TC-003: The DataService object can update an existing datum entity in the database'''
     mock_db_setup()
 
     data_in = Data(
