@@ -5,7 +5,7 @@ from models import Data, QAModel
 
 
 class DataService():
-    
+
     def create_data(self, datum:Data) -> Data:
         db.session.add(datum)
         db.session.commit()
@@ -37,7 +37,7 @@ class DataService():
         selected_data.answer = datum.answer
         selected_data.start_position = datum.start_position
         selected_data.end_position = datum.end_position
-        self.db_conn.session.commit()
+        db.session.commit()
         saved_data = self.read_data_by_id(datum.id)
         return saved_data
 
