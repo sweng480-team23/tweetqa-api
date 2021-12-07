@@ -259,11 +259,11 @@ paths:
                 end_position:
                   type: "integer"
   /v1/predictions/{id}:
-    post:
+    put:
       operationId: "controllers.v1.prediction_controller_v1.update_prediction"
       tags:
         - "PredictionController"
-      summary: "Application controller to handle QAModel request/response"
+      summary: "Application controller to handle prediction request/response"
       description: "Request to update a given prediction DTO"
       consumes:
         - application/json
@@ -287,7 +287,7 @@ paths:
                   type: "string"
       responses:
         200:
-          description: "Model succesfully updated"
+          description: "Prediction succesfully updated"
           schema:
             type: "array"
             items:
