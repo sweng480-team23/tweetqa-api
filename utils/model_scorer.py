@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import string
+import json
 import re
 
 from typing import List
@@ -56,15 +57,24 @@ def generate_gold_file(df: pd.DataFrame) -> List[dict]:
     return [{'qid': datum['qid'], 'Answer': datum['Answer']} for datum in data_dict]
 
 
+def to_prediction(datum: dict, model_runner: BertModelRunner) -> dict:
+    answer, start, end = model_runner.answer_tweet_question(datum['Tweet'], datum['Question'])
+    print(start)
+    return {
+                'qid': datum['qid'],
+                'Tweet': datum['Tweet'],
+                'Question': datum['Question'],
+                'Answer': answer,
+                'Start': start,
+                'End': end,
+                'Actual Answer': datum['Answer']
+            }
+
+
 def generate_user_file(df: pd.DataFrame) -> List[dict]:
     model_runner: BertModelRunner = get_model_runner(gs_model_location, "bert", local_model_location)
     data_dict: dict = df.to_dict('records')
-    return [
-        {
-            'qid': datum['qid'],
-            'Answer': model_runner.answer_tweet_question(datum['Tweet'], datum['Question'])
-        }
-        for datum in data_dict]
+    return [to_prediction(datum, model_runner) for datum in data_dict]
 
 
 def normalize_answer(s):
@@ -128,6 +138,9 @@ if __name__ == '__main__':
     data: pd.DataFrame = read_data('https://raw.githubusercontent.com/sweng480-team23/tweet-qa-data/main/dev.json')
     gold_file = generate_gold_file(data)
     user_file = generate_user_file(data)
-    print(user_file[0:5])
+
+    with open('user_file.json', 'w') as f_out:
+        json.dump(user_file, f_out)
+
     output = evaluate(gold_file, user_file)
     print(output)

@@ -57,4 +57,4 @@ class BertModelRunner(object):
 
         # print("\nPredicted answer:\n{}".format(answer.capitalize()))
 
-        return answer
+        return answer, answer_start.item(), answer_end.item()
