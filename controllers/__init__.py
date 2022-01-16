@@ -8,7 +8,7 @@ from flask_cors import CORS
 
 
 app = connexion.App(__name__, specification_dir='./')
-SECRET_KEY = os.getENV('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 CORS(app.app)
 # App Config
