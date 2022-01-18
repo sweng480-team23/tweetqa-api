@@ -11,7 +11,7 @@ from nltk.translate.bleu_score import sentence_bleu
 from nlgeval.pycocoevalcap.meteor.meteor import Meteor
 from nlgeval.pycocoevalcap.rouge.rouge import Rouge
 from transformers import BertTokenizerFast, BertForQuestionAnswering
-from utils.bert_model_runner import BertModelRunner
+from bert_model_runner import BertModelRunner
 
 
 local_model_location = './models'
@@ -46,7 +46,7 @@ def download_model_to_local(gs_model_loc: str, model_name: str, model_loc: str):
 
 
 def get_model_runner(gs_model_loc: str, model_name: str, model_loc: str) -> BertModelRunner:
-    download_model_to_local(gs_model_loc, model_name, model_loc)
+    #download_model_to_local(gs_model_loc, model_name, model_loc)
     tokenizer = BertTokenizerFast.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
     model = BertForQuestionAnswering.from_pretrained(f'{model_loc}/{model_name}')
     return BertModelRunner(model_name, tokenizer, model)
@@ -72,7 +72,7 @@ def to_prediction(datum: dict, model_runner: BertModelRunner) -> dict:
 
 
 def generate_user_file(df: pd.DataFrame) -> List[dict]:
-    model_runner: BertModelRunner = get_model_runner(gs_model_location, "bert", local_model_location)
+    model_runner: BertModelRunner = get_model_runner(gs_model_location, "bert/v2", local_model_location)
     data_dict: dict = df.to_dict('records')
     return [to_prediction(datum, model_runner) for datum in data_dict]
 
