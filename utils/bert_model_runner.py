@@ -49,10 +49,12 @@ class BertModelRunner(object):
                     answer += tokens[i][2:]
                 else:
                     answer += " " + tokens[i]
+        else:
+            answer = "Unable to find the answer to your question."
 
         # if answer.startswith("[CLS]"):
         #     answer = "Unable to find the answer to your question."
 
         # print("\nPredicted answer:\n{}".format(answer.capitalize()))
 
-        return answer
+        return answer, answer_start.item(), answer_end.item()
