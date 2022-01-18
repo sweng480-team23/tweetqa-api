@@ -10,13 +10,13 @@ from datetime import datetime
 import random, string
 
 from services.data_service import DataService
-from services.prediction_service import prediction_service
+from services.prediction_service import PredictionService
 from services.qa_model_service import QAModelService
 
-def uuid_generator(size : int = 60) -> str:
-    chars = string.ascii_lowercase + string.digits
-    uuid = ''.join(random.choice(chars) for i in range(size))
-    return uuid
+# def uuid_generator(size : int = 60) -> str:
+#     chars = string.ascii_lowercase + string.digits
+#     uuid = ''.join(random.choice(chars) for i in range(size))
+#     return uuid
 
 """
 test_data = Data(
@@ -83,7 +83,7 @@ testprediction.is_corrected = False
 saved_prediction = new_predservice.update_prediction(testprediction)
 print(saved_prediction)
 """
-new_modalservice = QAModelService()
+""" new_modalservice = QAModelService()
 
 testmodel = QAModel(
     uuid = uuid_generator(),
@@ -102,4 +102,68 @@ testmodel = QAModel(
 saved_models = new_modalservice.read_all_qa_model_by_type('BERT')
 
 for model in saved_models:
-    print(model)
+    print(model) """
+
+
+
+# scripts to import json file with starting and ending position into database
+#import dependencies
+import pandas as pd
+import string
+
+#import data set
+data = pd.read_json('https://raw.githubusercontent.com/sweng480-team23/tweet-qa-data/main/train.json')
+print(data.head(5))
+
+#required to transform the data, explore this later : CSJ
+data["Answer"] = data["Answer"].explode()
+
+#selecting first five
+data_selected = data[10:20]
+#turning it into dictionary (list)
+data_selected_preprocess = data_selected.to_dict('records')
+#tweet = data_selected_preprocess[2]["Tweet"].lower()
+#function returning a dictionary adding starting and ending position
+def identify_start_and_end_positions(data: dict) -> dict:
+  tweet = data["Tweet"].lower()
+  question = data["Question"].lower()
+  answer = data["Answer"].lower()
+  start_position = tweet.find(answer)
+
+  if start_position > -1:
+    end_position = start_position + len(answer)
+  else:
+    end_position = -1
+
+  return {
+      "qid": data["qid"],
+      "tweet": tweet,
+      "question": question,
+      "answer": answer,
+      "start_position": start_position,
+      "end_position": end_position,
+      # "bleu_score": max_score
+  }
+data_selected_processed = [identify_start_and_end_positions(datum) for datum in data_selected_preprocess[:]]
+
+# Function to save each data set from the dict into the sql instance
+def transform_and_save(data:dict):
+    new_dataservice = DataService()
+    for datum in data:
+        test_data = Data(
+            qid = datum["qid"],
+            tweet = datum["tweet"],
+            question = datum["question"],
+            answer = datum["answer"],
+            created_date = datetime.now(),
+            updated_date = datetime.now(),
+            source = "original dataset",
+            start_position = datum["start_position"],
+            end_position = datum["end_position"],
+        )
+        saved_data = new_dataservice.create_data(test_data)
+        print(saved_data)
+# End of transform_and_save
+
+transform_and_save(data_selected_processed)
+
