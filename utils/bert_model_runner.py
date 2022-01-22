@@ -15,6 +15,8 @@ class BertModelRunner(object):
         super().__init__()
 
     def answer_tweet_question(self, tweet, question):
+        tweet = tweet.lower()
+        question = question.lower()
         # tokenize question and text as a pair
         input_ids = self.tokenizer.encode(question, tweet)
 
