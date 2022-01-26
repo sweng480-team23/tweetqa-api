@@ -1,17 +1,20 @@
 from sqlalchemy import String, Integer
 
 from controllers import db
+from models.IdentifiableEntity_model import IdentifiableEntity
 
-class Account(db.Model):
+class Account(IdentifiableEntity):
     __tablename__ = 'account'
 
-    account_id = db.Column(Integer, primary_key=True, autoincrement = True)
-    username = db.Column(String(60), nullable=False)
+    #To delete account_id = db.Column(Integer, primary_key=True, autoincrement = True)
     #TODO: convert password plain text to hash/salt password 
     password = db.Column(String(60), nullable=False)
     email = db.Column(String(60), nullable=False)
 
+    # One to many relationship with visitor
+    visitor = db.relationship('models.visitor_model.Visitor', back_populates='invitor')
+
     # tostring code use for testing and debug
     def __repr__(self)->str:
-        return (f'Username: {self.username}, \n' +
+        return (f'Password: {self.password}, \n' +
                 f'Email: {self.email}, \n')

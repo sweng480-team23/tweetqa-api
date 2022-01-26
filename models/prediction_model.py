@@ -1,12 +1,12 @@
 from sqlalchemy import Integer, String, Boolean
 
 from controllers import db
+from models.IdentifiableEntity_model import IdentifiableEntity
 
-
-class Prediction(db.Model):
+class Prediction(IdentifiableEntity):
     __tablename__ = 'prediction'
 
-    id = db.Column(Integer, primary_key=True, autoincrement = True)
+    #To delete after test: id = db.Column(Integer, primary_key=True, autoincrement = True)
     prediction = db.Column(String(280), nullable=False)
     is_correct = db.Column(Boolean, nullable=True)
     alt_answer = db.Column(String(280), nullable=True)
@@ -21,7 +21,7 @@ class Prediction(db.Model):
     datum_id = db.Column(Integer, db.ForeignKey('data.id'), nullable=False)
     datum = db.relationship('models.data_model.Data', back_populates='predictions')
 
-    # many to one relationship with Model
+    # many to one relationship with visitor
     visitor_id = db.Column(Integer, db.ForeignKey('visitor.id'), nullable=False)
     visitor = db.relationship('models.visitor_model.Visitor', back_populates='predictions')
 

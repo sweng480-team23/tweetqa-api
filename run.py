@@ -1,16 +1,16 @@
 from operator import ne
 from controllers import db
-from models.account_model import Account
-from models.data_model import Data
-from models.prediction_model import Prediction
+# from models.account_model import Account
+# from models.data_model import Data
+# from models.prediction_model import Prediction
 from models.qa_model import QAModel
-from models.visitor_model import Visitor
-from services.account_service import AccountService
+# from models.visitor_model import Visitor
+# from services.account_service import AccountService
 from datetime import datetime
 import random, string
 
-from services.data_service import DataService
-from services.prediction_service import PredictionService
+# from services.data_service import DataService
+# from services.prediction_service import PredictionService
 from services.qa_model_service import QAModelService
 
 # def uuid_generator(size : int = 60) -> str:
@@ -83,26 +83,38 @@ testprediction.is_corrected = False
 saved_prediction = new_predservice.update_prediction(testprediction)
 print(saved_prediction)
 """
-""" new_modalservice = QAModelService()
+new_modalservice = QAModelService()
 
 testmodel = QAModel(
-    uuid = uuid_generator(),
-    ml_type = 'BERT',
-    ml_version = '0.1.0',
-    bleu_score = 0.70,
-    rogue_score = 0.70,
-    meteor_score = 0.70,
-    created_date = datetime.now()
-)
+    created_date = datetime.now(),
 
-#saved_model = new_modalservice.create_qa_model(testmodel)
+    ml_type = 'BERT',
+    ml_version = '0.1.1',
+
+    bucket = 'testing_bucket',
+    location = 'testing_location',
+    name = 'testing_name',
+
+    training_started = datetime.now(),
+    training_ended = datetime.now(),
+    epochs = 12,
+    batch_size_train = 12,
+    batch_size_eval = 2,
+    learning_rate = 0.0005,
+
+    bleu_score = 0.70,
+    rouge_score = 0.70,
+    meteor_score = 0.70
+    )
+
+saved_model = new_modalservice.create_qa_model(testmodel)
 #saved_model = new_modalservice.read_qa_model_by_uuid('wekcjl1f8bq0s3vypu221shqz2egx62pzjnmounduzwcgj71v10q6eb833vp')
 #saved_model = new_modalservice.read_latest_qa_model_by_type('BERT')
-#print(saved_model)
-saved_models = new_modalservice.read_all_qa_model_by_type('BERT')
+print(saved_model)
+# saved_models = new_modalservice.read_all_qa_model_by_type('BERT')
 
-for model in saved_models:
-    print(model) """
+# for model in saved_models:
+#     print(model) """
 
 
 
@@ -119,7 +131,7 @@ print(data.head(5))
 data["Answer"] = data["Answer"].explode()
 
 #selecting first five
-data_selected = data[10:20]
+data_selected = data
 #turning it into dictionary (list)
 data_selected_preprocess = data_selected.to_dict('records')
 #tweet = data_selected_preprocess[2]["Tweet"].lower()
@@ -146,6 +158,17 @@ def identify_start_and_end_positions(data: dict) -> dict:
   }
 data_selected_processed = [identify_start_and_end_positions(datum) for datum in data_selected_preprocess[:]]
 
+print(len(data_selected_processed))
+no_pos_indentified = 0
+
+for datum in data_selected_processed:
+    if datum["start_position"] == -1 :
+        no_pos_indentified += 1
+
+print(no_pos_indentified)
+#for datum in data_selected_processed:
+#    print(datum)
+
 # Function to save each data set from the dict into the sql instance
 def transform_and_save(data:dict):
     new_dataservice = DataService()
@@ -165,5 +188,5 @@ def transform_and_save(data:dict):
         print(saved_data)
 # End of transform_and_save
 
-transform_and_save(data_selected_processed)
+#transform_and_save(data_selected_processed)
 
