@@ -1,13 +1,9 @@
 from sqlalchemy import Integer, String, Float, DateTime
-
 from controllers import db
-from models.IdentifiableEntity_model import IdentifiableEntity
+from models.identifiableEntity_model import IdentifiableEntity
 
 class QAModel(IdentifiableEntity):
     __tablename__ = 'qa_model'
-
-    #To delete after test: id = db.Column(Integer, primary_key=True, autoincrement = True)
-    
 
     ml_type = db.Column(String(100), nullable=False)
     ml_version = db.Column(String(20), nullable=False)

@@ -1,12 +1,11 @@
 from sqlalchemy import Integer, String, Float, DateTime
 
 from controllers import db
-from models.IdentifiableEntity_model import IdentifiableEntity
+from models.identifiableEntity_model import IdentifiableEntity
 
 class Visitor(IdentifiableEntity):
     __tablename__ = 'visitor'
 
-    #To delete after test: id = db.Column(Integer, primary_key=True, autoincrement = True)
     token = db.Column(String(60), nullable=False, unique=True)
     #name = db.Column(String(60), nullable=False)  Not used as per latest diagram - CSJ 2022-01-26
     email = db.Column(String(60), nullable=False)

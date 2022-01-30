@@ -14,7 +14,8 @@ def create_qa_model(request: dict) -> QAModelResponse:
     model = dto.to_model()
 
     try:
-        model = qa_model_service.create_qa_model(model)
+        #model = qa_model_service.create_qa_model(model)
+        model = qa_model_service.create(model)
         response = QAModelResponse(model)
         return response, 200
 
@@ -26,7 +27,9 @@ def create_qa_model(request: dict) -> QAModelResponse:
 def read_qa_model(id_: str) -> QAModelResponse:
     '''Controller function to get a given model based on id'''
 
-    model = qa_model_service.read_qa_model_by_id(id_)
+    #model = qa_model_service.read_qa_model_by_id(id_)
+    #watch for passing in str instead of int
+    model = qa_model_service.read_by_id(id_)
 
     # Model is found and return the DTO or return None
     if model is not None:

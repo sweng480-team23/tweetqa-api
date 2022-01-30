@@ -1,12 +1,11 @@
 from sqlalchemy import Integer, String, DateTime
 
 from controllers import db
-from models.IdentifiableEntity_model import IdentifiableEntity
+from models.identifiableEntity_model import IdentifiableEntity
 
 class Data(IdentifiableEntity):
     __tablename__ = 'data'
 
-    #To delete after test: id = db.Column(Integer, primary_key=True, autoincrement = True)
     qid = db.Column(String(35), nullable=True, unique=True)
 
     tweet = db.Column(String(400), nullable=False)

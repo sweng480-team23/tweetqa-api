@@ -1,12 +1,11 @@
 from sqlalchemy import String, Integer
 
 from controllers import db
-from models.IdentifiableEntity_model import IdentifiableEntity
+from models.identifiableEntity_model import IdentifiableEntity
 
 class Account(IdentifiableEntity):
     __tablename__ = 'account'
 
-    #To delete account_id = db.Column(Integer, primary_key=True, autoincrement = True)
     #TODO: convert password plain text to hash/salt password 
     password = db.Column(String(60), nullable=False)
     email = db.Column(String(60), nullable=False)
