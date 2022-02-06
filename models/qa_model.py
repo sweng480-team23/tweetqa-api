@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String, Float, DateTime
 from controllers import db
-from models.identifiableEntity_model import IdentifiableEntity
+from models.identifiable_entity_model import IdentifiableEntity
 
 class QAModel(IdentifiableEntity):
     __tablename__ = 'qa_model'

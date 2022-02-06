@@ -23,7 +23,7 @@ class PredictionService(CreateReadUpdateService):
 
     #Wrapper function to update
     def update_prediction(self, prediction: Prediction) -> Prediction:
-        # TODO: Logic to be added if required
+        # TODO: Logic to be added to update the DATA collection
         saved_prediction = self.update(prediction)
         return saved_prediction
 

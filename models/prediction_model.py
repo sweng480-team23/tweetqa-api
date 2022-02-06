@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, String, Boolean
 
 from controllers import db
-from models.identifiableEntity_model import IdentifiableEntity
+from models.identifiable_entity_model import IdentifiableEntity
 
 class Prediction(IdentifiableEntity):
     __tablename__ = 'prediction'
