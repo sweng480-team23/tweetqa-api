@@ -2,6 +2,7 @@ from sqlalchemy import Integer, String, Float, DateTime
 from controllers import db
 from models.identifiable_entity_model import IdentifiableEntity
 
+
 class QAModel(IdentifiableEntity):
     __tablename__ = 'qa_model'
 
@@ -14,7 +15,6 @@ class QAModel(IdentifiableEntity):
     model_url = db.Column(String(200), nullable=True)
     # One to many relationship with prediction
     predictions = db.relationship('models.prediction_model.Prediction', back_populates='model')
-
 
     # tostring code use for testing and debug
     def __repr__(self) -> str:

@@ -62,7 +62,35 @@ paths:
           description: "Model id not found"
           schema:
             type: "null"
-  /v1/models/{model_type}:
+  /v1/models/{id}/wordcloud:
+    get:
+      operationId: "controllers.v1.qa_model_controller_v1.get_word_cloud"
+      tags:
+        - "QAModelController"
+      summary: "Application controller to return a word cloud for a specified model"
+      description: "Request a Word Cloud of the data used in model with id"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: number
+          format: path
+      responses:
+        200:
+          description: "Word Cloud succesfully generated"
+          schema:
+            type: "array"
+            items:
+              properties:
+                model_id:
+                  type: "number"
+                words:
+                  type: "array"
+        404:
+          description: "Word Cloud not generated"
+          schema:
+            type: "null"
+  /v1/models/{model_type}/latest:
     get:
       operationId: "controllers.v1.qa_model_controller_v1.read_latest_qa_model_by_type"
       tags:
@@ -96,6 +124,26 @@ paths:
                   type: "number"
                 meteor_score:
                   type: "number"
+        404:
+          description: "Model not found"
+          schema:
+            type: "null"
+  /v1/models/{model_type}:
+    get:
+      operationId: "controllers.v1.qa_model_controller_v1.read_all_qa_model_by_type"
+      tags:
+        - "QAModelController"
+      summary: "Application controller to handle QAModel request/response"
+      description: "Request the all model DTOs for a model type"
+      parameters:
+        - name: model_type
+          in: path
+          required: true
+          type: string
+          format: path
+      responses:
+        200:
+          description: "Models successfully found"
         404:
           description: "Model not found"
           schema:

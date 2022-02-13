@@ -1,6 +1,7 @@
 from utils.bert_model_runner import BertModelRunner, BertTokenizerFast, BertForQuestionAnswering
 
 
+
 print(' * Initializing model runners')
 
 tokenizer = BertTokenizerFast.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
