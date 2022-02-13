@@ -5,7 +5,7 @@ from datetime import datetime
 import uuid
 
 # Reset database
-db.drop_all()
+#db.drop_all()
 db.create_all()
 
 
@@ -29,13 +29,19 @@ testmodel = QAModel(
     bleu_score = 0.70,
     rouge_score = 0.70,
     meteor_score = 0.70,
-    created_date = datetime.now()
+    created_date = datetime.now(),
+    model_url = 'yahoo.com'
+)
+testaccount = Account(
+    password = 'password',
+    email = 'john.doe@gmail.com'
 )
 
 testvisitor = Visitor(
     token = uuid.uuid1(),
-    name = 'John',
-    email = 'John@hotmail.com'
+    email = 'John@hotmail.com',
+    invitor_account = testaccount.id,
+    invitor = testaccount
 )
 
 testprediction = Prediction(
@@ -50,22 +56,18 @@ testprediction = Prediction(
     visitor = testvisitor
 )
 
-testaccount = Account(
-    username = 'Johny',
-    password = 'password',
-    email = 'john.doe@gmail.com'
-)
+
 
 db.session.add(testdata)
 db.session.add(testmodel)
+db.session.add(testaccount)
 db.session.add(testvisitor)
 db.session.add(testprediction)
-db.session.add(testaccount)
 db.session.commit()
 
-model = QAModel.query.order_by(QAModel.id.desc()).first()
+#model = QAModel.query.order_by(QAModel.id.desc()).first()
 
-print(model)
-print(model.predictions[0])
+#print(model)
+#print(model.predictions[0])
 
 db.session.close()
