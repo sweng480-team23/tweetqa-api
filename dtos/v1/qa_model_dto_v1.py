@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from models import QAModel
 
+
 @dataclass
 class QAModelCreateRequest(object):
     ml_type: str
@@ -30,6 +31,7 @@ class QAModelCreateRequest(object):
                         meteor_score=self.meteor_score,
                         created_date=datetime.now())
 
+
 @dataclass
 class QAModelResponse(object):
 
@@ -52,5 +54,3 @@ class QAModelResponse(object):
         self.rouge_score = model.rouge_score
         self.meteor_score = model.meteor_score
         super().__setattr__('frozen', True)
-
-     

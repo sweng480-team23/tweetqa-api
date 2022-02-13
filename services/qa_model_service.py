@@ -1,4 +1,3 @@
-
 from controllers import db
 from dtos.v1.qa_model_dto_v1 import QAModelResponse
 from models import QAModel
@@ -6,14 +5,14 @@ import string
 from services.create_read_update_service import CreateReadUpdateService
 from sqlalchemy import distinct
 
-class QAModelService(CreateReadUpdateService):
-    '''Service class to handle all database CRUD operations for models, functions inherited from CreateReadUpdateService : read_by_id(id), create(entity_model), update(entity_model)'''
 
-    
+class QAModelService(CreateReadUpdateService):
+    ''' Service class to handle all database CRUD operations for models,
+        functions inherited from CreateReadUpdateService : read_by_id(id), create(entity_model), update(entity_model)'''
+
     def __init__(self):
         '''Constructor, take in the specific model class and pass the db.model back to the parent'''
         super().__init__(QAModel)
-
 
     def read_all_qa_model_by_type(self, model_type: string) -> list:
         '''Service function to read all models by a given type'''
