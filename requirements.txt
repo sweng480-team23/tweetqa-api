@@ -1,4 +1,3 @@
-atomicwrites==1.4.0
 attrs==21.2.0
 boto3==1.20.16
 botocore==1.23.16
@@ -25,10 +24,10 @@ google-crc32c==1.3.0
 google-resumable-media==2.1.0
 googleapis-common-protos==1.53.0
 greenlet==1.1.2
+gunicorn==20.1.0
 huggingface-hub==0.1.2
 idna==3.2
 inflection==0.5.1
-iniconfig==1.1.1
 isodate==0.6.0
 itsdangerous==1.1.0
 Jinja2==2.11.3
@@ -39,22 +38,18 @@ MarkupSafe==2.0.1
 marshmallow==3.13.0
 marshmallow-sqlalchemy==0.26.1
 mysqlclient==2.1.0
-nlg-eval==2.3
 nltk==3.6.5
 numpy==1.21.4
 openapi-schema-validator==0.1.5
 openapi-spec-validator==0.3.1
 packaging==21.3
 pandas==1.3.4
-pluggy==1.0.0
 protobuf==3.19.1
 psutil==5.8.0
-py==1.11.0
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
 pyparsing==3.0.6
 pyrsistent==0.18.0
-pytest==6.2.5
 python-dateutil==2.8.2
 python-decouple==3.5
 pytz==2021.3
@@ -73,7 +68,6 @@ swagger-ui-bundle==0.0.9
 Theano==1.0.5
 threadpoolctl==3.0.0
 tokenizers==0.10.3
-toml==0.10.2
 torch==1.10.0
 tqdm==4.62.3
 transformers==4.12.5
@@ -81,3 +75,5 @@ typing_extensions==4.0.0
 urllib3==1.26.7
 Werkzeug==1.0.1
 xdg==5.1.1
+git+https://github.com/Maluuba/nlg-eval.git@master
+google-python-cloud-debugger
