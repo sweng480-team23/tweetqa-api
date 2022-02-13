@@ -8,3 +8,5 @@ __pycache__
 utils/models/**
 !.gitkeep
 .pytest_cache
+user_file.json
+app.yaml

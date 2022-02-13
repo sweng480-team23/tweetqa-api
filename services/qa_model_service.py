@@ -1,27 +1,18 @@
-
 from controllers import db
 from dtos.v1.qa_model_dto_v1 import QAModelResponse
 from models import QAModel
 import string
+from services.create_read_update_service import CreateReadUpdateService
+from sqlalchemy import distinct
 
-class QAModelService(object):
-    '''Service class to handle all database CRUD operations for models'''
 
+class QAModelService(CreateReadUpdateService):
+    ''' Service class to handle all database CRUD operations for models,
+        functions inherited from CreateReadUpdateService : read_by_id(id), create(entity_model), update(entity_model)'''
 
-    def create_qa_model(self, model: QAModel) -> QAModel:
-        '''Service function to create a new model in the database'''
-
-        db.session.add(model)
-        db.session.commit()
-
-        saved_model = self.read_qa_model_by_id(model.id)
-        return saved_model
-
-    def read_qa_model_by_id(self, id: string) -> QAModel:
-        '''Service function to read a model from the database by id'''
-
-        selected_model = QAModel.query.filter(QAModel.id == id).first()
-        return selected_model
+    def __init__(self):
+        '''Constructor, take in the specific model class and pass the db.model back to the parent'''
+        super().__init__(QAModel)
 
     def read_all_qa_model_by_type(self, model_type: string) -> list:
         '''Service function to read all models by a given type'''
@@ -32,20 +23,20 @@ class QAModelService(object):
     def read_latest_qa_model_by_type(self, model_type: string) -> QAModel:
         '''Service function to read the latest model by type'''
 
-        selected_model = QAModel.query.filter(QAModel.ml_type == model_type).order_by(QAModel.created_date.desc()).first()
+        selected_model = QAModel.query.filter(QAModel.ml_type == model_type).\
+            order_by(QAModel.created_date.desc()).first()
         return selected_model
 
     def read_latest_models(self) -> list:
         '''Service function used to retrive the latest models for each type'''
-
-        #TODO: Not working correctly
-        """ select qa1.*
-        from qa_models qa1
-        where qa1.created_date in (
-            select max(qa2.created_date)
-            from qa_models qa2
-            where qa2.ml_type = qa1.ml_type )"""
-
-        models = QAModel.query.order_by(QAModel.created_date.desc()).distinct(QAModel.ml_type)
-        return models
+        # First get the list of unique model name from the query
+        selected_models_name = db.session.query(QAModel.ml_type).distinct().all()
+        # create an empty list
+        selected_models = []
+        # For each of the unique model name, query the database to return the latest one and apend to the list
+        for name in selected_models_name:
+            print(name)
+            selected_model = QAModel.query.filter(QAModel.ml_type == name[0]).order_by(QAModel.created_date.desc()).first()
+            selected_models.append(selected_model)
+        return selected_models
 
