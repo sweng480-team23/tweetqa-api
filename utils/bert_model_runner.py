@@ -54,9 +54,4 @@ class BertModelRunner(object):
         else:
             answer = "Unable to find the answer to your question."
 
-        # if answer.startswith("[CLS]"):
-        #     answer = "Unable to find the answer to your question."
-
-        # print("\nPredicted answer:\n{}".format(answer.capitalize()))
-
         return answer, answer_start.item(), answer_end.item()
