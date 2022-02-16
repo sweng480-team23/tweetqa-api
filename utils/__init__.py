@@ -4,10 +4,9 @@ from utils.bert_model_runner import BertModelRunner, BertTokenizerFast, BertForQ
 
 # print(' * Initializing model runners')
 
-def model_runner_init():
-    tokenizer = BertTokenizerFast.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
-    first_model = BertForQuestionAnswering.from_pretrained('utils/models/bert/v1')
-    first_runner = BertModelRunner('First BERT Model', tokenizer, first_model)
+tokenizer = BertTokenizerFast.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
+first_model = BertForQuestionAnswering.from_pretrained('utils/models/bert/v1')
+first_runner = BertModelRunner('First BERT Model', tokenizer, first_model)
 
 # print(' * Model runner init complete')
 
