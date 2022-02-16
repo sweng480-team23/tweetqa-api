@@ -23,17 +23,17 @@ def qa_model_model():
     yield qa_model
 
 @pytest.mark.qa_model
-def test_create_qa_model(app: FlaskClient, qa_model_model: QAModel):
-    '''TC-004: The create model end point is being reached and providing the appropriate response'''
-
+def test_create_qa_model(app: FlaskClient):
+    """
+    TC-004: The create model end point is being reached and providing the appropriate response
+    """
 
     data = {}
-    data["ml_type"] = "BERT-FINE-TUNED"
+    data["ml_type"] = "BERT-FINE-TUNED-V2"
     data["ml_version"] = "1.1"
     data["bleu_score"] = 80.0
     data["rouge_score"] = 80.0
     data["meteor_score"] = 80.0
-    #data = vars(qa_model_model)
 
     response: Response = app.post(f'/{CONTR_VER}/models',
                            data=json.dumps(data),
@@ -50,7 +50,9 @@ def test_create_qa_model(app: FlaskClient, qa_model_model: QAModel):
 
 @pytest.mark.qa_model
 def test_read_qa_model(db: SQLAlchemy, app: FlaskClient, qa_model_model: QAModel):
-    '''TC-005: The read model endpoint being reached and providing the appropriate response'''
+    """
+    TC-005: The read model endpoint being reached and providing the appropriate response
+    """
 
     db.session.add(qa_model_model)
     db.session.commit()
@@ -62,8 +64,11 @@ def test_read_qa_model(db: SQLAlchemy, app: FlaskClient, qa_model_model: QAModel
     response = response.get_json()
     assert response["id"] == 1
 
+@pytest.mark.qa_model
 def test_read_latest_qa_model_by_type(db: SQLAlchemy, app: FlaskClient, qa_model_model: QAModel):
-    '''TC-006: The read latest model by type end point is being reached and providing the appropriate response'''
+    """
+    TC-006: The read latest model by type end point is being reached and providing the appropriate response
+    """
     
     qa_model_model.ml_type = 'BERT'
 
@@ -76,9 +81,11 @@ def test_read_latest_qa_model_by_type(db: SQLAlchemy, app: FlaskClient, qa_model
     response = response.get_json()
     assert response["ml_type"] == 'BERT'
 
-
+@pytest.mark.qa_model
 def test_read_latest_models(db: SQLAlchemy, app: FlaskClient, qa_model_model: QAModel):
-    '''TC-007: The read latest models endpoint is being reached and providing the appropriate response'''
+    """
+    TC-007: The read latest models endpoint is being reached and providing the appropriate response
+    """
     response: Response = app.get(f'/{CONTR_VER}/models/latest',
                           content_type='application/json')
 

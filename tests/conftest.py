@@ -52,23 +52,30 @@ def pytest_sessionstart(session):
     database.session.commit()
 
     # Load some sample datafor the wordcloud
-    df = pd.read_json('https://raw.githubusercontent.com/sweng480-team23/tweet-qa-data/main/train.json')
-    data: ndarray = df.values[1:100, :]
-    
-    for datum in data: 
-        d = Data(
-            question=datum[0],
-            answer=datum[1],
-            tweet=datum[2],
-            qid=datum[3],
-            created_date=datetime.now(),
-            updated_date=datetime.now(),
-            source='original dataset',
-            start_position=1,
-            end_position=1
-        )
-        database.session.add(d)
-        database.session.commit()
+    df = pd.read_json('https://raw.githubusercontent.com/sweng480-team23/tweet-qa-data/main/dev.json')
+    df = df.head(100)
+
+    for _, row in df.iterrows():
+        row["Answer"] = row["Answer"][0]
+
+    for _, row in df.iterrows(): 
+
+        try:
+            d = Data(
+                question=row["Question"],
+                answer=row["Answer"],
+                tweet=row["Tweet"],
+                qid=row["qid"],
+                created_date=datetime.now(),
+                updated_date=datetime.now(),
+                source='dev dataset',
+                start_position=1,
+                end_position=5
+            )
+            database.session.add(d)
+            database.session.commit()
+        except:
+            continue
 
 
 def pytest_sessionfinish(session, exitstatus):

@@ -1,3 +1,4 @@
+from multiprocessing.context import assert_spawning
 import pytest
 from datetime import datetime
 from flask.testing import FlaskClient
@@ -7,7 +8,7 @@ from models import Data
 
 def test_root(app: FlaskClient):
     """
-    Smoke test
+    Smoke test to ensure the application isnt on fire
     """
     response = app.get("/", content_type="html/text")
 
@@ -15,9 +16,9 @@ def test_root(app: FlaskClient):
     assert response.data == b'"The TweetQA Api is running!"\n'
 
 @pytest.fixture
-def data_model():
+def data_model(db):
     data = Data(
-        qid='test qid1',
+        qid='test qid',
         tweet='test tweet',
         question='test question',
         answer='test answer',
@@ -25,10 +26,13 @@ def data_model():
         updated_date=datetime.now(),
         source='original dataset',
         start_position=1,
-        end_position=4
+        end_position=1
     )
 
     yield data
+
+    db.session.delete(data)
+    db.session.commit()
 
 @pytest.fixture
 def data_service():
@@ -44,7 +48,7 @@ def test_data_service_creates_data(data_model: Data, data_service: DataService):
 
     data_out = data_service.create(data_model)
     data_saved = Data.query.filter(Data.id == data_model.id).first()
-
+    
     assert data_saved is not None
     assert data_out is not None
     assert data_saved == data_out
@@ -57,7 +61,7 @@ def test_data_service_reads_data_by_id(data_model: Data, data_service: DataServi
     """
 
     data_service.create(data_model)
-    data_out = data_service.read_by_id(data_model)
+    data_out = data_service.read_by_id(data_model.id)
 
     assert data_out is not None
     assert data_out == data_model
@@ -69,8 +73,8 @@ def test_data_service_updates_data(data_model: Data, data_service: DataService):
     """
 
     data_service.create(data_model)
-    data_model.qid = 'updated qid'
 
+    data_model.qid = 'updated qid'
     data_out = data_service.update(data_model)
 
     assert data_out is not None
