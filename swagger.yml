@@ -419,13 +419,11 @@ paths:
         200:
           description: "Prediction successfully created"
           schema:
-            type: "array"
+            type: "object"
             items:
               properties:
                 id:
                   type: "number"
-                token:
-                  type: "string"
                 prediction:
                   type: "string"
                 is_correct:

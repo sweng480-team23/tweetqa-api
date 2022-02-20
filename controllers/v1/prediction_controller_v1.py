@@ -9,15 +9,15 @@ def create_prediction(request: dict) -> PredictionResponse:
     '''Controller function to process a create prediction request'''
 
     dto = PredictionCreateRequest(request)
-
     try:
-        model = prediction_service.create_prediction(dto.to_model())
-        response = PredictionResponse(model)
+        prediction: Prediction = prediction_service.create_prediction(dto.to_model())
+        response = PredictionResponse(prediction)
         return response, 200
 
     except Exception as e:
         print(e)
         return None, 404
+
 
 def read_prediction(id_: int) -> PredictionResponse:
     '''Controller function to process prediciton read request by id'''
@@ -29,6 +29,7 @@ def read_prediction(id_: int) -> PredictionResponse:
         return response, 200
     else:
         return None, 404
+
 
 def update_prediction(id_: int, request: dict):
     '''Controller function used to record a corrected answer'''

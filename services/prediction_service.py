@@ -15,10 +15,9 @@ class PredictionService(CreateReadUpdateService):
         super().__init__(Prediction)
 
     # Wrapper function to create
-    def create_prediction(self, prediction:Prediction)->Prediction:
+    def create_prediction(self, prediction: Prediction) -> Prediction:
         model_prediction = first_runner.answer_tweet_question(prediction.datum.tweet, prediction.datum.question)
         prediction.prediction = model_prediction[0]
-
         saved_prediction = self.create(prediction)
         return saved_prediction
 
