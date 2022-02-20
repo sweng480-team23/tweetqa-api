@@ -17,8 +17,7 @@ class PredictionCreateRequest(object):
         self.datum = DataCreateRequest(request["datum"])
         super().__setattr__('frozen', True)
 
-
-    #TODO: Work around for the token
+    # TODO: Work around for the token
     def to_model(self) -> Prediction:
         return Prediction(prediction=self.datum.answer,
                           model_id=self.model_id,
@@ -46,18 +45,19 @@ class PredictionUpdateRequest(object):
 @dataclass
 class PredictionResponse(object):
     id: int
-    token: str
+    # token: str
     prediction: str
     is_correct: bool
     alt_answer: str
     model: QAModelResponse
     datum: DataResponse
 
-    def __init__(self, prediction: Prediction) -> None:
+    def __init__(self, prediction: Prediction):
         self.id = prediction.id
-        self.token = prediction.visitor.token
+        # self.token = prediction.visitor.token
         self.prediction = prediction.prediction
         self.is_correct = prediction.is_correct
         self.alt_answer = prediction.alt_answer
-        self.model = QAModelResponse(prediction.model)
+        # self.model = QAModelResponse(prediction.model)
+        self.model = None
         self.datum = DataResponse(prediction.datum)

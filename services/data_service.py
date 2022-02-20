@@ -5,6 +5,9 @@ from controllers import db
 from models import Data, QAModel
 from typing import List
 from tqatypes.word_response import WordResponse
+import nltk
+from nltk.corpus import stopwords
+nltk.download('stopwords')
 import pandas as pd
 import string
 
@@ -12,10 +15,12 @@ import string
 class DataService(CreateReadUpdateService):
     """ DataService, functions inherited from CreateReadUpdateService : read_by_id(id), create(entity_model), update(entity_model) """
 
+
     def __init__(self):
         '''Constructor, take in the specific model class and pass the db.model back to the parent'''
         super().__init__(Data)
         self.model_service: QAModelService = QAModelService()
+        self.stop_words = set(stopwords.words('english'))
 
     """ functions inherited from CreateReadUpdateService : read_by_id(id), create(entity_model), update(entity_model) """
 
@@ -34,7 +39,8 @@ class DataService(CreateReadUpdateService):
         data: List[Data] = self.read_all_data_since(model.created_date)
         word_list: List[str] = []
         [[word_list.append(word)
-            for word in datum.tweet.translate(str.maketrans('', '', string.punctuation)).lower().split()]
+            for word in datum.tweet.translate(str.maketrans('', '', string.punctuation)).lower().split()
+            if not word in self.stop_words]
             for datum in data]
         word_counts: List = pd.Series(word_list).value_counts().to_dict()
-        return [{'name': key, 'weight': value} for key, value in word_counts.items()]
+        return [{'name': key, 'weight': value} for key, value in word_counts.items() if value > 1]
