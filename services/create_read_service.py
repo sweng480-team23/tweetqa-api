@@ -10,7 +10,6 @@ class CreateReadService(ReadService):
         super().__init__(entityModel)
     
     def create(self, data) -> db.Model:
-        #self.entitymodel
         db.session.add(data)
         db.session.commit()
         saved_data = self.read_by_id(data.id)
