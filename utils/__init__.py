@@ -1,12 +1,15 @@
+from transformers import TFBertForQuestionAnswering
 from utils.bert_model_runner import BertModelRunner, BertTokenizerFast, BertForQuestionAnswering
-
+from utils.tf_bert_model_runner import TFBertModelRunner
 
 
 # print(' * Initializing model runners')
 
 tokenizer = BertTokenizerFast.from_pretrained('bert-large-uncased-whole-word-masking-finetuned-squad')
-first_model = BertForQuestionAnswering.from_pretrained('utils/models/bert/v1')
-first_runner = BertModelRunner('First BERT Model', tokenizer, first_model)
+# first_model = BertForQuestionAnswering.from_pretrained('utils/models/bert/v1')
+# first_runner = BertModelRunner('First BERT Model', tokenizer, first_model)
+tf_model = TFBertForQuestionAnswering.from_pretrained('utils/models/bert_tf/v1')
+tf_runner = TFBertModelRunner(tokenizer, tf_model)
 
 # print(' * Model runner init complete')
 

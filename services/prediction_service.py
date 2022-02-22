@@ -1,7 +1,8 @@
 from venv import create
 from controllers import db
 from models.qa_model import QAModel
-from utils import first_runner
+# from utils import first_runner
+from utils import tf_runner
 from models import Prediction
 from services.create_read_update_service import CreateReadUpdateService
 
@@ -16,8 +17,10 @@ class PredictionService(CreateReadUpdateService):
 
     # Wrapper function to create
     def create_prediction(self, prediction: Prediction) -> Prediction:
-        model_prediction = first_runner.answer_tweet_question(prediction.datum.tweet, prediction.datum.question)
-        prediction.prediction = model_prediction[0]
+        # model_prediction = first_runner.answer_tweet_question(prediction.datum.tweet, prediction.datum.question)
+        model_prediction = tf_runner.answer_tweet_question(prediction.datum.tweet, prediction.datum.question)
+        # prediction.prediction = model_prediction[0]
+        prediction.prediction = model_prediction
         saved_prediction = self.create(prediction)
         return saved_prediction
 
@@ -26,4 +29,3 @@ class PredictionService(CreateReadUpdateService):
         # TODO: Logic to be added to update the DATA collection
         saved_prediction = self.update(prediction)
         return saved_prediction
-
