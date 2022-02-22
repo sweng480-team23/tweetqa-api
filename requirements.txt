@@ -13,7 +13,7 @@ clickclick==20.10.2
 cloud-storage==1.6.0
 colorama==0.4.4
 connexion==2.9.0
-Cython==0.29.24
+Cython==0.29.14
 factory-boy==3.2.1
 Faker==12.3.0
 filelock==3.4.0
