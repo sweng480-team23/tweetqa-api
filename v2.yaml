@@ -1,0 +1,308 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes configures the TweetQA API
+  version: "2.0.0"
+  title: TweetQA API
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/v2"
+
+paths:
+  /data:
+    post:
+      parameters:
+        - in: body
+          name: request
+          schema:
+            $ref: "#/definitions/DataCreateRequestV2"
+      responses:
+        200:
+          description: "Datum successfully created"
+          schema:
+            $ref: "#/definitions/DataResponseV2"
+        403:
+          description: "Requesting user not authorized"
+        404:
+          description: "Datum not created"
+  /data/{resource_id}:
+    get:
+      parameters:
+        - in: path
+          name: resource_id
+          type: "integer"
+          format: path
+          required: true
+      responses:
+        200:
+          description: "Successfully read data by id"
+          schema:
+            $ref: "#/definitions/DataResponseV2"
+    put:
+      parameters:
+        - in: path
+          name: resource_id
+          type: "integer"
+          format: path
+          required: true
+        - in: body
+          name: request
+          schema:
+            $ref: "#/definitions/DataUpdateRequestV2"
+      responses:
+        200:
+          description: "Datum successfully updated"
+          schema:
+            $ref: "#/definitions/DataResponseV2"
+        403:
+          description: "Requesting user not authorized"
+        404:
+          description: "Datum not updated"
+  /models:
+    post:
+      parameters:
+        - in: body
+          name: request
+          schema:
+            $ref: "#/definitions/QAModelCreateRequestV2"
+      responses:
+        200:
+          description: "Model successfully created"
+          schema:
+            $ref: "#/definitions/QAModelResponseV2"
+        403:
+          description: "Requesting user not authorized"
+        404:
+          description: "Prediction not created"
+  /models/{resource_id}:
+    get:
+      parameters:
+        - in: path
+          name: resource_id
+          type: "integer"
+          format: path
+          required: true
+      responses:
+        200:
+          description: "Successfully retrieved selected model"
+          schema:
+            $ref: "#/definitions/QAModelResponseV2"
+  /models/{resource_id}/wordcloud:
+    get:
+      operationId: "controllers.v2.model_controller_v2.ModelsView.get_word_cloud"
+      parameters:
+        - in: path
+          name: resource_id
+          type: "integer"
+          format: path
+          required: true
+      responses:
+        200:
+          description: "Successfully retrieved Word Cloud for selected model"
+          schema:
+            $ref: "#/definitions/WordCloudResponseV2"
+  /predictions:
+    post:
+      parameters:
+        - in: body
+          name: request
+          schema:
+            $ref: "#/definitions/PredictionCreateRequestV2"
+      responses:
+        200:
+          description: "Prediction successfully created"
+          schema:
+            $ref: "#/definitions/PredictionResponseV2"
+        403:
+          description: "Requesting user not authorized"
+        404:
+          description: "Prediction not created"
+  /predictions/{resource_id}:
+    get:
+      parameters:
+        - in: path
+          name: resource_id
+          type: "integer"
+          format: path
+          required: true
+      responses:
+        200:
+          description: "Successful read prediction by id"
+          schema:
+            $ref: "#/definitions/PredictionResponseV2"
+    put:
+      parameters:
+        - in: path
+          name: resource_id
+          type: "integer"
+          format: path
+          required: true
+        - in: body
+          name: request
+          schema:
+            $ref: "#/definitions/PredictionUpdateRequestV2"
+      responses:
+        200:
+          description: "Prediction successfully updated"
+          schema:
+            $ref: "#/definitions/PredictionResponseV2"
+        403:
+          description: "Requesting user not authorized"
+        404:
+          description: "Prediction not updated"
+  /visitors:
+    post:
+      parameters:
+        - in: body
+          name: request
+          schema:
+            $ref: "#/definitions/VisitorCreateRequestV2"
+      responses:
+        200:
+          description: "New visitor created and invited"
+          schema:
+            $ref: "#/definitions/VisitorResponseV2"
+  /visitors/{resource_id}:
+    get:
+      parameters:
+        - in: path
+          name: resource_id
+          type: "integer"
+          format: path
+          required: true
+      responses:
+        200:
+          description: "Successfully read visitor by id"
+          schema:
+            $ref: "#/definitions/VisitorResponseV2"
+definitions:
+  DataCreateRequestV2:
+    type: "object"
+    properties:
+      tweet:
+        type: "string"
+      question:
+        type: "string"
+      answer:
+        type: "string"
+  DataResponseV2:
+    type: "object"
+    properties:
+      qid:
+        type: "string"
+      tweet:
+        type: "string"
+      question:
+        type: "string"
+      answer:
+        type: "string"
+      created_date:
+        type: "string"
+      updated_date:
+        type: "string"
+      source:
+        type: "string"
+      start_position:
+        type: "integer"
+      end_position:
+        type: "integer"
+  DataUpdateRequestV2:
+    type: "object"
+    properties:
+      qid:
+        type: "string"
+      answer:
+        type: "string"
+      start_position:
+        type: "integer"
+      end_position:
+        type: "integer"
+  PredictionCreateRequestV2:
+    type: "object"
+    properties:
+      visitor:
+        type: "object"
+      model_id:
+        type: "string"
+      datum:
+        type: "object"
+  PredictionUpdateRequestV2:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      is_correct:
+        type: "boolean"
+      alt_answer:
+        type: "string"
+  PredictionResponseV2:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      visitor:
+        type: "object"
+      prediction:
+        type: "string"
+      is_correct:
+        type: "boolean"
+      alt_answer:
+        type: "string"
+      model:
+        type: "string"
+      datum:
+        type: "string"
+  QAModelCreateRequestV2:
+    type: "object"
+    properties:
+      ml_type:
+        type: "string"
+      ml_version:
+        type: "string"
+      bleu_score:
+        type: "number"
+      rouge_score:
+        type: "number"
+      meteor_score:
+        type: "number"
+  QAModelResponseV2:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      created_date:
+        type: "string"
+      ml_type:
+        type: "string"
+      ml_version:
+        type: "string"
+      bleu_score:
+        type: "number"
+      rouge_score:
+        type: "number"
+      meteor_score:
+        type: "number"
+  VisitorCreateRequestV2:
+    type: "object"
+    properties:
+      invitor_account:
+        type: "integer"
+      email:
+        type: "string"
+  VisitorResponseV2:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      token:
+        type: "string"
+  WordCloudResponseV2:
+    type: "object"
+    properties:
+      model_id:
+        type: "integer"
+      words:
+        type: "array"
+

@@ -74,7 +74,7 @@ new_accservice = AccountService()
 #3. Manual test code for visitor service class
 from models.visitor_model import Visitor
 from services.visitor_service import VisitorService
-print (VisitorService().visitor_check('e80a9052-7983-45fc-9707-5c1e3915878a'))
+print (VisitorService().check_valid_visitor('e80a9052-7983-45fc-9707-5c1e3915878a'))
 
 """ #4. Manual test code for prediction service class
 testprediction = Prediction(

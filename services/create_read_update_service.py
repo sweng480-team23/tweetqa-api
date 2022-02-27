@@ -1,7 +1,6 @@
 from controllers import db
-from sqlalchemy import String, Integer, null
+from sqlalchemy import null
 from services.create_read_service import CreateReadService
-from dataclasses import fields
 
 '''basic CreateReadUpdate class to handle all database CreateReadUpdate operations for models'''
 class CreateReadUpdateService(CreateReadService):

@@ -1,7 +1,7 @@
-from sqlalchemy import Integer, String, Float, DateTime
-
+from sqlalchemy import Integer, String
 from controllers import db
-from models.identifiable_entity_model import IdentifiableEntity
+from models import IdentifiableEntity
+
 
 class Visitor(IdentifiableEntity):
     __tablename__ = 'visitor'

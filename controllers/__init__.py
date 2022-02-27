@@ -1,21 +1,41 @@
 import connexion
+from connexion.resolver import MethodViewResolver
 from decouple import config
-
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
 
-app = connexion.App(__name__, specification_dir='./')
-SECRET_KEY = config('SECRET_KEY')
+def configure_prod_db(_app: Flask) -> Flask:
+    secret_key = config('SECRET_KEY')
+    _app.app.config['SECRET_KEY'] = secret_key
+    _app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'false'
+    _app.app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:' + secret_key + '@ljdub.com:3306/mysql_database'
+    return _app
 
-CORS(app.app)
-# App Config
-app.app.config['SECRET_KEY'] = SECRET_KEY
 
-app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'false'
-# Change database after '@ljdub.com:3306/
-app.app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:' + SECRET_KEY + '@ljdub.com:3306/mysql_database'
-# app.app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:' + SECRET_KEY + '@ljdub.com:3306/mysql_database_csjtrial'
+def configure_dev_db(_app: Flask) -> Flask:
+    _app.app.config['TESTING'] = True
+    _app.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+    return _app
+
+
+def configure_endpoints(_app: Flask) -> Flask:
+    from containers import Container
+    _app.container = Container()
+    _app.add_api('../swagger.yml', pythonic_params=True)
+    _app.add_api('../v2.yaml', resolver=MethodViewResolver('controllers.v2'))
+    return _app
+
+
+def create_app(prod: bool = False) -> Flask:
+    _app = connexion.App(__name__, specification_dir='./')
+    CORS(_app.app)
+    if prod:
+        return configure_prod_db(_app)
+    return configure_dev_db(_app)
+
+
+app = create_app(prod=True)
 db = SQLAlchemy(app.app)
-
-app.add_api('../swagger.yml', pythonic_params=True)
+app = configure_endpoints(app)

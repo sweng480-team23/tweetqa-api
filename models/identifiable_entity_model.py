@@ -1,7 +1,8 @@
 from controllers import db
-from sqlalchemy import String, Integer
+from sqlalchemy import Integer
 
 # class new class name (class inherit from)
+
 
 class IdentifiableEntity(db.Model):
     __abstract__ = True

@@ -1,8 +1,8 @@
 from datetime import datetime
 from services.create_read_update_service import CreateReadUpdateService
 from services.qa_model_service import QAModelService
-from controllers import db
-from models import Data, QAModel
+from models.data_model import Data
+from models.qa_model import QAModel
 from typing import List
 from tqatypes.word_response import WordResponse
 import nltk
