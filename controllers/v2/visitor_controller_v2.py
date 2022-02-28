@@ -19,7 +19,7 @@ class VisitorsView(AbstractReadControllerV2):
     def get_by_token(self, token: str) -> VisitorResponseV2:
         visitor: Visitor = self.visitor_service.read_by_token(token)
         if visitor:
-            return VisitorResponseV2.from_model(), 200
+            return VisitorResponseV2.from_model(visitor), 200
         else:
             return None, 404
 
