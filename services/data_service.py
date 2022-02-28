@@ -42,5 +42,5 @@ class DataService(CreateReadUpdateService):
             for word in datum.tweet.translate(str.maketrans('', '', string.punctuation)).lower().split()
             if not word in self.stop_words]
             for datum in data]
-        word_counts: List = pd.Series(word_list).value_counts().to_dict()
-        return [{'name': key, 'weight': value} for key, value in word_counts.items() if value > 1]
+        word_counts: List = pd.Series(word_list).value_counts().head(100).to_dict()
+        return [{'name': key, 'weight': value} for key, value in word_counts.items()]

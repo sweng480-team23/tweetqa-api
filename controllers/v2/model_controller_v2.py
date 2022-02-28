@@ -2,6 +2,7 @@ from dependency_injector.wiring import inject, Provide
 from containers import Container
 from typing import List
 from tqatypes.word_response import WordResponse
+from models import QAModel
 from services import VisitorService
 from services import QAModelService
 from services import DataService
@@ -26,7 +27,15 @@ class ModelsView(AbstractCreateReadControllerV2):
             response_dto=QAModelResponseV2,
             request_dto=QAModelCreateRequestV2
         )
+        self.service = model_service
         self.data_service = data_service
+
+    def get_models_by_type(self, model_type: str) -> List[QAModelResponseV2]:
+        models: List[QAModel] = self.service.read_all_qa_model_by_type(model_type)
+        if len(models) > 0:
+            return [QAModelResponseV2.from_model(model) for model in models], 200
+        else:
+            return None, 404
 
     def get_word_cloud(self, resource_id: str) -> WordCloudResponseV2:
         word_cloud: List[WordResponse] = self.data_service.generate_word_cloud(resource_id)

@@ -89,6 +89,22 @@ paths:
           description: "Successfully retrieved selected model"
           schema:
             $ref: "#/definitions/QAModelResponseV2"
+  /models/{model_type}:
+    get:
+      operationId: "controllers.v2.model_controller_v2.ModelsView.get_models_by_type"
+      parameters:
+        - in: path
+          name: model_type
+          type: "string"
+          format: path
+          required: true
+      responses:
+        200:
+          description: "Successfully retreived models of specified type"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/QAModelResponseV2"
   /models/{resource_id}/wordcloud:
     get:
       operationId: "controllers.v2.model_controller_v2.ModelsView.get_word_cloud"

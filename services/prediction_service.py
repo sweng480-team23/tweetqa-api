@@ -22,6 +22,6 @@ class PredictionService(CreateReadUpdateService):
 
     def update(self, prediction: Prediction) -> Prediction:
         # TODO: Logic to be added to update the DATA collection
-        saved_prediction = self.update(prediction)
+        saved_prediction = super().update(prediction)
         return saved_prediction
 
