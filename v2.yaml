@@ -177,6 +177,20 @@ paths:
           description: "Successfully read visitor by id"
           schema:
             $ref: "#/definitions/VisitorResponseV2"
+  /visitors/{token}:
+    get:
+      operationId: "controllers.v2.visitor_controller_v2.VisitorsView.get_by_token"
+      parameters:
+        - in: path
+          name: token
+          type: "string"
+          format: path
+          required: true
+      responses:
+        200:
+          description: "Successfully retrieved visitor with token"
+          schema:
+            $ref: "#/definitions/VisitorResponseV2"
 definitions:
   DataCreateRequestV2:
     type: "object"
