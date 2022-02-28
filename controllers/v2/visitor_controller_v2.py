@@ -1,3 +1,4 @@
+from models import Visitor
 from services.visitor_service import VisitorService
 from dtos.v2.visitor_dto_v2 import VisitorCreateRequestV2
 from dtos.v2.visitor_dto_v2 import VisitorResponseV2
@@ -16,7 +17,11 @@ class VisitorsView(AbstractReadControllerV2):
         self.visitor_service = visitor_service
 
     def get_by_token(self, token: str) -> VisitorResponseV2:
-        return VisitorResponseV2.from_model(self.visitor_service.read_by_token(token)), 200
+        visitor: Visitor = self.visitor_service.read_by_token(token)
+        if visitor:
+            return VisitorResponseV2.from_model(), 200
+        else:
+            return None, 404
 
     def post(self, request: dict) -> VisitorResponseV2:
         dto: VisitorCreateRequestV2 = from_dict(data_class=VisitorCreateRequestV2, data=request)
