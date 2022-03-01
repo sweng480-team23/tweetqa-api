@@ -24,7 +24,7 @@ class AbstractCreateReadControllerV2(AbstractReadControllerV2):
     def post(self, request: dict):
         """ /v2/{resource} """
         dto: Type[VisitorEnforcedRequest] = from_dict(data_class=self.request_dto, data=request)
-        if self.visitor_service.check_valid_visitor(dto.visitor.token):
+        if dto.visitor is not None and self.visitor_service.check_valid_visitor(dto.visitor.token):
             try:
                 resource = self.service.create(dto.to_model())
                 response = self.response_dto.from_model(resource)

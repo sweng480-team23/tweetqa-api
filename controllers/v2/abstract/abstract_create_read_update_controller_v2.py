@@ -24,7 +24,7 @@ class AbstractCreateReadUpdateControllerV2(AbstractCreateReadControllerV2):
     def put(self, resource_id: int, request: dict):
         """ /v2/{resource}/{resource_id} """
         dto = from_dict(data_class=self.update_request_dto, data=request)
-        if self.visitor_service.check_valid_visitor(dto.visitor.token):
+        if dto.visitor is not None and self.visitor_service.check_valid_visitor(dto.visitor.token):
             resource = self.service.update(dto.to_model())
             response = self.response_dto.from_model(resource)
             return response, 200
