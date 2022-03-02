@@ -1,8 +1,14 @@
-from controllers import db
 from models.visitor_model import Visitor
+from models.account_model import Account
 from services.create_read_update_service import CreateReadUpdateService
+from services.account_service import AccountService
 import string
-from sqlalchemy.sql.expression import null
+from uuid import uuid4
+import smtplib
+import ssl
+from email.message import EmailMessage
+from decouple import config
+
 
 class VisitorService(CreateReadUpdateService):
     """ VisitorService:
@@ -10,14 +16,37 @@ class VisitorService(CreateReadUpdateService):
         additional functions: def visitor_check (self, token: string) -> Visitor"""   
 
     def __init__(self):
-        '''Constructor, take in the specific model class and pass the db.model back to the parent'''
+        """ Constructor, take in the specific model class and pass the db.model back to the parent """
         super().__init__(Visitor)
+        self.account_service = AccountService()
 
+    def create(self, visitor: Visitor) -> Visitor:
+        visitor.token = uuid4()
+        created: Visitor = super().create(visitor)
+        self.email_link(created)
+        return created
 
+    def read_by_token(self, token: string) -> Visitor:
+        return Visitor.query.filter(Visitor.token == token).first()
 
-    def visitor_check (self, token: string) -> Visitor:
-        '''check if the token valid and return the visitor information '''
-        checkin_user = Visitor.query.filter(Visitor.token==token).first()
-        if checkin_user is None:
-            return null
-        return checkin_user
+    def check_valid_visitor(self, token: string) -> bool:
+        """ check if the token is valid """
+        if self.read_by_token(token) is None:
+            return False
+        return True
+
+    def email_link(self, visitor: Visitor):
+        invitor: Account = self.account_service.read_by_id(visitor.invitor_account)
+        msg = EmailMessage()
+        msg.set_content(
+            f"""Welcome to TweetQA! Follow this link to interact with our ML models via our Web Application.
+
+            localhost:8080?token={visitor.token}""")
+        msg['Subject'] = "Welcome to TweetQA!"
+        msg['From'] = invitor.email
+        msg['To'] = visitor.email
+        context = ssl.create_default_context()
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
+            server.login('psu.tweetqa@gmail.com', config('GMAIL_PWD'))
+            server.send_message(msg)
+            server.quit()

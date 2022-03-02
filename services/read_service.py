@@ -1,5 +1,5 @@
 from controllers import db
-from sqlalchemy import String, Integer
+
 
 class ReadService(object):
     '''basic read class to handle all database Read operations for models'''

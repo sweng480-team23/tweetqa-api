@@ -24,7 +24,7 @@ class QAModelCreateRequest(object):
     def to_model(self) -> QAModel:
         '''Utility function to convert this DTO into a model'''
 
-        return QAModel( ml_type=self.ml_type, 
+        return QAModel( ml_type=self.ml_type,
                         ml_version=self.ml_version,
                         bleu_score=self.bleu_score,
                         rouge_score=self.rouge_score,

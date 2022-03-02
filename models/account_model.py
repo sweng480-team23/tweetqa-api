@@ -1,7 +1,7 @@
-from sqlalchemy import String, Integer
-
+from sqlalchemy import String
 from controllers import db
-from models.identifiable_entity_model import IdentifiableEntity
+from models import IdentifiableEntity
+
 
 class Account(IdentifiableEntity):
     __tablename__ = 'account'

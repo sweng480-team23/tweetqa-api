@@ -1,10 +1,8 @@
 from sqlalchemy.sql.expression import null
-from controllers import db
 from models.account_model import Account
-from models.visitor_model import Visitor
-import string, uuid
+import string
 from services.create_read_update_service import CreateReadUpdateService
-from services.visitor_service import VisitorService
+
 
 class AccountService(CreateReadUpdateService):
     """ AccountService, functions inherited from CreateReadUpdateService : read_by_id(id), create(entity_model), update(entity_model) """
@@ -24,17 +22,6 @@ class AccountService(CreateReadUpdateService):
             return login_user
         return null
 
-    def generate_token_invitation_for_email(self, email:string)->Visitor:
-        new_token = uuid.uuid4()
-        new_visitor = Visitor(
-            token = new_token,
-            email = email,
-            invitor_account = 1
-            #TODO - to fetch the invitor_account information somehow from the controller
-        )
-        saved_visitor = VisitorService().create(new_visitor)
-        return saved_visitor
-        #to be implemented
 
 # def uuid_generator(size : int = 60) -> str:
 #     chars = string.ascii_lowercase + string.digits

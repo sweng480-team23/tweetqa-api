@@ -1,6 +1,6 @@
 from controllers import db
-from sqlalchemy import String, Integer
 from services.read_service import ReadService
+
 
 class CreateReadService(ReadService):
     '''basic read class to handle all database Read operations for models'''

@@ -1,8 +1,8 @@
 from datetime import datetime
 from services.create_read_update_service import CreateReadUpdateService
 from services.qa_model_service import QAModelService
-from controllers import db
-from models import Data, QAModel
+from models.data_model import Data
+from models.qa_model import QAModel
 from typing import List
 from tqatypes.word_response import WordResponse
 import nltk
@@ -42,5 +42,5 @@ class DataService(CreateReadUpdateService):
             for word in datum.tweet.translate(str.maketrans('', '', string.punctuation)).lower().split()
             if not word in self.stop_words]
             for datum in data]
-        word_counts: List = pd.Series(word_list).value_counts().to_dict()
-        return [{'name': key, 'weight': value} for key, value in word_counts.items() if value > 1]
+        word_counts: List = pd.Series(word_list).value_counts().head(100).to_dict()
+        return [{'name': key, 'weight': value} for key, value in word_counts.items()]

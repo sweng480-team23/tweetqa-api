@@ -1,7 +1,7 @@
 from sqlalchemy import Integer, String, Boolean
-
 from controllers import db
-from models.identifiable_entity_model import IdentifiableEntity
+from models import IdentifiableEntity
+
 
 class Prediction(IdentifiableEntity):
     __tablename__ = 'prediction'
@@ -25,4 +25,4 @@ class Prediction(IdentifiableEntity):
     visitor = db.relationship('models.visitor_model.Visitor', back_populates='predictions')
 
     def __repr__(self) -> str:
-        return (f'Prediction {self.id} '+ f'Prediction:{self.prediction} ' + f'Alt_ans:{self.alt_answer}')
+        return f'PredictionId: {self.id}, Prediction: {self.prediction}, Alt_ans: {self.alt_answer}'

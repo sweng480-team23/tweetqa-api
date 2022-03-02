@@ -10,7 +10,7 @@ def create_prediction(request: dict) -> PredictionResponse:
 
     dto = PredictionCreateRequest(request)
     try:
-        prediction: Prediction = prediction_service.create_prediction(dto.to_model())
+        prediction: Prediction = prediction_service.create(dto.to_model())
         response = PredictionResponse(prediction)
         return response, 200
 
@@ -35,7 +35,7 @@ def update_prediction(id_: int, request: dict):
     '''Controller function used to record a corrected answer'''
 
     dto = PredictionUpdateRequest(request)
-    predicition = prediction_service.update_prediction(dto.to_model())
+    predicition = prediction_service.update(dto.to_model())
     response = PredictionResponse(predicition)
 
     return response, 200

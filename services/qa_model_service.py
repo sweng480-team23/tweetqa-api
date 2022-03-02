@@ -1,6 +1,6 @@
 from controllers import db
 from dtos.v1.qa_model_dto_v1 import QAModelResponse
-from models import QAModel
+from models.qa_model import QAModel
 import string
 from services.create_read_update_service import CreateReadUpdateService
 from sqlalchemy import distinct
