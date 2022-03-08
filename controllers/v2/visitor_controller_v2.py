@@ -2,6 +2,7 @@ from models import Visitor
 from services.visitor_service import VisitorService
 from dtos.v2.visitor_dto_v2 import VisitorCreateRequestV2
 from dtos.v2.visitor_dto_v2 import VisitorResponseV2
+from dtos.v2.visitor_dto_v2 import VisitorCollectionResponseV2
 from controllers.v2 import AbstractReadControllerV2
 from dependency_injector.wiring import inject, Provide
 from containers import Container
@@ -23,7 +24,7 @@ class VisitorsView(AbstractReadControllerV2):
         else:
             return None, 404
 
-    def post(self, request: dict) -> VisitorResponseV2:
+    def post(self, request: dict) -> VisitorCollectionResponseV2:
         dto: VisitorCreateRequestV2 = from_dict(data_class=VisitorCreateRequestV2, data=request)
-        return VisitorResponseV2.from_model(
+        return VisitorCollectionResponseV2.from_model(
             self.visitor_service.create(dto.to_model())), 200
