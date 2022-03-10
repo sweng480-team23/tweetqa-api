@@ -1,5 +1,5 @@
 from flask.views import MethodView
-from services import ReadService
+from services.abstract.read_service import ReadService
 from typing import Type
 from dtos.v2 import AbstractResponseV2
 

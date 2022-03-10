@@ -1,7 +1,7 @@
-from models.visitor_model import Visitor
-from models.account_model import Account
-from services.create_read_update_service import CreateReadUpdateService
-from services.account_service import AccountService
+from models import Visitor
+from models import Account
+from .abstract.create_read_update_service import CreateReadUpdateService
+from services import AccountService
 import string
 from uuid import uuid4
 import smtplib

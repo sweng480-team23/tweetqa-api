@@ -1,7 +1,6 @@
 import factory
-from dtos.v1.visitor_dto_v1 import VisitorCreateRequest
-from dtos.v1.visitor_dto_v1 import VisitorResponse
-
+from dtos.v2.visitor_dto_v2 import VisitorCreateRequest
+from dtos.v2.visitor_dto_v2 import VisitorResponse
 
 class MockVisitorCreateRequest(factory.Factory):
     class Meta:

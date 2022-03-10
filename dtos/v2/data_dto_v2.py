@@ -91,5 +91,5 @@ class DataUpdateRequestV2(VisitorEnforcedRequest):
 
 @dataclass
 class DataCollectionResponseV2(object):
-    # todo - inherit from CollectionResponse base class
+    # TODO: - inherit from CollectionResponse base class
     collection: List[DataResponseV2]

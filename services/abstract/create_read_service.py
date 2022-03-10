@@ -1,5 +1,5 @@
 from controllers import db
-from services.read_service import ReadService
+from .read_service import ReadService
 
 
 class CreateReadService(ReadService):

@@ -61,5 +61,5 @@ class DataCreateRequest(object):
 
 @dataclass
 class DataCollectionResponse(object):
-    # todo - inherit from CollectionResponse base class
+    # TODO: - inherit from CollectionResponse base class
     collection: List[DataResponse]
