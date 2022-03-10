@@ -179,7 +179,7 @@ paths:
         200:
           description: "New visitor created and invited"
           schema:
-            $ref: "#/definitions/VisitorResponseV2"
+            $ref: "#/definitions/VisitorCollectionResponseV2"
   /visitors/{resource_id}:
     get:
       parameters:
@@ -319,8 +319,13 @@ definitions:
     properties:
       invitor_account:
         type: "integer"
-      email:
-        type: "string"
+      emails:
+        type: "array"
+  VisitorCollectionResponseV2:
+    type: "object"
+    properties:
+      data:
+        type: "array"
   VisitorResponseV2:
     type: "object"
     properties:

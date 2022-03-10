@@ -8,6 +8,7 @@ import smtplib
 import ssl
 from email.message import EmailMessage
 from decouple import config
+from typing import List
 
 
 class VisitorService(CreateReadUpdateService):
@@ -20,7 +21,10 @@ class VisitorService(CreateReadUpdateService):
         super().__init__(Visitor)
         self.account_service = AccountService()
 
-    def create(self, visitor: Visitor) -> Visitor:
+    def create(self, visitors: List[Visitor]) -> List[Visitor]:
+        return [self._create(v) for v in visitors]
+
+    def _create(self, visitor: Visitor) -> Visitor:
         visitor.token = uuid4()
         created: Visitor = super().create(visitor)
         self.email_link(created)
