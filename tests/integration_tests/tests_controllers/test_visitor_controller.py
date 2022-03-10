@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from models.prediction_model import Prediction
-from dtos.v1.qa_model_dto_v1 import QAModelResponse
-from dtos.v1.data_dto_v1 import DataCreateRequest, DataResponse
-from dtos.v1.visitor_dto_v2 import VisitorResponseV2
+from dtos.v2.qa_model_dto_v2 import QAModelResponseV2
+from dtos.v2.data_dto_v2 import DataCreateRequestV2, DataResponseV2
+from dtos.v2.visitor_dto_v2 import VisitorResponseV2
 
 
 @dataclass
 class PredictionCreateRequestV2(object):
     model_id: int
-    datum: DataCreateRequest
+    datum: DataCreateRequestV2
     visitor: VisitorResponseV2
 
     def to_model(self) -> Prediction:
@@ -38,8 +38,8 @@ class PredictionResponseV2(object):
     prediction: str
     is_correct: bool
     alt_answer: str
-    model: QAModelResponse
-    datum: DataResponse
+    model: QAModelResponseV2
+    datum: DataResponseV2
 
     def __init__(self, prediction: Prediction):
         self.id = prediction.id
@@ -49,4 +49,4 @@ class PredictionResponseV2(object):
         self.alt_answer = prediction.alt_answer
         # self.model = QAModelResponse(prediction.model)
         self.model = None
-        self.datum = DataResponse(prediction.datum)
+        self.datum = DataResponseV2(prediction.datum)
