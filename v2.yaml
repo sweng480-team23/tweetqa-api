@@ -255,7 +255,7 @@ definitions:
       visitor:
         type: "object"
       model_id:
-        type: "string"
+        type: "integer"
       datum:
         type: "object"
   PredictionUpdateRequestV2:

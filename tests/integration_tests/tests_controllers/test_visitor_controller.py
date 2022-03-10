@@ -7,7 +7,7 @@ from dtos.v1.visitor_dto_v2 import VisitorResponseV2
 
 @dataclass
 class PredictionCreateRequestV2(object):
-    model_id: str
+    model_id: int
     datum: DataCreateRequest
     visitor: VisitorResponseV2
 
