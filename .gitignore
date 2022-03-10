@@ -10,3 +10,4 @@ utils/models/**
 .pytest_cache
 user_file.json
 app.yaml
+.vscode/
