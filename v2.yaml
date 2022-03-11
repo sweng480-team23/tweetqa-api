@@ -105,6 +105,38 @@ paths:
             type: "array"
             items:
               $ref: "#/definitions/QAModelResponseV2"
+  /models/{model_type}/latest:
+    get:
+      operationId: "controllers.v2.model_controller_v2.ModelsView.read_latest_qa_model_by_type"
+      parameters:
+      - name: model_type
+        in: path
+        required: true
+        type: string
+        format: path
+      responses:
+        200:
+          description: "Model retreived of specified type"
+          schema:
+            $ref: "#/definitions/QAModelResponseV2"
+        404:
+          description: "Model not found"
+          schema:
+            type: "null"
+  /models/latest:
+    get:
+      operationId: "controllers.v2.model_controller_v2.ModelsView.read_latest_models"
+      responses:
+        200:
+          description: "Models succesfully found"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/QAModelResponseV2"
+        404:
+          description: "Models not found"
+          schema:
+            type: "null"
   /models/{resource_id}/wordcloud:
     get:
       operationId: "controllers.v2.model_controller_v2.ModelsView.get_word_cloud"

@@ -1,13 +1,19 @@
 import factory
+from decouple import config
 from dtos import VisitorCreateRequestV2
 from dtos import VisitorEnforcedRequest
 from dtos import VisitorResponseV2
 
+
 class MockVisitorCreateRequestV2(factory.Factory):
     class Meta:
         model = VisitorCreateRequestV2
-    
-class MockVisitorResponseV2:
+
+    invitor_account = factory.Faker('random_int')
+    emails = factory.List([factory.Faker('email')])
+
+
+class MockVisitorResponseV2(factory.Factory):
     class Meta:
         model = VisitorResponseV2
 
