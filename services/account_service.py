@@ -1,7 +1,7 @@
 from sqlalchemy.sql.expression import null
-from models.account_model import Account
+from models import Account
 import string
-from services.create_read_update_service import CreateReadUpdateService
+from .abstract.create_read_update_service import CreateReadUpdateService
 
 
 class AccountService(CreateReadUpdateService):
@@ -21,10 +21,3 @@ class AccountService(CreateReadUpdateService):
         elif login_user.password == password:
             return login_user
         return null
-
-
-# def uuid_generator(size : int = 60) -> str:
-#     chars = string.ascii_lowercase + string.digits
-#     uuid = ''.join(random.choice(chars) for i in range(size))
-#     return uuid
-#End of AccountService Class

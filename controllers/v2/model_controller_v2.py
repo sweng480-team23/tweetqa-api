@@ -37,6 +37,24 @@ class ModelsView(AbstractCreateReadControllerV2):
         else:
             return None, 404
 
+    def read_latest_qa_model_by_type(self, model_type: str) -> QAModelResponseV2:
+
+        model = self.service.read_latest_qa_model_by_type(model_type)
+
+        if model is not None:
+            response = QAModelResponseV2.from_model(model)
+            return response, 200
+        else:
+            return None, 404
+
+    def read_latest_models(self) -> List[QAModelResponseV2]:
+        models: List[QAModel] = self.service.read_latest_models()
+
+        if len(models) > 0:
+            return [QAModelResponseV2.from_model(model) for model in models], 200
+        else:
+            return None, 200
+
     def get_word_cloud(self, resource_id: str) -> WordCloudResponseV2:
         word_cloud: List[WordResponse] = self.data_service.generate_word_cloud(resource_id)
         if len(word_cloud) > 0:

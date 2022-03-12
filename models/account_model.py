@@ -1,6 +1,6 @@
 from sqlalchemy import String
 from controllers import db
-from models import IdentifiableEntity
+from .abstract.identifiable_entity_model import IdentifiableEntity
 
 
 class Account(IdentifiableEntity):

@@ -1,9 +1,6 @@
-from venv import create
-from controllers import db
-from models.qa_model import QAModel
 from utils import first_runner
 from models import Prediction
-from services.create_read_update_service import CreateReadUpdateService
+from .abstract.create_read_update_service import CreateReadUpdateService
 
 
 class PredictionService(CreateReadUpdateService):

@@ -7,7 +7,6 @@ class Visitor(IdentifiableEntity):
     __tablename__ = 'visitor'
 
     token = db.Column(String(60), nullable=False, unique=True)
-    #name = db.Column(String(60), nullable=False)  Not used as per latest diagram - CSJ 2022-01-26
     email = db.Column(String(60), nullable=False)
 
     # One to many relationship with prediction

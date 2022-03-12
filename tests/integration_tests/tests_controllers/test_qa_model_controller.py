@@ -1,117 +1,139 @@
-import pytest
 import json
-from datetime import datetime
+from collections import defaultdict
+from dataclasses import asdict
+from datetime import datetime, timedelta
+from typing import List
+
+import pytest
+from dtos.v2.visitor_dto_v2 import VisitorResponseV2
 from flask import Response
-from flask_sqlalchemy import SQLAlchemy
 from flask.testing import FlaskClient
+from flask_sqlalchemy import SQLAlchemy
+from models import Visitor
+from models.data_model import Data
+from models.qa_model import QAModel
+from services.data_service import DataService
+from services.qa_model_service import QAModelService
+from tests.mock.dtos.v2 import MockQAModelCreateRequestV2
 
-from models import QAModel
-
-CONTR_VER = 'v1'
-
-@pytest.fixture
-def qa_model_model():
-    qa_model = QAModel(
-        ml_type="BERT-FINE-TUNED",
-        ml_version="1.1",
-        bleu_score=80.0,
-        rouge_score=80.0,
-        meteor_score=80.0,
-        created_date=datetime.now()
-    )
-
-    yield qa_model
 
 @pytest.mark.qa_model
-def test_create_qa_model(app: FlaskClient):
-    """
-    TC-004: The create model end point is being reached and providing the appropriate response
-    """
+def test_create_qa_model(app: FlaskClient, db: SQLAlchemy):
+    url = '/v2/models'
+    dto = MockQAModelCreateRequestV2()
 
-    data = {}
-    data["ml_type"] = "BERT-FINE-TUNED-V2"
-    data["ml_version"] = "1.1"
-    data["bleu_score"] = 80.0
-    data["rouge_score"] = 80.0
-    data["meteor_score"] = 80.0
+    model: Visitor = Visitor.query.first()
+    dto.visitor = VisitorResponseV2.from_model(model)
+    dto = asdict(dto)
 
-    response: Response = app.post(f'/{CONTR_VER}/models',
-                           data=json.dumps(data),
-                           content_type='application/json')
+    response: Response = app.post(url,
+                                  data=json.dumps(dto),
+                                  content_type='application/json')
 
     assert response.status_code == 200
+
     response = response.get_json()
 
-    assert response["ml_type"] == data["ml_type"]
-    assert response["ml_version"] == data["ml_version"]
-    assert response["bleu_score"] == data["bleu_score"]
-    assert response["rouge_score"] == data["rouge_score"]
-    assert response["meteor_score"] == data["meteor_score"]
+    assert response["ml_type"] == dto["ml_type"]
+    assert response["ml_version"] == dto["ml_version"]
+    assert response["bleu_score"] == dto["bleu_score"]
+    assert response["rouge_score"] == dto["rouge_score"]
+    assert response["meteor_score"] == dto["meteor_score"]
+
 
 @pytest.mark.qa_model
 def test_read_qa_model(db: SQLAlchemy, app: FlaskClient, qa_model_model: QAModel):
-    """
-    TC-005: The read model endpoint being reached and providing the appropriate response
-    """
+    url = '/v2/models/1'
 
     db.session.add(qa_model_model)
     db.session.commit()
 
-    response: Response = app.get(f'/{CONTR_VER}/models/1',
-                          content_type='application/json')
+    response: Response = app.get(url, content_type='application/json')
 
     assert response.status_code == 200
     response = response.get_json()
     assert response["id"] == 1
 
-@pytest.mark.qa_model
-def test_read_latest_qa_model_by_type(db: SQLAlchemy, app: FlaskClient, qa_model_model: QAModel):
-    """
-    TC-006: The read latest model by type end point is being reached and providing the appropriate response
-    """
-    
-    qa_model_model.ml_type = 'BERT'
 
-    db.session.add(qa_model_model)
-    db.session.commit()
-    response: Response = app.get(f'/{CONTR_VER}/models/BERT/latest',
-                          content_type='application/json')
+@pytest.mark.qa_model
+def test_read_latest_qa_model_by_type(app: FlaskClient, qa_model_service: QAModelService, qa_model_model_list: List[QAModel]):
+    url = 'v2/models/BERT/latest'
+
+    latest_model = max(qa_model_model_list,
+                       key=lambda q: q.created_date)
+
+    for qa_model in qa_model_model_list:
+        qa_model.ml_type = 'BERT'
+        qa_model_service.create(qa_model)
+
+    response: Response = app.get(url, content_type='application/json')
 
     assert response.status_code == 200
+
     response = response.get_json()
     assert response["ml_type"] == 'BERT'
+    assert int(response["id"]) == latest_model.id
+
 
 @pytest.mark.qa_model
-def test_read_latest_models(db: SQLAlchemy, app: FlaskClient, qa_model_model: QAModel):
-    """
-    TC-007: The read latest models endpoint is being reached and providing the appropriate response
-    """
-    response: Response = app.get(f'/{CONTR_VER}/models/latest',
-                          content_type='application/json')
+def test_read_latest_models(app: FlaskClient, qa_model_service: QAModelService, qa_model_model_list: QAModel):
+    url = '/v2/models/latest'
+
+    for qa_model in qa_model_model_list:
+        qa_model_service.create(qa_model)
+
+    groups = defaultdict(list)
+    for qa_model in qa_model_model_list:
+        groups[qa_model.ml_type].append(qa_model)
+
+    latest_models = []
+    for group in groups.values():
+        group.sort(key=lambda q: q.created_date, reverse=True)
+        latest_models.append(group[0])
+
+    response: Response = app.get(url, content_type='application/json')
 
     assert response.status_code == 200
-    response = response.get_json()
 
-    assert response["length"] != 1
+    response: List[dict] = response.get_json()
+    assert len(latest_models) == len(response)
+
 
 @pytest.mark.qa_model
-def test_get_word_cloud(app: FlaskClient):
-    response: Response = app.get(f'/{CONTR_VER}/models/1/wordcloud', 
-                                 content_type='application/json')
+def test_get_word_cloud(app: FlaskClient,
+                        qa_model_service: QAModelService, qa_model_model: QAModel,
+                        data_service: DataService, data_model_list: List[Data]):
 
-    word_cloud: dict = json.loads(response.get_data())
+    qa_model_model.created_date = datetime.today() - timedelta(days=5)
+    qa_model_service.create(qa_model_model)
+    for data in data_model_list:
+        data_service.create(data)
+
+    url = f'/v2/models/{qa_model_model.id}/wordcloud'
+
+    response: Response = app.get(url, content_type='application/json')
+
+    word_cloud: dict = response.get_json()
 
     assert response.status_code == 200
-    assert word_cloud['model_id'] == 1
-    assert len(word_cloud['words']) > 0
-    assert 'name' in word_cloud['words'][0]
+    assert word_cloud["model_id"] == qa_model_model.id
+    assert len(word_cloud["words"]) == 100
+    assert all("name" in e for e in word_cloud["words"])
+    assert all("weight" in e for e in word_cloud["words"])
+
 
 @pytest.mark.qa_model
-def test_read_all_qa_model_by_type(app: FlaskClient):
-    response: Response = app.get(f'/{CONTR_VER}/models/BERT', 
-                                    content_type='application/json')
-    models: dict = json.loads(response.get_data())
-    assert response.status_code == 200
-    assert len(models) > 0
-    assert models[0]['ml_type'] == 'BERT'
+def test_get_models_by_type(app: FlaskClient, qa_model_service: QAModelService, qa_model_model_list: List[QAModel]):
+    url = '/v2/models/BERT'
 
+    for model in qa_model_model_list:
+        model.ml_type = 'BERT'
+        qa_model_service.create(model)
+
+    response: Response = app.get(url, content_type='application/json')
+
+    models: dict = response.get_json()
+
+    assert response.status_code == 200
+    assert len(models) == len(qa_model_model_list)
+    assert all(e["ml_type"] == 'BERT' for e in models)

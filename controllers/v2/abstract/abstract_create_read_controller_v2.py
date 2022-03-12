@@ -1,5 +1,5 @@
 from typing import Type
-from services import CreateReadService
+from services.abstract.create_read_service import CreateReadService
 from services import VisitorService
 from controllers.v2 import AbstractReadControllerV2
 from dtos.v2.abstract import AbstractResponseV2
