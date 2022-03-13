@@ -1,4 +1,4 @@
-from utils import first_runner
+from utils import tf_runner_best
 from models import Prediction
 from .abstract.create_read_update_service import CreateReadUpdateService
 
@@ -12,7 +12,7 @@ class PredictionService(CreateReadUpdateService):
         super().__init__(Prediction)
 
     def create(self, prediction: Prediction) -> Prediction:
-        model_prediction = first_runner.answer_tweet_question(prediction.datum.tweet, prediction.datum.question)
+        model_prediction = tf_runner_best.answer_tweet_question(prediction.datum.tweet, prediction.datum.question)
         prediction.prediction = model_prediction[0]
         saved_prediction = super().create(prediction)
         return saved_prediction
@@ -21,4 +21,3 @@ class PredictionService(CreateReadUpdateService):
         # TODO: Logic to be added to update the DATA collection
         saved_prediction = super().update(prediction)
         return saved_prediction
-

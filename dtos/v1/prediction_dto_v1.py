@@ -8,7 +8,7 @@ from dtos.v1.data_dto_v1 import DataCreateRequest, DataResponse
 @dataclass
 class PredictionCreateRequest(object):
     token: str
-    model_id: str
+    model_id: int
     datum: DataCreateRequest
 
     def __init__(self, request: dict) -> None:
