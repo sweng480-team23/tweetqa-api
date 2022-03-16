@@ -41,7 +41,6 @@ def test_create_qa_model(app: FlaskClient, db: SQLAlchemy):
     assert response["meteor_score"] == dto["meteor_score"]
 
 
-
 @pytest.mark.qa_model
 def test_read_qa_model(db: SQLAlchemy, app: FlaskClient, qa_model_model: QAModel):
     url = '/v2/models/1'
@@ -76,7 +75,6 @@ def test_read_latest_qa_model_by_type(app: FlaskClient, qa_model_service: QAMode
     assert int(response["id"]) == latest_model.id
 
 
-
 @pytest.mark.qa_model
 def test_read_latest_models(app: FlaskClient, qa_model_service: QAModelService, qa_model_model_list: QAModel):
     url = '/v2/models/latest'
@@ -101,6 +99,19 @@ def test_read_latest_models(app: FlaskClient, qa_model_service: QAModelService, 
     assert len(latest_models) == len(response)
 
 
+@pytest.mark.qa_model
+def test_read_best_models(app: FlaskClient, qa_model_service: QAModelService, qa_model_model_list: QAModel):
+    url = '/v2/models/best'
+
+    for qa_model in qa_model_model_list:
+        qa_model_service.create(qa_model)
+
+    response: Response = app.get(url, content_type='application/json')
+
+    assert response.status_code == 200
+    response: List[dict] = response.get_json()
+    assert len(response) > 0
+
 
 @pytest.mark.qa_model
 def test_get_word_cloud(app: FlaskClient,
@@ -123,7 +134,6 @@ def test_get_word_cloud(app: FlaskClient,
     assert len(word_cloud["words"]) == 100
     assert all("name" in e for e in word_cloud["words"])
     assert all("weight" in e for e in word_cloud["words"])
-
 
 
 @pytest.mark.qa_model

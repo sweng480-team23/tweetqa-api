@@ -123,6 +123,20 @@ paths:
           description: "Model not found"
           schema:
             type: "null"
+  /models/best:
+    get:
+      operationId: "controllers.v2.model_controller_v2.ModelsView.read_best_models"
+      responses:
+        200:
+          description: "Best models retrieved"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/QAModelResponseV2"
+        404:
+          description: "No Models found"
+          schema:
+            type: "null"
   /models/latest:
     get:
       operationId: "controllers.v2.model_controller_v2.ModelsView.read_latest_models"
