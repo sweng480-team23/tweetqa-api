@@ -9,7 +9,7 @@ from dtos.v2 import DataCreateRequestV2
 
 @dataclass
 class PredictionCreateRequestV2(VisitorEnforcedRequest):
-    model_id: int
+    model_id: str
     datum: DataCreateRequestV2
 
     def to_model(self) -> Prediction:

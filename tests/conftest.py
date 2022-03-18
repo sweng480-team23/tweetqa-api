@@ -104,6 +104,22 @@ def visitor_service():
     return service
 
 
+@pytest.fixture
+def account_service():
+    service = AccountService()
+    return service
+
+
+@pytest.fixture
+def account_model(db: SQLAlchemy):
+    #TODO: May need to create a DTO for account? 
+    account_model = Account(email='tester@psu.edu', password='tqa123')
+
+    yield account_model
+
+    db.session.delete(account_model)
+    db.session.commit()
+
 def pytest_sessionstart(session):
     """
     Called after the Session object has been created and
