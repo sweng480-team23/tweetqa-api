@@ -88,13 +88,21 @@ def qa_model_service():
 
 
 @pytest.fixture
-def visitor_model(db: SQLAlchemy):
+def visitor_model(db: SQLAlchemy, account_model: Account):
+    db.session.add(account_model)
+    db.session.commit()
+    
     dto: VisitorCreateRequestV2 = MockVisitorCreateRequestV2()
     visitor_model = dto.to_model()
+    
+    for v in visitor_model:
+        v.invitor = account_model
 
     yield visitor_model
 
-    db.session.delete(visitor_model)
+    for v in visitor_model:
+        db.session.delete(v)
+
     db.session.commit()
 
 

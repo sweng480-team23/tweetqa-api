@@ -10,6 +10,16 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers", "data: mark a test that is a part of the Data stack"
     )
+    config.addinivalue_line(
+        "markers", "account: mark a test that is a part of the Account stack"
+    )
+    config.addinivalue_line(
+        "markers", "visitor: mark a test that is a part of the Visitor stack"
+    )
+    config.addinivalue_line(
+        "markers", "predicition: mark a test that is a part of the Predicition stack"
+    )
+
 
 def pytest_unconfigure(config):
     """

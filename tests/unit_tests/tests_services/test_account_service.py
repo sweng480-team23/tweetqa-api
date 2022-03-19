@@ -40,10 +40,9 @@ def test_account_service_update(account_model: Account, account_service: Account
 def test_account_service_login(account_model: Account, account_service: AccountService):
 
     account_service.create(account_model)
-
-    account_model.email = 'updated_tester@psu.edu'
-    account_out = account_service.update(account_model)
+    email = account_model.email
+    password = account_model.password
+    account_out = account_service.login(email, password)
 
     assert account_out is not None
     assert account_out == account_model
-

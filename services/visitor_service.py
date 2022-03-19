@@ -25,9 +25,9 @@ class VisitorService(CreateReadUpdateService):
         return [self._create(v) for v in visitors]
 
     def _create(self, visitor: Visitor) -> Visitor:
-        visitor.token = uuid4()
+        visitor.token = str(uuid4())
         created: Visitor = super().create(visitor)
-        self.email_link(created)
+        #self.email_link(created)
         return created
 
     def read_by_token(self, token: string) -> Visitor:
