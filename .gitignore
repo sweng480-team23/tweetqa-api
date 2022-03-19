@@ -11,3 +11,5 @@ utils/models/**
 user_file.json
 app.yaml
 .vscode/
+run.py
+.venv

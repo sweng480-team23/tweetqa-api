@@ -6,6 +6,7 @@ class ReadService(object):
 
     '''Constructor, take in the specific model class and pass the db.model back to the parent'''
     def __init__(self, entityModel:db.Model):
+        #Instance variable
         self.entitymodel = entityModel
     
     def read_by_id(self, id: int) -> db.Model:
