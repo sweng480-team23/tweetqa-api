@@ -55,6 +55,14 @@ class ModelsView(AbstractCreateReadControllerV2):
         else:
             return None, 200
 
+    def read_best_models(self) -> List[QAModelResponseV2]:
+        models: List[QAModel] = self.service.read_best_model_by_type()
+
+        if len(models) > 0:
+            return [QAModelResponseV2.from_model(model) for model in models], 200
+        else:
+            return None, 200
+
     def get_word_cloud(self, resource_id: str) -> WordCloudResponseV2:
         word_cloud: List[WordResponse] = self.data_service.generate_word_cloud(resource_id)
         if len(word_cloud) > 0:
