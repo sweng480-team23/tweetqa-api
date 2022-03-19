@@ -9,9 +9,7 @@ def admin_login(request:dict):
     """Controller function to perform admin login authentication and return the token"""
 
     dto_admin = AccountLoginRequestV2(request)
-    print(dto_admin)
-    print(dto_admin.email)
-    print(dto_admin.password)
+
     new_accservice = AccountService()
     try:
         login_admin = new_accservice.login(dto_admin.email, dto_admin.password)

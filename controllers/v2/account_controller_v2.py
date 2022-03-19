@@ -21,7 +21,6 @@ class AccountsView(AbstractReadControllerV2):
         super().__init__(
             service=account_service,
             response_dto=AccountLoginResponseV2,
-            # request_dto=AccountLoginRequestV2
         )
         self.service = account_service
 
@@ -29,9 +28,7 @@ class AccountsView(AbstractReadControllerV2):
         """Controller function to perform admin login authentication and return the token"""
 
         dto_admin = AccountLoginRequestV2(request)
-        print(dto_admin)
-        print(dto_admin.email)
-        print(dto_admin.password)
+
         new_accservice = AccountService()
         try:
             login_admin = new_accservice.login(dto_admin.email, dto_admin.password)
