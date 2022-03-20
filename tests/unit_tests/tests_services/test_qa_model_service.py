@@ -91,3 +91,17 @@ def test_read_latest_models(qa_model_model_list: List[QAModel], qa_model_service
     assert all(type(e) == QAModel for e in selected_models)
     assert all(not latest_models.remove(e) for e in selected_models)
     assert len(latest_models) == 0
+
+
+@pytest.mark.qa_model
+def test_read_best_model_by_type(qa_model_model_list: List[QAModel], qa_model_service: QAModelService):
+    for qa_model in qa_model_model_list:
+        qa_model_service.create(qa_model)
+
+    selected_models = qa_model_service.read_best_model_by_type()
+
+    assert type(selected_models) == list
+    for selected_model in selected_models:
+        assert QAModelService.average_model_scores(selected_model) >= max(
+            [QAModelService.average_model_scores(qa_model)
+             for qa_model in qa_model_model_list if qa_model.ml_type == selected_model.ml_type])
