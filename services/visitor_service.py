@@ -19,6 +19,7 @@ class VisitorService(CreateReadUpdateService):
     def __init__(self):
         """ Constructor, take in the specific model class and pass the db.model back to the parent """
         super().__init__(Visitor)
+        self.test_flag = False
         self.account_service = AccountService()
 
     def create(self, visitors: List[Visitor]) -> List[Visitor]:
@@ -27,7 +28,10 @@ class VisitorService(CreateReadUpdateService):
     def _create(self, visitor: Visitor) -> Visitor:
         visitor.token = str(uuid4())
         created: Visitor = super().create(visitor)
-        #self.email_link(created)
+
+        if not self.test_flag:
+            self.email_link(created)
+
         return created
 
     def read_by_token(self, token: string) -> Visitor:
@@ -54,3 +58,6 @@ class VisitorService(CreateReadUpdateService):
             server.login('psu.tweetqa@gmail.com', config('GMAIL_PWD'))
             server.send_message(msg)
             server.quit()
+
+    def set_test_flag(self, flag=True):
+        self.set_test_flag = flag

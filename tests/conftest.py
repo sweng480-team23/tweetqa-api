@@ -109,6 +109,7 @@ def visitor_model(db: SQLAlchemy, account_model: Account):
 @pytest.fixture
 def visitor_service():
     service = VisitorService()
+    service.set_test_flag()
     return service
 
 
