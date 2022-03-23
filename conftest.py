@@ -17,7 +17,7 @@ def pytest_configure(config):
         "markers", "visitor: mark a test that is a part of the Visitor stack"
     )
     config.addinivalue_line(
-        "markers", "predicition: mark a test that is a part of the Predicition stack"
+        "markers", "prediction: mark a test that is a part of the Predicition stack"
     )
 
 

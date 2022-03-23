@@ -2,7 +2,7 @@ from sqlalchemy import Integer, String
 from controllers import db
 from models import IdentifiableEntity
 
-
+print(f'Visitor Model: {db.engine.url}')
 class Visitor(IdentifiableEntity):
     __tablename__ = 'visitor'
 

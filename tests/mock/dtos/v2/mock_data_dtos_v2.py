@@ -10,14 +10,14 @@ from dtos import DataCollectionResponseV2
 from .mock_visitor_dto_v2 import MockVisitorEnforcedRequestV2
 
 
-class MockDataCreateRequestV2(factory.Factory):
+class MockDataCreateRequestV2(MockVisitorEnforcedRequestV2):
     class Meta:
         model = DataCreateRequestV2
-
+ 
     tweet = factory.Faker('text', max_nb_chars=400)
     question = factory.Faker('text', max_nb_chars=280)
     answer = factory.Faker('text', max_nb_chars=280)
-    visitor = MockVisitorEnforcedRequestV2()
+
 
 
 class MockDataResponseV2(factory.Factory):
