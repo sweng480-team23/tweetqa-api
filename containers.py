@@ -10,3 +10,4 @@ class Container(containers.DeclarativeContainer):
     prediction_service = providers.Factory(services.PredictionService)
     model_service = providers.Factory(services.QAModelService)
     data_service = providers.Factory(services.DataService)
+    account_service = providers.Factory(services.AccountService)

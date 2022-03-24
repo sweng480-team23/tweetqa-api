@@ -438,3 +438,44 @@ paths:
           description: "Prediction not created"
           schema:
             type: "null"
+
+
+
+  /v1/accounts:
+    post:
+      operationId: "controllers.v1.account_controller_v1.admin_login"
+      tags:
+        - "AccountController"
+      summary: "Application controller to handle admin login request/response"
+      description: "Request to return the login token"
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: request
+          schema:
+            type: "object"
+            items:
+              properties:
+                email:
+                  type: "string"
+                password:
+                  type: "string"
+      responses:
+        200:
+          description: "Admin successfully created"
+          schema:
+            type: "object"
+            items:
+              properties:
+                email:
+                  type: "string"
+                token:
+                  type: "string"
+                expiresIn:
+                  type: "string"
+
+        404:
+          description: "Admin not login"
+          schema:
+            type: "null"

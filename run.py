@@ -4,14 +4,15 @@ from numpy import save
 from controllers import db
 
 
-from models.prediction_model import Prediction
-from models.qa_model import QAModel
-# from models.visitor_model import Visitor
+# from models.prediction_model import Prediction
+# from models.qa_model import QAModel
+# # from models.visitor_model import Visitor
 
 from datetime import datetime
 import random, string
-from services.prediction_service import PredictionService
-from services.qa_model_service import QAModelService
+from controllers.v2.account_controller_v2 import AccountsView
+# from services.prediction_service import PredictionService
+# from services.qa_model_service import QAModelService
 
 """ Menu:
 1. Manual test code for data service class
@@ -57,7 +58,7 @@ print(updated_data)
 
 
 
-""" #2. Manual test code for account service class
+#2. Manual test code for account service class
 from models.account_model import Account
 from services.account_service import AccountService
 testaccount = Account(
@@ -66,15 +67,21 @@ testaccount = Account(
 )
 
 new_accservice = AccountService()
-#new_accservice.create(testaccount)
-#get_account = new_accservice.login('abc@gmail.com','password')
-#print(get_account)
-#print (new_accservice.generate_token_invitation_for_email('newbie@gmail.com')) """
+new_accservice.create(testaccount)
+get_account = new_accservice.login('abc@gmail.com','password')
+print(get_account)
 
-#3. Manual test code for visitor service class
-from models.visitor_model import Visitor
-from services.visitor_service import VisitorService
-print (VisitorService().check_valid_visitor('e80a9052-7983-45fc-9707-5c1e3915878a'))
+new_accCon = AccountsView()
+
+login_dict = {"email":"abc@gmail.com","password":"password"}
+login_response = new_accCon.admin_login(login_dict)
+print(login_response)
+# print (new_accservice.generate_token_invitation_for_email('newbie@gmail.com'))
+
+# #3. Manual test code for visitor service class
+# from models.visitor_model import Visitor
+# from services.visitor_service import VisitorService
+# print (VisitorService().visitor_check('e80a9052-7983-45fc-9707-5c1e3915878a'))
 
 """ #4. Manual test code for prediction service class
 testprediction = Prediction(
@@ -122,22 +129,23 @@ print(saved_models2) """
 
 
 
-# # scripts to import json file with starting and ending position into database
-# #import dependencies
-# import pandas as pd
-# import string
+""" # scripts to import json file with starting and ending position into database
+#import dependencies
+import pandas as pd
+import string
 
-# #import data set
-# data = pd.read_json('https://raw.githubusercontent.com/sweng480-team23/tweet-qa-data/main/train.json')
+#import data set
+data = pd.read_json('https://raw.githubusercontent.com/sweng480-team23/tweet-qa-data/main/train.json')
 # print(data.head(5))
 
 # #required to transform the data, explore this later : CSJ
 # data["Answer"] = data["Answer"].explode()
 
 # #selecting first five
-# data_selected = data
-# #turning it into dictionary (list)
-# data_selected_preprocess = data_selected.to_dict('records')
+data_selected = data
+#turning it into dictionary (list)
+data_selected_preprocess = data_selected.to_dict('records')
+#print(data_selected_preprocess)
 # #tweet = data_selected_preprocess[2]["Tweet"].lower()
 # #function returning a dictionary adding starting and ending position
 # def identify_start_and_end_positions(data: dict) -> dict:
@@ -174,23 +182,32 @@ print(saved_models2) """
 #    print(datum)
 
 # Function to save each data set from the dict into the sql instance
+
+from models.data_model import Data
+from services.data_service import DataService
+
 def transform_and_save(data:dict):
     new_dataservice = DataService()
     for datum in data:
         test_data = Data(
             qid = datum["qid"],
-            tweet = datum["tweet"],
-            question = datum["question"],
-            answer = datum["answer"],
+            tweet = datum["Tweet"],
+            question = datum["Question"],
+            answer = datum["Answer"],
             created_date = datetime.now(),
             updated_date = datetime.now(),
             source = "original dataset",
-            start_position = datum["start_position"],
-            end_position = datum["end_position"],
+            start_position = "0",
+            end_position = "0"
         )
-        saved_data = new_dataservice.create_data(test_data)
-        print(saved_data)
+        try:
+            saved_data = new_dataservice.create(test_data)
+            #print(saved_data)
+            #print("data saved")
+        except Exception as e:
+            #print(e)
+            pass
 # End of transform_and_save
 
-#transform_and_save(data_selected_processed)
+transform_and_save(data_selected_preprocess) """
 

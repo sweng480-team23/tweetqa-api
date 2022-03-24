@@ -11,6 +11,9 @@ class CreateReadService(ReadService):
     
     def create(self, data) -> db.Model:
         db.session.add(data)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
         saved_data = self.read_by_id(data.id)
         return saved_data

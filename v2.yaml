@@ -253,7 +253,40 @@ paths:
           description: "Successfully retrieved visitor with token"
           schema:
             $ref: "#/definitions/VisitorResponseV2"
+  /accounts:
+    post:
+      operationId: "controllers.v2.account_controller_v2.AccountsView.admin_login"
+      parameters:
+        - in: body
+          name: request
+          schema:
+            $ref: "#/definitions/AccountLoginRequestV2"
+      responses:
+        200:
+          description: "Admin successfully login"
+          schema:
+            $ref: "#/definitions/AccountLoginResponseV2"
+        404:
+          description: "Admin not login"
+          schema:
+            type: "null"
 definitions:
+  AccountLoginRequestV2:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+  AccountLoginResponseV2:
+    type: "object"
+    properties:
+      email:
+        type: "string"
+      token:
+        type: "string"
+      expiresIn:
+        type: "string"
   DataCreateRequestV2:
     type: "object"
     properties:
