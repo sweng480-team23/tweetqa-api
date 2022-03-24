@@ -79,6 +79,7 @@ class DataCreateRequestV2(VisitorEnforcedRequest):
 
 @dataclass
 class DataUpdateRequestV2(VisitorEnforcedRequest):
+    id: int
     qid: str
     answer: Optional[str]
     start_position: Optional[int]
@@ -86,6 +87,7 @@ class DataUpdateRequestV2(VisitorEnforcedRequest):
 
     def to_model(self) -> Data:
         return Data(
+            id=self.id,
             qid=self.qid,
             answer=self.answer,
             start_position=self.start_position,

@@ -42,10 +42,10 @@ class MockDataResponseV2(factory.Factory):
                                  max_value=400)
 
 
-class MockDataUpdateRequestV2(factory.Factory):
+class MockDataUpdateRequestV2(MockVisitorEnforcedRequestV2):
     class Meta:
         model = DataUpdateRequestV2
-
+    id = None
     qid = fuzzy.FuzzyText(
         length=35, chars=string.ascii_letters + string.digits)
     answer = factory.Faker('text', max_nb_chars=280)

@@ -21,10 +21,7 @@ def pytest_sessionstart(session):
     Called after the Session object has been created and
     before performing collection and entering the run test loop.
     """
-    client.app.config['TESTING'] = True
-    client.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-
-
+    
     database.drop_all()
     database.create_all()
 

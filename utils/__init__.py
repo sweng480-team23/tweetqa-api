@@ -1,10 +1,11 @@
+import sys
 from controllers import app
 from tqa_training_lib.model_runners.tf_bert_model_runner import TFBertModelRunner
+from tests.mock.mock_model_runner import MockModelRunner
 
-import sys
 
 if '--skip-runner' in sys.argv or app.app.config['TESTING']:
-    tf_runner_best = None
+    tf_runner_best = MockModelRunner()
     print('******** Skip runner or testing flag detected. Won\'t attempt to instantiate a runner.')
     print('******** Note that this will not allow predictions to work right now.')
     print('******** Todo: Create a mock runner subclass that can be used for testing.')
