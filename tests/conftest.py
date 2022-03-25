@@ -145,6 +145,7 @@ def prediction_model(db: SQLAlchemy):
     yield prediciton
 
     db.session.delete(prediciton)
+    db.session.delete(prediciton.datum)
     db.session.commit()
 
 @pytest.fixture

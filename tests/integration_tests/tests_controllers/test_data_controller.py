@@ -1,4 +1,3 @@
-from http.client import ResponseNotReady
 import pytest
 import json
 from typing import List
@@ -6,15 +5,15 @@ from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
 from dataclasses import asdict
 from flask import Response
-from dtos.v2.data_dto_v2 import DataUpdateRequestV2
-from models.data_model import Data
-from services.data_service import DataService
+from dtos import DataUpdateRequestV2
+from models import Data
+from services import DataService
 
 from tests.mock.dtos.v2 import MockDataCreateRequestV2
 from dtos import DataCreateRequestV2
-from models import Visitor, visitor_model
+from models import Visitor
 from dtos import VisitorResponseV2
-from services import VisitorService, visitor_service
+from services import VisitorService
 from tests.mock.dtos.v2.mock_data_dtos_v2 import MockDataUpdateRequestV2
 
 @pytest.mark.data
@@ -57,8 +56,12 @@ def test_read_data(app: FlaskClient,
     response: Response = app.get(url, content_type='application/json')
 
     assert response.status_code == 200
+
     response = response.get_json()
     assert response["id"] == data_model.id
+    assert response["tweet"] == data_model.tweet
+    assert response["question"] == data_model.question
+    assert response["answer"] == data_model.answer
 
 @pytest.mark.data
 def test_update_data(app: FlaskClient,

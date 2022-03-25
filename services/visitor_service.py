@@ -9,6 +9,7 @@ import ssl
 from email.message import EmailMessage
 from decouple import config
 from typing import List
+import sys
 
 
 class VisitorService(CreateReadUpdateService):
@@ -29,7 +30,7 @@ class VisitorService(CreateReadUpdateService):
         visitor.token = str(uuid4())
         created: Visitor = super().create(visitor)
 
-        if not self.test_flag:
+        if 'pytest' not in sys.argv[0]:
             self.email_link(created)
 
         return created
