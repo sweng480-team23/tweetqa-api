@@ -2,7 +2,6 @@ import factory
 from factory import fuzzy
 from factory.random import randgen
 from dtos import QAModelCreateRequestV2
-from .mock_visitor_dto_v2 import MockVisitorResponseV2
 from .mock_visitor_dto_v2 import MockVisitorEnforcedRequestV2
 
 

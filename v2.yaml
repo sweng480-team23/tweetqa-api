@@ -299,6 +299,8 @@ definitions:
   DataResponseV2:
     type: "object"
     properties:
+      id:
+        type: "integer"
       qid:
         type: "string"
       tweet:
@@ -320,6 +322,8 @@ definitions:
   DataUpdateRequestV2:
     type: "object"
     properties:
+      id:
+        type: "integer"
       qid:
         type: "string"
       answer:

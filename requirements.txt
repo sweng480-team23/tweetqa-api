@@ -111,7 +111,7 @@ tomli==2.0.1
 torch==1.10.0
 # todo: update this to point to main branch
 # need to wait until PR is closed
-tqa-training-lib @ git+https://github.com/sweng480-team23/tqa-training-lib@manual-train
+tqa-training-lib @git+https://github.com/sweng480-team23/tqa-training-lib@main
 tqdm==4.62.3
 transformers==4.12.5
 typing_extensions==4.1.1

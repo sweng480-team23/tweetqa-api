@@ -11,6 +11,7 @@ from dtos.v2 import VisitorEnforcedRequest
 
 @dataclass
 class DataResponseV2(AbstractResponseV2):
+    id: int
     qid: str
     tweet: str
     question: str
@@ -24,6 +25,7 @@ class DataResponseV2(AbstractResponseV2):
     @staticmethod
     def from_model(model: Data):
         return DataResponseV2(
+            id=model.id,
             qid=model.qid,
             tweet=model.tweet,
             question=model.question,
@@ -38,6 +40,7 @@ class DataResponseV2(AbstractResponseV2):
 
 @dataclass
 class PartialDataResponseV2(AbstractResponseV2):
+    id: int
     qid: str
     tweet: str
     question: str
@@ -47,6 +50,7 @@ class PartialDataResponseV2(AbstractResponseV2):
     @staticmethod
     def from_model(model: Data):
         return PartialDataResponseV2(
+            id=model.id,
             qid=model.qid,
             tweet=model.tweet,
             question=model.question,
@@ -75,6 +79,7 @@ class DataCreateRequestV2(VisitorEnforcedRequest):
 
 @dataclass
 class DataUpdateRequestV2(VisitorEnforcedRequest):
+    id: int
     qid: str
     answer: Optional[str]
     start_position: Optional[int]
@@ -82,6 +87,7 @@ class DataUpdateRequestV2(VisitorEnforcedRequest):
 
     def to_model(self) -> Data:
         return Data(
+            id=self.id,
             qid=self.qid,
             answer=self.answer,
             start_position=self.start_position,

@@ -1,29 +1,35 @@
 import json
+import pytest
 from collections import defaultdict
 from dataclasses import asdict
 from datetime import datetime, timedelta
 from typing import List
-
-import pytest
-from dtos.v2.visitor_dto_v2 import VisitorResponseV2
 from flask import Response
 from flask.testing import FlaskClient
 from flask_sqlalchemy import SQLAlchemy
+
+from dtos import VisitorResponseV2
+from dtos.v2.qa_model_dto_v2 import QAModelCreateRequestV2
 from models import Visitor
-from models.data_model import Data
-from models.qa_model import QAModel
-from services.data_service import DataService
-from services.qa_model_service import QAModelService
+from models import Data
+from models import QAModel
+from services import DataService
+from services import QAModelService
+from services.visitor_service import VisitorService
 from tests.mock.dtos.v2 import MockQAModelCreateRequestV2
 
 
 @pytest.mark.qa_model
-def test_create_qa_model(app: FlaskClient, db: SQLAlchemy):
-    url = '/v2/models'
-    dto = MockQAModelCreateRequestV2()
+def test_create_qa_model(app: FlaskClient, 
+                         db: SQLAlchemy,
+                         visitor_model: List[Visitor], 
+                         visitor_service: VisitorService):
 
-    model: Visitor = Visitor.query.first()
-    dto.visitor = VisitorResponseV2.from_model(model)
+    url = '/v2/models'
+    dto: QAModelCreateRequestV2 = MockQAModelCreateRequestV2()
+
+    visitor_service.create(visitor_model)
+    dto.visitor = VisitorResponseV2.from_model(visitor_model[0])
     dto = asdict(dto)
 
     response: Response = app.post(url,
@@ -40,23 +46,31 @@ def test_create_qa_model(app: FlaskClient, db: SQLAlchemy):
     assert response["rouge_score"] == dto["rouge_score"]
     assert response["meteor_score"] == dto["meteor_score"]
 
+    model = QAModel.query.first()
+    db.session.delete(model)
+    db.session.commit()
 
 @pytest.mark.qa_model
-def test_read_qa_model(db: SQLAlchemy, app: FlaskClient, qa_model_model: QAModel):
-    url = '/v2/models/1'
+def test_read_qa_model(app: FlaskClient, 
+                       qa_model_service: QAModelService, 
+                       qa_model_model: QAModel):
+    
+    qa_model_service.create(qa_model_model)
 
-    db.session.add(qa_model_model)
-    db.session.commit()
+    url = '/v2/models/' + str(qa_model_model.id)
 
     response: Response = app.get(url, content_type='application/json')
 
     assert response.status_code == 200
     response = response.get_json()
-    assert response["id"] == 1
+    assert response["id"] == qa_model_model.id
 
 
 @pytest.mark.qa_model
-def test_read_latest_qa_model_by_type(app: FlaskClient, qa_model_service: QAModelService, qa_model_model_list: List[QAModel]):
+def test_read_latest_qa_model_by_type(app: FlaskClient, 
+                                      qa_model_service: QAModelService, 
+                                      qa_model_model_list: List[QAModel]):
+
     url = 'v2/models/BERT/latest'
 
     latest_model = max(qa_model_model_list,
@@ -76,7 +90,10 @@ def test_read_latest_qa_model_by_type(app: FlaskClient, qa_model_service: QAMode
 
 
 @pytest.mark.qa_model
-def test_read_latest_models(app: FlaskClient, qa_model_service: QAModelService, qa_model_model_list: QAModel):
+def test_read_latest_models(app: FlaskClient, 
+                            qa_model_service: QAModelService, 
+                            qa_model_model_list: QAModel):
+
     url = '/v2/models/latest'
 
     for qa_model in qa_model_model_list:
@@ -100,7 +117,10 @@ def test_read_latest_models(app: FlaskClient, qa_model_service: QAModelService, 
 
 
 @pytest.mark.qa_model
-def test_read_best_models(app: FlaskClient, qa_model_service: QAModelService, qa_model_model_list: QAModel):
+def test_read_best_models(app: FlaskClient, 
+                          qa_model_service: QAModelService, 
+                          qa_model_model_list: QAModel):
+
     url = '/v2/models/best'
 
     for qa_model in qa_model_model_list:
@@ -115,8 +135,10 @@ def test_read_best_models(app: FlaskClient, qa_model_service: QAModelService, qa
 
 @pytest.mark.qa_model
 def test_get_word_cloud(app: FlaskClient,
-                        qa_model_service: QAModelService, qa_model_model: QAModel,
-                        data_service: DataService, data_model_list: List[Data]):
+                        qa_model_service: QAModelService, 
+                        qa_model_model: QAModel,
+                        data_service: DataService, 
+                        data_model_list: List[Data]):
 
     qa_model_model.created_date = datetime.today() - timedelta(days=5)
     qa_model_service.create(qa_model_model)
@@ -137,7 +159,10 @@ def test_get_word_cloud(app: FlaskClient,
 
 
 @pytest.mark.qa_model
-def test_get_models_by_type(app: FlaskClient, qa_model_service: QAModelService, qa_model_model_list: List[QAModel]):
+def test_get_models_by_type(app: FlaskClient, 
+                            qa_model_service: QAModelService, 
+                            qa_model_model_list: List[QAModel]):
+                            
     url = '/v2/models/BERT'
 
     for model in qa_model_model_list:

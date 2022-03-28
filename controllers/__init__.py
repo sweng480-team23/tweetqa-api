@@ -1,4 +1,5 @@
 import connexion
+import sys
 from connexion.resolver import MethodViewResolver
 from decouple import config
 from flask_cors import CORS
@@ -17,6 +18,7 @@ def configure_prod_db(_app: Flask) -> Flask:
 def configure_dev_db(_app: Flask) -> Flask:
     _app.app.config['TESTING'] = True
     _app.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+    _app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     return _app
 
 
@@ -27,15 +29,14 @@ def configure_endpoints(_app: Flask) -> Flask:
     _app.add_api('../v2.yaml', resolver=MethodViewResolver('controllers.v2'))
     return _app
 
-
-def create_app(prod: bool = False) -> Flask:
+def create_app() -> Flask:
     _app = connexion.App(__name__, specification_dir='./')
     CORS(_app.app)
-    if prod:
-        return configure_prod_db(_app)
-    return configure_dev_db(_app)
+    if 'pytest' in sys.argv[0]:
+        return configure_dev_db(_app)
+    return configure_prod_db(_app)
 
 
-app = create_app(prod=True)
+app = create_app()
 db = SQLAlchemy(app.app)
 app = configure_endpoints(app)

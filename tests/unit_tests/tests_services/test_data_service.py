@@ -1,7 +1,5 @@
 
-from select import select
 import pytest
-from flask_sqlalchemy import SQLAlchemy
 from typing import List
 from datetime import datetime, timedelta
 
@@ -9,7 +7,6 @@ from services import DataService
 from services import QAModelService
 from models import Data
 from models import QAModel
-from tests.mock.dtos.v2 import MockDataCreateRequestV2
 from tqatypes.word_response import WordResponse
 
 

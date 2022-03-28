@@ -2,7 +2,6 @@ import pytest
 import os
 from flask_sqlalchemy import SQLAlchemy
 from typing import List
-
 from controllers import app as client
 from controllers import db as database
 
@@ -10,12 +9,21 @@ from models import *
 from services import *
 from dtos import *
 
-from services.visitor_service import VisitorService
 from tests.mock.dtos.v2 import MockDataCreateRequestV2
 from tests.mock.dtos.v2 import MockQAModelCreateRequestV2
+from tests.mock.dtos.v2.mock_prediction_dtos_v2 import MockPredictionCreateRequestV2
 from tests.mock.dtos.v2.mock_visitor_dto_v2 import MockVisitorCreateRequestV2
 
 tester = client.app.test_client()
+
+def pytest_sessionstart(session):
+    """
+    Called after the Session object has been created and
+    before performing collection and entering the run test loop.
+    """
+    
+    database.drop_all()
+    database.create_all()
 
 
 @pytest.fixture
@@ -88,32 +96,62 @@ def qa_model_service():
 
 
 @pytest.fixture
-def visitor_model(db: SQLAlchemy):
+def visitor_model(db: SQLAlchemy, account_model: Account):
+    db.session.add(account_model)
+    db.session.commit()
+    
     dto: VisitorCreateRequestV2 = MockVisitorCreateRequestV2()
-    visitor_model = dto.to_model()
+    visitor_model: List[Visitor] = dto.to_model()
+    
+    for v in visitor_model:
+        v.invitor = account_model
 
     yield visitor_model
 
-    db.session.delete(visitor_model)
+    for v in visitor_model:
+        db.session.delete(v)
+
     db.session.commit()
 
 
 @pytest.fixture
 def visitor_service():
     service = VisitorService()
+    service.set_test_flag()
     return service
 
 
-def pytest_sessionstart(session):
-    """
-    Called after the Session object has been created and
-    before performing collection and entering the run test loop.
-    """
+@pytest.fixture
+def account_service():
+    service = AccountService()
+    return service
 
-    client.app.config['TESTING'] = True
-    client.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-    database.drop_all()
-    database.create_all()
+
+@pytest.fixture
+def account_model(db: SQLAlchemy):
+    #TODO: May need to create a DTO for account? 
+    account_model = Account(email='tester@psu.edu', password='tqa123')
+
+    yield account_model
+
+    db.session.delete(account_model)
+    db.session.commit()
+
+@pytest.fixture
+def prediction_model(db: SQLAlchemy):
+    dto: PredictionCreateRequestV2 = MockPredictionCreateRequestV2()
+    prediciton = dto.to_model()
+
+    yield prediciton
+
+    db.session.delete(prediciton)
+    db.session.delete(prediciton.datum)
+    db.session.commit()
+
+@pytest.fixture
+def prediction_service():
+    service = PredictionService()
+    yield service
 
 
 def pytest_sessionfinish(session, exitstatus):
