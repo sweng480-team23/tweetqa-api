@@ -23,3 +23,13 @@ class DataView(AbstractCreateReadUpdateControllerV2):
             request_dto=DataCreateRequestV2,
             update_request_dto=DataUpdateRequestV2
         )
+    
+    def read_random_data(self):
+        '''Controller function to retrieve a random data'''
+        
+        random_datum = self.service.read_random()
+        if random_datum is not None:
+            response = self.response_dto.from_model(random_datum)
+            return response, 200
+        else:
+            return  None,404

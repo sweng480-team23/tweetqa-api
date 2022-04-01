@@ -27,6 +27,16 @@ paths:
           description: "Requesting user not authorized"
         404:
           description: "Datum not created"
+  /data/random:
+    get:
+      operationId: "controllers.v2.data_controller_v2.DataView.read_random_data"
+      responses:
+        200:
+          description: "Successfully get random data"
+          schema:
+            $ref: "#/definitions/DataResponseV2"
+        404: 
+          description: "No data available"
   /data/{resource_id}:
     get:
       parameters:
