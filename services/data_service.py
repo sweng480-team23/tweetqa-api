@@ -66,3 +66,5 @@ class DataService(CreateReadUpdateService):
         print(timeit.default_timer()-starttime)
         return random_data
 
+    def read_all_training_data(self) -> List[Data]:
+        return Data.query.filter(Data.answer is not None and Data.answer != "").all()
