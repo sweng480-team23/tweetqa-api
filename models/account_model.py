@@ -12,6 +12,7 @@ class Account(IdentifiableEntity):
 
     # One to many relationship with visitor
     visitor = db.relationship('models.visitor_model.Visitor', back_populates='invitor')
+    trainings = db.relationship('models.training_model.Training', back_populates='admin')
 
     # tostring code use for testing and debug
     def __repr__(self)->str:

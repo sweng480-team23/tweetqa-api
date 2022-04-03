@@ -11,6 +11,23 @@ produces:
 basePath: '/v2'
 
 paths:
+  /accounts:
+    post:
+      operationId: "controllers.v2.account_controller_v2.AccountsView.admin_login"
+      parameters:
+        - in: body
+          name: request
+          schema:
+            $ref: "#/definitions/AccountLoginRequestV2"
+      responses:
+        200:
+          description: "Admin successfully login"
+          schema:
+            $ref: "#/definitions/AccountLoginResponseV2"
+        404:
+          description: "Admin was not logged in"
+          schema:
+            type: "null"
   /data:
     post:
       parameters:
@@ -233,7 +250,32 @@ paths:
         403:
           description: 'Requesting user not authorized'
         404:
-          description: 'Prediction not updated'
+          description: "Prediction not updated"
+  /training:
+    post:
+      parameters:
+        - in: body
+          name: request
+          schema:
+            $ref: "#/definitions/TrainingCreateRequestV2"
+      responses:
+        200:
+          description: "New training started and created"
+          schema:
+            $ref: "#/definitions/NewTrainingResponseV2"
+  /training/{resource_id}:
+    get:
+      parameters:
+        - in: path
+          name: resource_id
+          type: "integer"
+          format: path
+          required: true
+      responses:
+        200:
+          description: "Successfully read training by id"
+          schema:
+            $ref: "#/definitions/TrainingResponseV2"
   /visitors:
     post:
       parameters:
@@ -272,24 +314,7 @@ paths:
         200:
           description: 'Successfully retrieved visitor with token'
           schema:
-            $ref: '#/definitions/VisitorResponseV2'
-  /accounts:
-    post:
-      operationId: 'controllers.v2.account_controller_v2.AccountsView.admin_login'
-      parameters:
-        - in: body
-          name: request
-          schema:
-            $ref: '#/definitions/AccountLoginRequestV2'
-      responses:
-        200:
-          description: 'Admin successfully login'
-          schema:
-            $ref: '#/definitions/AccountLoginResponseV2'
-        404:
-          description: 'Admin not login'
-          schema:
-            type: 'null'
+            $ref: "#/definitions/VisitorResponseV2"
 definitions:
   AccountLoginRequestV2:
     type: 'object'
@@ -433,7 +458,52 @@ definitions:
       rouge_score:
         type: 'number'
       meteor_score:
-        type: 'number'
+        type: "number"
+  TrainingCreateRequestV2:
+    type: "object"
+    properties:
+      admin:
+        type: "object"
+      epochs:
+        type: "number"
+      learningRate:
+        type: "string"
+      batchSize:
+        type: "number"
+      baseModel:
+        type: "string"
+      lastXLabels:
+        type: "number"
+      includeUserLabels:
+        type: "boolean"
+      pipelineHost:
+        type: "string"
+  NewTrainingResponseV2:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+  TrainingResponseV2:
+    type: "object"
+    properties:
+      id:
+        type: "number"
+      admin:
+        type: "object"
+      epochs:
+        type: "number"
+      learningRate:
+        type: "string"
+      batchSize:
+        type: "number"
+      baseModel:
+        type: "string"
+      lastXLabels:
+        type: "number"
+      includeUserLabels:
+        type: "boolean"
+      pipelineHost:
+        type: "string"
   VisitorCreateRequestV2:
     type: 'object'
     properties:

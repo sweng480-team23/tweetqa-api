@@ -7,6 +7,7 @@ class Container(containers.DeclarativeContainer):
         "controllers.v2"
     ])
     visitor_service = providers.Factory(services.VisitorService)
+    training_service = providers.Factory(services.TrainingService)
     prediction_service = providers.Factory(services.PredictionService)
     model_service = providers.Factory(services.QAModelService)
     data_service = providers.Factory(services.DataService)
