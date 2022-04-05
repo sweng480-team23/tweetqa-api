@@ -13,7 +13,8 @@ class CreateReadService(ReadService):
         db.session.add(data)
         try:
             db.session.commit()
-        except Exception:
+        except Exception as e:
+            print(e)
             db.session.rollback()
         saved_data = self.read_by_id(data.id)
         return saved_data

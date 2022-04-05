@@ -9,17 +9,18 @@ class TrainingService(CreateReadService):
         super().__init__(Training)
 
     def create(self, training) -> (str, int):
+        data: dict = {
+            "epochs": training.epochs,
+            "learning_rate": training.learningRate,
+            "batch_size": training.batchSize,
+            "base_model": training.baseModel,
+            "last_x_labels": training.lastXLabels,
+            "include_user_labels": training.includeUserLabels,
+            "pipeline_host": 'https://426311df09ff6461-dot-us-central1.pipelines.googleusercontent.com'
+        }
         response: requests.Response = requests.post(
-            url='https://tweetqa-pipeline-service-d62rdgteaa-uc.a.run.app/training',
-            data={
-                "epochs": training.epochs,
-                "learning_rate": training.learningRate,
-                "batch_size": training.batchSize,
-                "base_model": training.baseModel,
-                "last_x_labels": training.lastXLabels,
-                "include_user_labels": training.includeUserLabels,
-                "pipeline_host": training.pipelineHost
-            })
+            url='https://tweetqa-pipeline-service-d62rdgteaa-uc.a.run.app',
+            json=data)
 
         if response.status_code == 200:
             new_training = super().create(training)
