@@ -15,7 +15,6 @@ class TrainingCreateRequestV2(AbstractRequestV2):
     baseModel: str
     lastXLabels: int
     includeUserLabels: bool
-    pipelineHost: str
 
     def to_model(self) -> Training:
         return Training(
@@ -26,7 +25,6 @@ class TrainingCreateRequestV2(AbstractRequestV2):
             baseModel=self.baseModel,
             lastXLabels=self.lastXLabels,
             includeUserLabels=self.includeUserLabels,
-            pipelineHost=self.pipelineHost
         )
 
 
@@ -45,7 +43,6 @@ class TrainingResponseV2(AbstractResponseV2):
     baseModel: str
     lastXLabels: int
     includeUserLabels: bool
-    pipelineHost: str
 
     @staticmethod
     def from_model(model: Training):
@@ -58,5 +55,4 @@ class TrainingResponseV2(AbstractResponseV2):
             baseModel=model.baseModel,
             lastXLabels=model.lastXLabels,
             includeUserLabels=model.includeUserLabels,
-            pipelineHost=model.pipelineHost
         )

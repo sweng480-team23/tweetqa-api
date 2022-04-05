@@ -439,8 +439,6 @@ definitions:
         type: "number"
       includeUserLabels:
         type: "boolean"
-      pipelineHost:
-        type: "string"
   NewTrainingResponseV2:
     type: "object"
     properties:
@@ -465,8 +463,6 @@ definitions:
         type: "number"
       includeUserLabels:
         type: "boolean"
-      pipelineHost:
-        type: "string"
   VisitorCreateRequestV2:
     type: "object"
     properties:

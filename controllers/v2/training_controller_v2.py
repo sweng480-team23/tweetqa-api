@@ -4,6 +4,7 @@ from controllers.v2 import AbstractCreateReadControllerV2
 from dtos.v2.training_dto_v2 import TrainingCreateRequestV2
 from dtos.v2.training_dto_v2 import NewTrainingResponseV2
 from dacite import from_dict
+from models.training_model import Training
 
 
 class TrainingView(AbstractCreateReadControllerV2):
@@ -23,7 +24,9 @@ class TrainingView(AbstractCreateReadControllerV2):
             request_dto=TrainingCreateRequestV2)
 
     def post(self, request: dict) -> NewTrainingResponseV2:
-        # TODO: Check admin auth and get Admin Account info for Creation
+        # TODO: Check admin auth
         dto: TrainingCreateRequestV2 = from_dict(data_class=self.request_dto, data=request)
-        response, status = self.service.create(dto.to_model())
+        training_model: Training = dto.to_model()
+        training_model.admin = self.account_service.get_by_email(dto.admin.email)
+        response, status = self.service.create(training_model)
         return NewTrainingResponseV2(message=response), status
