@@ -23,10 +23,10 @@ from controllers.v2.account_controller_v2 import AccountsView
 6. Script to automatically import data from db - TODO: add this into the function for data_service. 
 """
 
-""" # 1. Manual test code for data service class
+# 1. Manual test code for data service class
 from models.data_model import Data
 from services.data_service import DataService
-test_data = Data(
+""" test_data = Data(
     qid = '0c871b7e5320d0816d5b2999d68c2936',
     tweet = ('Our prayers are with the students, educators & families at '+
     'Independence High School & all the first responders on the scene. ' +
@@ -38,27 +38,28 @@ test_data = Data(
     source = "original dataset",
     start_position = 60,
     end_position = 84
-)
+) """
 
 new_data_service = DataService()
 #saved_data = new_data_service.create(test_data)
 #print(saved_data)
-data_get = new_data_service.read_by_id(3)
-print(data_get)
-data_get.source = 'original set'
-updated_data = new_data_service.update(data_get)
-print(updated_data)
-#print(data_get)
+# data_get = new_data_service.read_by_id(3)
+# print(data_get)
+# data_get.source = 'original set'
+# updated_data = new_data_service.update(data_get)
+# print(updated_data)
+random_data = new_data_service.get_random_tweet()
+print(random_data)
 
 #date_selected = datetime(2021, 11, 1)
 #dataset = new_data_service.read_all_data_since(date_selected)
 #dataset = new_data_service.read_last_x_datum(2)
 #for data in dataset:
-#    print(data) """
+#    print(data)
 
 
 
-#2. Manual test code for account service class
+""" #2. Manual test code for account service class
 from models.account_model import Account
 from services.account_service import AccountService
 testaccount = Account(
@@ -75,7 +76,7 @@ new_accCon = AccountsView()
 
 login_dict = {"email":"abc@gmail.com","password":"password"}
 login_response = new_accCon.admin_login(login_dict)
-print(login_response)
+print(login_response) """
 # print (new_accservice.generate_token_invitation_for_email('newbie@gmail.com'))
 
 # #3. Manual test code for visitor service class
