@@ -26,6 +26,16 @@ def read_data(id_: int) -> DataResponse:
 
     return id_, 404
 
+def read_random_data() -> DataResponse:
+    '''Controller function to retrieve a random data'''
+
+    datum_model = data_service.read_random()
+
+    if datum_model is not None:
+        response = DataResponse(datum_model)
+        return response, 200
+
+    return  404
 
 def read_all_data_since(date: datetime) -> DataCollectionResponse:
     # todo
