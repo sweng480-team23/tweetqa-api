@@ -1,6 +1,8 @@
 from datetime import datetime
+from itertools import count
 from services.abstract.create_read_update_service import CreateReadUpdateService
 from services.qa_model_service import QAModelService
+from sqlalchemy.sql import func
 from models.data_model import Data
 from models.qa_model import QAModel
 from typing import List
@@ -10,7 +12,9 @@ import nltk
 from nltk.corpus import stopwords
 nltk.download('stopwords', quiet=True)
 import pandas as pd
+import random
 import string
+import timeit
 
 
 class DataService(CreateReadUpdateService):
@@ -45,3 +49,10 @@ class DataService(CreateReadUpdateService):
             for datum in data]
         word_counts: Dict = pd.Series(word_list, dtype=str).value_counts().head(100).to_dict()
         return [{'name': key, 'weight': value} for key, value in word_counts.items()]
+
+    def read_random(self)->Data:
+        random_data = Data.query.order_by(func.random()).first()
+        return random_data
+
+    def read_all_training_data(self) -> List[Data]:
+        return Data.query.filter(Data.answer is not None and Data.answer != "").all()

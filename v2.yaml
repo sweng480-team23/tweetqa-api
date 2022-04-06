@@ -1,14 +1,14 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
   description: This is the swagger file that goes configures the TweetQA API
-  version: "2.0.0"
+  version: '2.0.0'
   title: TweetQA API
 consumes:
-  - "application/json"
+  - 'application/json'
 produces:
-  - "application/json"
+  - 'application/json'
 
-basePath: "/v2"
+basePath: '/v2'
 
 paths:
   /data:
@@ -17,410 +17,446 @@ paths:
         - in: body
           name: request
           schema:
-            $ref: "#/definitions/DataCreateRequestV2"
+            $ref: '#/definitions/DataCreateRequestV2'
       responses:
         200:
-          description: "Datum successfully created"
+          description: 'Datum successfully created'
           schema:
-            $ref: "#/definitions/DataResponseV2"
+            $ref: '#/definitions/DataResponseV2'
         403:
-          description: "Requesting user not authorized"
+          description: 'Requesting user not authorized'
         404:
-          description: "Datum not created"
+          description: 'Datum not created'
+  /data/random:
+    get:
+      operationId: 'controllers.v2.data_controller_v2.DataView.read_random_data'
+      responses:
+        200:
+          description: 'Successfully get random data'
+          schema:
+            $ref: '#/definitions/DataResponseV2'
+        404:
+          description: 'No data available'
+  /data/training:
+    get:
+      operationId: 'controllers.v2.data_controller_v2.DataView.read_training_data'
+      responses:
+        200:
+          description: 'Successfully get training data'
+          schema:
+            $ref: '#/definitions/DataForTrainingCollectionResponseV2'
+        404:
+          description: 'No data available'
   /data/{resource_id}:
     get:
       parameters:
         - in: path
           name: resource_id
-          type: "integer"
+          type: 'integer'
           format: path
           required: true
       responses:
         200:
-          description: "Successfully read data by id"
+          description: 'Successfully read data by id'
           schema:
-            $ref: "#/definitions/DataResponseV2"
+            $ref: '#/definitions/DataResponseV2'
     put:
       parameters:
         - in: path
           name: resource_id
-          type: "integer"
+          type: 'integer'
           format: path
           required: true
         - in: body
           name: request
           schema:
-            $ref: "#/definitions/DataUpdateRequestV2"
+            $ref: '#/definitions/DataUpdateRequestV2'
       responses:
         200:
-          description: "Datum successfully updated"
+          description: 'Datum successfully updated'
           schema:
-            $ref: "#/definitions/DataResponseV2"
+            $ref: '#/definitions/DataResponseV2'
         403:
-          description: "Requesting user not authorized"
+          description: 'Requesting user not authorized'
         404:
-          description: "Datum not updated"
+          description: 'Datum not updated'
   /models:
     post:
       parameters:
         - in: body
           name: request
           schema:
-            $ref: "#/definitions/QAModelCreateRequestV2"
+            $ref: '#/definitions/QAModelCreateRequestV2'
       responses:
         200:
-          description: "Model successfully created"
+          description: 'Model successfully created'
           schema:
-            $ref: "#/definitions/QAModelResponseV2"
+            $ref: '#/definitions/QAModelResponseV2'
         403:
-          description: "Requesting user not authorized"
+          description: 'Requesting user not authorized'
         404:
-          description: "Prediction not created"
+          description: 'Prediction not created'
   /models/{resource_id}:
     get:
       parameters:
         - in: path
           name: resource_id
-          type: "integer"
+          type: 'integer'
           format: path
           required: true
       responses:
         200:
-          description: "Successfully retrieved selected model"
+          description: 'Successfully retrieved selected model'
           schema:
-            $ref: "#/definitions/QAModelResponseV2"
+            $ref: '#/definitions/QAModelResponseV2'
   /models/{model_type}:
     get:
-      operationId: "controllers.v2.model_controller_v2.ModelsView.get_models_by_type"
+      operationId: 'controllers.v2.model_controller_v2.ModelsView.get_models_by_type'
       parameters:
         - in: path
           name: model_type
-          type: "string"
+          type: 'string'
           format: path
           required: true
       responses:
         200:
-          description: "Successfully retreived models of specified type"
+          description: 'Successfully retreived models of specified type'
           schema:
-            type: "array"
+            type: 'array'
             items:
-              $ref: "#/definitions/QAModelResponseV2"
+              $ref: '#/definitions/QAModelResponseV2'
   /models/{model_type}/latest:
     get:
-      operationId: "controllers.v2.model_controller_v2.ModelsView.read_latest_qa_model_by_type"
+      operationId: 'controllers.v2.model_controller_v2.ModelsView.read_latest_qa_model_by_type'
       parameters:
-      - name: model_type
-        in: path
-        required: true
-        type: string
-        format: path
+        - name: model_type
+          in: path
+          required: true
+          type: string
+          format: path
       responses:
         200:
-          description: "Model retreived of specified type"
+          description: 'Model retreived of specified type'
           schema:
-            $ref: "#/definitions/QAModelResponseV2"
+            $ref: '#/definitions/QAModelResponseV2'
         404:
-          description: "Model not found"
+          description: 'Model not found'
           schema:
-            type: "null"
+            type: 'null'
   /models/best:
     get:
-      operationId: "controllers.v2.model_controller_v2.ModelsView.read_best_models"
+      operationId: 'controllers.v2.model_controller_v2.ModelsView.read_best_models'
       responses:
         200:
-          description: "Best models retrieved"
+          description: 'Best models retrieved'
           schema:
-            type: "array"
+            type: 'array'
             items:
-              $ref: "#/definitions/QAModelResponseV2"
+              $ref: '#/definitions/QAModelResponseV2'
         404:
-          description: "No Models found"
+          description: 'No Models found'
           schema:
-            type: "null"
+            type: 'null'
   /models/latest:
     get:
-      operationId: "controllers.v2.model_controller_v2.ModelsView.read_latest_models"
+      operationId: 'controllers.v2.model_controller_v2.ModelsView.read_latest_models'
       responses:
         200:
-          description: "Models succesfully found"
+          description: 'Models succesfully found'
           schema:
-            type: "array"
+            type: 'array'
             items:
-              $ref: "#/definitions/QAModelResponseV2"
+              $ref: '#/definitions/QAModelResponseV2'
         404:
-          description: "Models not found"
+          description: 'Models not found'
           schema:
-            type: "null"
+            type: 'null'
   /models/{resource_id}/wordcloud:
     get:
-      operationId: "controllers.v2.model_controller_v2.ModelsView.get_word_cloud"
+      operationId: 'controllers.v2.model_controller_v2.ModelsView.get_word_cloud'
       parameters:
         - in: path
           name: resource_id
-          type: "integer"
+          type: 'integer'
           format: path
           required: true
       responses:
         200:
-          description: "Successfully retrieved Word Cloud for selected model"
+          description: 'Successfully retrieved Word Cloud for selected model'
           schema:
-            $ref: "#/definitions/WordCloudResponseV2"
+            $ref: '#/definitions/WordCloudResponseV2'
   /predictions:
     post:
       parameters:
         - in: body
           name: request
           schema:
-            $ref: "#/definitions/PredictionCreateRequestV2"
+            $ref: '#/definitions/PredictionCreateRequestV2'
       responses:
         200:
-          description: "Prediction successfully created"
+          description: 'Prediction successfully created'
           schema:
-            $ref: "#/definitions/PredictionResponseV2"
+            $ref: '#/definitions/PredictionResponseV2'
         403:
-          description: "Requesting user not authorized"
+          description: 'Requesting user not authorized'
         404:
-          description: "Prediction not created"
+          description: 'Prediction not created'
   /predictions/{resource_id}:
     get:
       parameters:
         - in: path
           name: resource_id
-          type: "integer"
+          type: 'integer'
           format: path
           required: true
       responses:
         200:
-          description: "Successful read prediction by id"
+          description: 'Successful read prediction by id'
           schema:
-            $ref: "#/definitions/PredictionResponseV2"
+            $ref: '#/definitions/PredictionResponseV2'
     put:
       parameters:
         - in: path
           name: resource_id
-          type: "integer"
+          type: 'integer'
           format: path
           required: true
         - in: body
           name: request
           schema:
-            $ref: "#/definitions/PredictionUpdateRequestV2"
+            $ref: '#/definitions/PredictionUpdateRequestV2'
       responses:
         200:
-          description: "Prediction successfully updated"
+          description: 'Prediction successfully updated'
           schema:
-            $ref: "#/definitions/PredictionResponseV2"
+            $ref: '#/definitions/PredictionResponseV2'
         403:
-          description: "Requesting user not authorized"
+          description: 'Requesting user not authorized'
         404:
-          description: "Prediction not updated"
+          description: 'Prediction not updated'
   /visitors:
     post:
       parameters:
         - in: body
           name: request
           schema:
-            $ref: "#/definitions/VisitorCreateRequestV2"
+            $ref: '#/definitions/VisitorCreateRequestV2'
       responses:
         200:
-          description: "New visitor created and invited"
+          description: 'New visitor created and invited'
           schema:
-            $ref: "#/definitions/VisitorCollectionResponseV2"
+            $ref: '#/definitions/VisitorCollectionResponseV2'
   /visitors/{resource_id}:
     get:
       parameters:
         - in: path
           name: resource_id
-          type: "integer"
+          type: 'integer'
           format: path
           required: true
       responses:
         200:
-          description: "Successfully read visitor by id"
+          description: 'Successfully read visitor by id'
           schema:
-            $ref: "#/definitions/VisitorResponseV2"
+            $ref: '#/definitions/VisitorResponseV2'
   /visitors/{token}:
     get:
-      operationId: "controllers.v2.visitor_controller_v2.VisitorsView.get_by_token"
+      operationId: 'controllers.v2.visitor_controller_v2.VisitorsView.get_by_token'
       parameters:
         - in: path
           name: token
-          type: "string"
+          type: 'string'
           format: path
           required: true
       responses:
         200:
-          description: "Successfully retrieved visitor with token"
+          description: 'Successfully retrieved visitor with token'
           schema:
-            $ref: "#/definitions/VisitorResponseV2"
+            $ref: '#/definitions/VisitorResponseV2'
   /accounts:
     post:
-      operationId: "controllers.v2.account_controller_v2.AccountsView.admin_login"
+      operationId: 'controllers.v2.account_controller_v2.AccountsView.admin_login'
       parameters:
         - in: body
           name: request
           schema:
-            $ref: "#/definitions/AccountLoginRequestV2"
+            $ref: '#/definitions/AccountLoginRequestV2'
       responses:
         200:
-          description: "Admin successfully login"
+          description: 'Admin successfully login'
           schema:
-            $ref: "#/definitions/AccountLoginResponseV2"
+            $ref: '#/definitions/AccountLoginResponseV2'
         404:
-          description: "Admin not login"
+          description: 'Admin not login'
           schema:
-            type: "null"
+            type: 'null'
 definitions:
   AccountLoginRequestV2:
-    type: "object"
+    type: 'object'
     properties:
       email:
-        type: "string"
+        type: 'string'
       password:
-        type: "string"
+        type: 'string'
   AccountLoginResponseV2:
-    type: "object"
+    type: 'object'
     properties:
       email:
-        type: "string"
+        type: 'string'
       token:
-        type: "string"
+        type: 'string'
       expiresIn:
-        type: "string"
+        type: 'string'
   DataCreateRequestV2:
-    type: "object"
+    type: 'object'
     properties:
       tweet:
-        type: "string"
+        type: 'string'
       question:
-        type: "string"
+        type: 'string'
       answer:
-        type: "string"
+        type: 'string'
   DataResponseV2:
-    type: "object"
+    type: 'object'
     properties:
       id:
-        type: "integer"
+        type: 'integer'
       qid:
-        type: "string"
+        type: 'string'
       tweet:
-        type: "string"
+        type: 'string'
       question:
-        type: "string"
+        type: 'string'
       answer:
-        type: "string"
+        type: 'string'
       created_date:
-        type: "string"
+        type: 'string'
       updated_date:
-        type: "string"
+        type: 'string'
       source:
-        type: "string"
+        type: 'string'
       start_position:
-        type: "integer"
+        type: 'integer'
       end_position:
-        type: "integer"
-  DataUpdateRequestV2:
-    type: "object"
+        type: 'integer'
+  DataResponseForTrainingV2:
+    type: 'object'
     properties:
-      id:
-        type: "integer"
-      qid:
-        type: "string"
+      tweet:
+        type: 'string'
+      question:
+        type: 'string'
       answer:
-        type: "string"
+        type: 'string'
       start_position:
-        type: "integer"
+        type: 'integer'
       end_position:
-        type: "integer"
+        type: 'integer'
+  DataForTrainingCollectionResponseV2:
+    type: array
+    items:
+      $ref: '#/definitions/DataResponseForTrainingV2'
+  DataUpdateRequestV2:
+    type: 'object'
+    properties:
+      id:
+        type: 'integer'
+      qid:
+        type: 'string'
+      answer:
+        type: 'string'
+      start_position:
+        type: 'integer'
+      end_position:
+        type: 'integer'
   PredictionCreateRequestV2:
-    type: "object"
+    type: 'object'
     properties:
       visitor:
-        type: "object"
+        type: 'object'
       model_id:
-        type: "integer"
+        type: 'integer'
       datum:
-        type: "object"
+        type: 'object'
   PredictionUpdateRequestV2:
-    type: "object"
+    type: 'object'
     properties:
       id:
-        type: "integer"
+        type: 'integer'
       is_correct:
-        type: "boolean"
+        type: 'boolean'
       alt_answer:
-        type: "string"
+        type: 'string'
   PredictionResponseV2:
-    type: "object"
+    type: 'object'
     properties:
       id:
-        type: "integer"
+        type: 'integer'
       visitor:
-        type: "object"
+        type: 'object'
       prediction:
-        type: "string"
+        type: 'string'
       is_correct:
-        type: "boolean"
+        type: 'boolean'
       alt_answer:
-        type: "string"
+        type: 'string'
       model:
-        type: "string"
+        type: 'string'
       datum:
-        type: "string"
+        type: 'string'
   QAModelCreateRequestV2:
-    type: "object"
+    type: 'object'
     properties:
       ml_type:
-        type: "string"
+        type: 'string'
       ml_version:
-        type: "string"
+        type: 'string'
       bleu_score:
-        type: "number"
+        type: 'number'
       rouge_score:
-        type: "number"
+        type: 'number'
       meteor_score:
-        type: "number"
+        type: 'number'
   QAModelResponseV2:
-    type: "object"
+    type: 'object'
     properties:
       id:
-        type: "integer"
+        type: 'integer'
       created_date:
-        type: "string"
+        type: 'string'
       ml_type:
-        type: "string"
+        type: 'string'
       ml_version:
-        type: "string"
+        type: 'string'
       bleu_score:
-        type: "number"
+        type: 'number'
       rouge_score:
-        type: "number"
+        type: 'number'
       meteor_score:
-        type: "number"
+        type: 'number'
   VisitorCreateRequestV2:
-    type: "object"
+    type: 'object'
     properties:
       invitor_account:
-        type: "integer"
+        type: 'integer'
       emails:
-        type: "array"
+        type: 'array'
   VisitorCollectionResponseV2:
-    type: "object"
+    type: 'object'
     properties:
       data:
-        type: "array"
+        type: 'array'
   VisitorResponseV2:
-    type: "object"
+    type: 'object'
     properties:
       id:
-        type: "integer"
+        type: 'integer'
       token:
-        type: "string"
+        type: 'string'
   WordCloudResponseV2:
-    type: "object"
+    type: 'object'
     properties:
       model_id:
-        type: "integer"
+        type: 'integer'
       words:
-        type: "array"
-
+        type: 'array'
