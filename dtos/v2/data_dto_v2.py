@@ -99,3 +99,28 @@ class DataUpdateRequestV2(VisitorEnforcedRequest):
 class DataCollectionResponseV2(object):
     # TODO: - inherit from CollectionResponse base class
     collection: List[DataResponseV2]
+
+
+@dataclass
+class DataForTrainingResponseV2(AbstractResponseV2):
+    tweet: str
+    question: str
+    answer: str
+    start_position: int
+    end_position: int
+
+    @staticmethod
+    def from_model(model: Data):
+        return DataForTrainingResponseV2(
+            tweet=model.tweet,
+            question=model.question,
+            answer=model.answer,
+            start_position=model.start_position,
+            end_position=model.end_position
+        )
+
+
+@dataclass
+class DataForTrainingCollectionResponseV2(object):
+    # TODO: - inherit from CollectionResponse base class
+    collection: List[DataForTrainingResponseV2]

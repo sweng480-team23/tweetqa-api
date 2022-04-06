@@ -54,3 +54,5 @@ class DataService(CreateReadUpdateService):
         random_data = Data.query.order_by(func.random()).first()
         return random_data
 
+    def read_all_training_data(self) -> List[Data]:
+        return Data.query.filter(Data.answer is not None and Data.answer != "").all()
