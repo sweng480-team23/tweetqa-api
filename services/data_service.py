@@ -51,19 +51,7 @@ class DataService(CreateReadUpdateService):
         return [{'name': key, 'weight': value} for key, value in word_counts.items()]
 
     def read_random(self)->Data:
-        # id_list: List[int] = []
-        # all_datas = Data.query.all()
-        # for datum in all_datas:
-        #     id_list.append(datum.id)
-        # #print(id_list)
-        # random_id = random.choice(id_list)
-        # #print(random_id)
-        # random_data = self.read_by_id(random_id)
-        # #print(random_data)
-        starttime = timeit.default_timer()
         random_data = Data.query.order_by(func.random()).first()
-        #print(random_data)
-        print(timeit.default_timer()-starttime)
         return random_data
 
     def read_all_training_data(self) -> List[Data]:
