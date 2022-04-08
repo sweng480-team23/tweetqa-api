@@ -8,7 +8,7 @@ steps:
 # Deploy container image to Cloud Run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
-  args: ['run', 'deploy', 'tweetqa-api', '--image', 'gcr.io/tweetqa-338418/api', '--region', 'us-central1', '--timeout', '30']
+  args: ['run', 'deploy', 'tweetqa-api', '--image', 'gcr.io/tweetqa-338418/api', '--region', 'us-central1', '--timeout', '30', '--memory', '1Gi']
 timeout: 1800s
 images:
 - gcr.io/tweetqa-338418/api
