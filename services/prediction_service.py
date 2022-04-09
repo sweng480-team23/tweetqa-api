@@ -13,9 +13,9 @@ class PredictionService(CreateReadUpdateService):
         super().__init__(Prediction)
 
     def create(self, prediction: Prediction) -> Prediction:
-        runner_ip = app.app.config['RUNNER_IP']
+        runner_address = app.app.config['RUNNER_ADDRESS']
         dict_out = {"tweet": prediction.datum.tweet, "question": prediction.datum.question}
-        res = requests.post('http://' + runner_ip + ':5555/', json=dict_out)
+        res = requests.post(runner_address, json=dict_out)
         dict_in = res.json()
 
         prediction.prediction = dict_in["answer"]

@@ -9,9 +9,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 def configure_prod_db(_app: Flask) -> Flask:
     secret_key = config('SECRET_KEY')
-    runner_ip = config('RUNNER_IP')
+    runner_address = config('RUNNER_ADDRESS')
     _app.app.config['SECRET_KEY'] = secret_key
-    _app.app.config['RUNNER_IP'] = runner_ip
+    _app.app.config['RUNNER_ADDRESS'] = runner_address
     _app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'false'
     _app.app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:' + secret_key + '@ljdub.com:3306/mysql_database'
     return _app
@@ -19,6 +19,7 @@ def configure_prod_db(_app: Flask) -> Flask:
 
 def configure_dev_db(_app: Flask) -> Flask:
     _app.app.config['TESTING'] = True
+    _app.app.config['RUNNER_ADDRESS'] = 'no-ip'
     _app.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
     _app.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     return _app

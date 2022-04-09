@@ -1,6 +1,6 @@
 FROM python:3.8
 
-ENV RUNNER_IP=172.17.0.2
+ENV RUNNER_ADDRESS=172.17.0.2
 
 # Install OpenJDK-11
 RUN apt-get update && \
@@ -15,4 +15,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 EXPOSE 8080
 
-CMD ./run_app.sh ${SECRET_KEY} ${RUNNER_IP} ${GMAIL_PWD}
+CMD ./run_app.sh ${SECRET_KEY} ${RUNNER_ADDRESS} ${GMAIL_PWD}
