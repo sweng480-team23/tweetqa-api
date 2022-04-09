@@ -14,8 +14,8 @@ import sys
 
 class VisitorService(CreateReadUpdateService):
     """ VisitorService:
-        functions inherited from CreateReadUpdateService : read_by_id(id), create(entity_model), update(entity_model) 
-        additional functions: def visitor_check (self, token: string) -> Visitor"""   
+        functions inherited from CreateReadUpdateService : read_by_id(id), create(entity_model), update(entity_model)
+        additional functions: def visitor_check (self, token: string) -> Visitor"""
 
     def __init__(self):
         """ Constructor, take in the specific model class and pass the db.model back to the parent """
@@ -50,7 +50,7 @@ class VisitorService(CreateReadUpdateService):
         msg.set_content(
             f"""Welcome to TweetQA! Follow this link to interact with our ML models via our Web Application.
 
-            localhost:8080?token={visitor.token}""")
+            localhost:4200?token={visitor.token}""")
         msg['Subject'] = "Welcome to TweetQA!"
         msg['From'] = invitor.email
         msg['To'] = visitor.email
