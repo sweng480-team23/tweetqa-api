@@ -15,5 +15,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 EXPOSE 8080
 
-# CMD gunicorn -b :8080 'main:start(runner_ip="$r_ip")'
 CMD ./run_app.sh ${SECRET_KEY} ${RUNNER_IP} ${GMAIL_PWD}
