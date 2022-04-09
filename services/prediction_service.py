@@ -1,6 +1,6 @@
-from utils import tf_runner_best
 from models import Prediction
 from .abstract.create_read_update_service import CreateReadUpdateService
+import requests
 
 
 class PredictionService(CreateReadUpdateService):
@@ -12,8 +12,11 @@ class PredictionService(CreateReadUpdateService):
         super().__init__(Prediction)
 
     def create(self, prediction: Prediction) -> Prediction:
-        model_prediction = tf_runner_best.answer_tweet_question(prediction.datum.tweet, prediction.datum.question)
-        prediction.prediction = model_prediction[0]
+        dictOut = {"tweet": prediction.datum.tweet, "question": prediction.datum.question}
+        res = requests.post('http://localhost:5555/', json=dictOut)
+        dictIn = res.json()
+
+        prediction.prediction = dictIn["answer"]
         saved_prediction = super().create(prediction)
         return saved_prediction
 
