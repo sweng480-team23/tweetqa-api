@@ -1,1 +1,1 @@
-from .abstract_response_v2 import *
+from .abstract_dto_v2 import *

@@ -2,7 +2,7 @@ import abc
 from typing import Type, Optional, List
 from dataclasses import dataclass
 from models.visitor_model import Visitor
-from dtos.v2.abstract.abstract_response_v2 import AbstractResponseV2
+from dtos.v2.abstract.abstract_dto_v2 import AbstractResponseV2, AbstractRequestV2
 
 
 @dataclass
@@ -39,7 +39,7 @@ class VisitorCollectionResponseV2(AbstractResponseV2):
     
 
 @dataclass
-class VisitorEnforcedRequest(object):
+class VisitorEnforcedRequest(AbstractRequestV2):
     visitor: Optional[VisitorResponseV2]
 
     @abc.abstractmethod

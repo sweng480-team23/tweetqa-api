@@ -50,7 +50,7 @@ class VisitorService(CreateReadUpdateService):
         msg.set_content(
             f"""Welcome to TweetQA! Follow this link to interact with our ML models via our Web Application.
 
-            localhost:4200?token={visitor.token}""")
+            https://tweetqa-338418.uc.r.appspot.com/?token={visitor.token}""")
         msg['Subject'] = "Welcome to TweetQA!"
         msg['From'] = invitor.email
         msg['To'] = visitor.email
