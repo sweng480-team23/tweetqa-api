@@ -1,5 +1,4 @@
 from datetime import datetime
-from itertools import count
 from services.abstract.create_read_update_service import CreateReadUpdateService
 from services.qa_model_service import QAModelService
 from sqlalchemy.sql import func
@@ -12,9 +11,7 @@ import nltk
 from nltk.corpus import stopwords
 nltk.download('stopwords', quiet=True)
 import pandas as pd
-import random
 import string
-import timeit
 
 
 class DataService(CreateReadUpdateService):
