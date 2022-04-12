@@ -4,11 +4,10 @@ from .abstract.create_read_update_service import CreateReadUpdateService
 from services import AccountService
 import string
 from uuid import uuid4
-import smtplib
-import ssl
-from email.message import EmailMessage
 from decouple import config
 from typing import List
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 import sys
 
 
@@ -45,20 +44,16 @@ class VisitorService(CreateReadUpdateService):
         return True
 
     def email_link(self, visitor: Visitor):
-        invitor: Account = self.account_service.read_by_id(visitor.invitor_account)
-        msg = EmailMessage()
-        msg.set_content(
-            f"""Welcome to TweetQA! Follow this link to interact with our ML models via our Web Application.
-
-            https://tweetqa-338418.uc.r.appspot.com/?token={visitor.token}""")
-        msg['Subject'] = "Welcome to TweetQA!"
-        msg['From'] = invitor.email
-        msg['To'] = visitor.email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
-            server.login('psu.tweetqa@gmail.com', config('GMAIL_PWD'))
-            server.send_message(msg)
-            server.quit()
+        message: Mail = Mail(
+            from_email='psu.tweetqa@gmail.com',
+            to_emails=visitor.email,
+            subject="Welcome to TweetQA!",
+            html_content=f"""<strong>
+                Welcome to TweetQA! Follow this link to interact with our ML models via our Web Application. 
+                https://tweetqa-338418.uc.r.appspot.com/?token={visitor.token}</strong>"""
+        )
+        sg = SendGridAPIClient(api_key=config('SENDGRID_API_KEY'))
+        sg.send(message)
 
     def set_test_flag(self, flag=True):
         self.set_test_flag = flag
