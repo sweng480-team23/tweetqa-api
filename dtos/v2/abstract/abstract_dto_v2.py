@@ -1,9 +1,18 @@
 import abc
 from dataclasses import dataclass
-from typing import TypeVar
+from typing import TypeVar, Type
 
 MODEL = TypeVar("MODEL")
 RESPONSE = TypeVar("RESPONSE")
+
+
+@dataclass
+class AbstractRequestV2(object):
+
+    @abc.abstractmethod
+    def to_model(self) -> Type:
+        pass
+
 
 
 @dataclass

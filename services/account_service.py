@@ -11,11 +11,14 @@ class AccountService(CreateReadUpdateService):
         '''Constructor, take in the specific model class and pass the db.model back to the parent'''
         super().__init__(Account)
 
+    def get_by_email(self, email) -> Account:
+        return Account.query.filter(Account.email == email).first()
+
     #login function
     #check if the username and password combination exist in the database
     #if not, return null object TODO: need to hash/salt passwords
     def login(self, email: string, password: string) -> Account:
-        login_user = Account.query.filter(Account.email==email).first()
+        login_user = self.get_by_email(email)
         if login_user is None:
             return null
         elif login_user.password == password:
