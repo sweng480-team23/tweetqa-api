@@ -15,4 +15,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 EXPOSE 8080
 
-CMD ./run_app.sh ${SECRET_KEY} ${RUNNER_ADDRESS} ${GMAIL_PWD}
+CMD ./run_app.sh ${SECRET_KEY} ${RUNNER_ADDRESS} ${SENDGRID_API_KEY}
