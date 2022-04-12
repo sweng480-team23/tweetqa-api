@@ -13,3 +13,4 @@ app.yaml
 .vscode/
 run.py
 .venv
+sendgrid.env
