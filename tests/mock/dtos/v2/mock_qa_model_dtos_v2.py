@@ -24,3 +24,4 @@ class MockQAModelCreateRequestV2(MockVisitorEnforcedRequestV2):
     bleu_score = fuzzy.FuzzyFloat(0.0, 1.0, 2)
     rouge_score = fuzzy.FuzzyFloat(0.0, 1.0, 2)
     meteor_score = fuzzy.FuzzyFloat(0.0, 1.0, 2)
+    model_url = fuzzy.FuzzyText()

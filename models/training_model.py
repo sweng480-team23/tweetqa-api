@@ -17,4 +17,10 @@ class Training(IdentifiableEntity):
     admin = db.relationship('models.account_model.Account', back_populates='trainings')
 
     def __repr__(self) -> str:
-        return f"Training Id: {self.id}, Created: {self.created}, Base Model: {self.baseModel}"""
+        return f"""
+            Training Id: {self.id}, 
+            Created: {self.created}, 
+            Base Model: {self.baseModel},
+            Epochs: {self.epochs},
+            Learning Rate: {self.learningRate},
+            Batch Size: {self.batchSize}"""

@@ -12,6 +12,7 @@ class QAModelCreateRequestV2(VisitorEnforcedRequest):
     bleu_score: float
     rouge_score: float
     meteor_score: float
+    model_url: str
 
     def to_model(self) -> QAModel:
         return QAModel( ml_type=self.ml_type,
@@ -19,6 +20,7 @@ class QAModelCreateRequestV2(VisitorEnforcedRequest):
                         bleu_score=self.bleu_score,
                         rouge_score=self.rouge_score,
                         meteor_score=self.meteor_score,
+                        model_url=self.model_url,
                         created_date=datetime.now())
 
 
