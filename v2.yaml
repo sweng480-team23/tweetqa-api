@@ -326,6 +326,8 @@ definitions:
   AccountLoginResponseV2:
     type: 'object'
     properties:
+      id:
+        type: 'integer'
       email:
         type: 'string'
       token:

@@ -6,19 +6,21 @@ from models.account_model import Account
 
 @dataclass
 class AccountLoginRequestV2(object):
-    email:str
-    password:str
+    email: str
+    password: str
 
 
 @dataclass
 class AccountLoginResponseV2(AbstractResponseV2):
-    email:str
-    token:str
-    expiresIn:str
+    id: int
+    email: str
+    token: str
+    expiresIn: str
     @staticmethod
     def from_model(model: Account):
         return AccountLoginResponseV2(
-            email = model.email,
-            token = uuid.uuid4(),
-            expiresIn = '3600'
+            id=model.id,
+            email=model.email,
+            token=uuid.uuid4(),
+            expiresIn='3600'
         )
