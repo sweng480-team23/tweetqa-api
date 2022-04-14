@@ -31,6 +31,9 @@ class DataService(CreateReadUpdateService):
         selected_datas = Data.query.filter(Data.created_date > date).all()
         return selected_datas
 
+    def read_all_data_until(self, date: datetime) -> List[Data]:
+        return Data.query.filter(Data.created_date < date).all()
+
     def read_last_x_datum(self, x: int) -> List[Data]:
         selected_datas = Data.query.order_by(Data.id.desc()).limit(x)
         selected_datas = selected_datas[::-1]
@@ -38,7 +41,7 @@ class DataService(CreateReadUpdateService):
 
     def generate_word_cloud(self, model_id: int) -> List[WordResponse]:
         model: QAModel = self.model_service.read_by_id(model_id)
-        data: List[Data] = self.read_all_data_since(model.created_date)
+        data: List[Data] = self.read_all_data_until(model.created_date)
         word_list: List[str] = []
         [[word_list.append(word)
             for word in datum.tweet.translate(str.maketrans('', '', string.punctuation)).lower().split()
