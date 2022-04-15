@@ -140,7 +140,8 @@ def test_get_word_cloud(app: FlaskClient,
                         data_service: DataService, 
                         data_model_list: List[Data]):
 
-    qa_model_model.created_date = datetime.today() - timedelta(days=5)
+    # Model needs to be in the future so it can find the mock data that will have a date of today
+    qa_model_model.created_date = datetime.today() + timedelta(days=5)
     qa_model_service.create(qa_model_model)
     for data in data_model_list:
         data_service.create(data)

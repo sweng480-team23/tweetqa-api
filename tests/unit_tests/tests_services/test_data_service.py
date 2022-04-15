@@ -85,7 +85,8 @@ def test_read_last_x_datum(data_model_list: List[Data], data_service: DataServic
 def test_generate_word_cloud(data_model_list: List[Data], data_service: DataService,
                              qa_model_model: QAModel, qa_model_service: QAModelService):
 
-    qa_model_model.created_date = datetime.today() - timedelta(days=5)
+    # Model needs to be in the future so it can find the mock data that will have a date of today
+    qa_model_model.created_date = datetime.today() + timedelta(days=5)
     qa_model_service.create(qa_model_model)
     for data in data_model_list:
         data_service.create(data)
